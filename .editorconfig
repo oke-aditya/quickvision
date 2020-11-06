@@ -1,0 +1,56 @@
+# Inspired from https://github.com/seanfisk/python-project-template/blob/master/.editorconfig
+# More stuff taken from https://github.com/django/django/blob/master/.editorconfig
+# -*- mode: conf-unix; -*-
+
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# defaults
+[*]
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+charset = utf-8
+
+# Use 2 spaces for the HTML files
+[*.html]
+indent_size = 2
+
+# The JSON files contain newlines inconsistently
+[*.json]
+indent_size = 2
+insert_final_newline = ignore
+
+# Minified JavaScript files shouldn't be changed
+[**.min.js]
+indent_style = ignore
+insert_final_newline = ignore
+
+# Makefiles always use tabs for indentation
+[Makefile]
+indent_style = tab
+
+# Batch files use tabs for indentation
+[*.bat]
+indent_style = tab
+
+# 4 space indentation
+[*.{ini,py,py.tpl,rst}]
+indent_style = space
+indent_size = 4
+
+# 4-width tabbed indentation
+[*.{sh,bat.tpl,Makefile.tpl}]
+indent_style = tab
+indent_size = 4
+
+# 2-width space indentation for GitHub / Travis actions and yml files.
+[*.{yml}]
+indent_style = space
+indent_size = 2
+
+# Markdown might need whitespaces
+[*.md]
+trim_trailing_whitespace = false
