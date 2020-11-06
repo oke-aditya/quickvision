@@ -77,11 +77,11 @@ def train_step(model, train_loader, device, optimizer,
             if cnt >= num_batches:
                 print(f"Done till {num_batches} train batches")
                 end_train_step = time.time()
-                print(f"Time taken for validation step = {end_train_step - start_train_step} sec")
+                print(f"Time taken for Training step = {end_train_step - start_train_step} sec")
                 return loss_dict
 
     end_train_step = time.time()
-    print(f"Time taken for validation step = {end_train_step - start_train_step} sec")
+    print(f"Time taken for Training step = {end_train_step - start_train_step} sec")
     return loss_dict
 
 
@@ -91,7 +91,7 @@ def val_step(model, val_loader, device, num_batches=None,
     """
     Performs one step of validation. Calculates loss, forward pass and returns metrics.
     Args:
-        model : A pytorch CNN Model.
+        model : PyTorch FasterRCNN Model.
         val_loader : Validation loader.
         device : "cuda" or "cpu"
         num_batches : (optional) Integer To limit validation to certain number of batches.
@@ -121,11 +121,12 @@ def val_step(model, val_loader, device, num_batches=None,
             batch_start = time.time()
 
             if last_batch or batch_idx % log_interval == 0:  # If we reach the log intervel
-                print("Batch Train Time: {batch_time.val:.3f} ({batch_time.avg:.3f})  ")
+                print("Batch Validation Time: {batch_time.val:.3f} ({batch_time.avg:.3f})  ".format(
+                      batch_time=batch_time_m,))
 
             if num_batches is not None:
                 if cnt >= num_batches:
-                    print(f"Done till {num_batches} train batches")
+                    print(f"Done till {num_batches} Validation batches")
                     end_val_step = time.time()
                     print(f"Time taken for validation step = {end_val_step - start_val_step} sec")
                     return metrics
@@ -135,16 +136,16 @@ def val_step(model, val_loader, device, num_batches=None,
     return metrics
 
 
-def fit(epochs, model, train_loader, val_loader,
-        device, optimizer, scheduler=None, early_stopper=None,
+def fit(model, epochs, train_loader, val_loader,
+        device, optimizer, scheduler=None,
         num_batches: int = None, log_interval: int = 100,
         fp16: bool = False, ):
 
     """
     A fit function that performs training for certain number of epochs.
     Args:
+        model : A pytorch Faster RCNN Model.
         epochs: Number of epochs to train.
-        model : A pytorch CNN Model.
         train_loader : Train loader.
         val_loader : Validation loader.
         device : "cuda" or "cpu"
@@ -171,6 +172,20 @@ def fit(epochs, model, train_loader, val_loader,
         print(f"Training Epoch = {epoch}")
         loss_dict = train_step(model, train_loader, device, optimizer,
                                scheduler, num_batches, log_interval, scaler)
+        metrics = val_step(model, val_loader, device, num_batches, log_interval)
+
+        # Possibly we can use individual losses
+        loss = sum(loss_v for loss_v in loss_dict.values())
+        train_loss.append(loss.detach())
+
+        avg_iou = torch.stack([metrics["iou"]]).mean()
+        avg_giou = torch.stack([metrics["giou"]]).mean()
+
+        val_iou.append(avg_iou)
+        val_giou.append(avg_giou)
+
+    history = {"train": {"train_loss": train_loss},
+               "val": {"val_iou": val_iou, "val_giou": val_giou}}
 
     return history
 

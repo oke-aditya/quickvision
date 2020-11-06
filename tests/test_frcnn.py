@@ -93,12 +93,12 @@ class EngineTester(unittest.TestCase):
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
             opt = torch.optim.Adam(frcnn_model.parameters(), lr=1e-3)
-            out = faster_rcnn.train_step(frcnn_model, train_loader, "cpu", opt, num_batches=10)
-            self.assertIsInstance(out, Dict)
-            self.assertIsInstance(out["loss_classifier"], torch.Tensor)
-            self.assertIsInstance(out["loss_box_reg"], torch.Tensor)
-            self.assertIsInstance(out["loss_objectness"], torch.Tensor)
-            self.assertIsInstance(out["loss_rpn_box_reg"], torch.Tensor)
+            met = faster_rcnn.train_step(frcnn_model, train_loader, "cpu", opt, num_batches=10)
+            self.assertIsInstance(met, Dict)
+            self.assertIsInstance(met["loss_classifier"], torch.Tensor)
+            self.assertIsInstance(met["loss_box_reg"], torch.Tensor)
+            self.assertIsInstance(met["loss_objectness"], torch.Tensor)
+            self.assertIsInstance(met["loss_rpn_box_reg"], torch.Tensor)
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_step_fpn_cuda(self):
@@ -128,11 +128,45 @@ class EngineTester(unittest.TestCase):
             self.assertIsInstance(metrics["giou"], torch.Tensor)
 
     def test_fit(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=False)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(frcnn_model, nn.Module))
+            opt = torch.optim.Adam(frcnn_model.parameters(), lr=1e-3)
+            history = faster_rcnn.fit(frcnn_model, 1, train_loader, val_loader, "cpu", opt, num_batches=10)
+
+            self.assertIsInstance(history, Dict)
+            exp_keys = ("train", "val")
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in history.keys())
+            exp_keys2 = ("train_loss")
+            for exp_k2 in exp_keys2:
+                self.assertTrue(exp_k2 in history["train"].keys())
+            exp_keys3 = ("val_iou", "val_giou")
+            for exp_k3 in exp_keys3:
+                self.assertTrue(exp_k3 in history["val"].keys())
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_fit_cuda(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=False)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(frcnn_model, nn.Module))
+            opt = torch.optim.Adam(frcnn_model.parameters(), lr=1e-3)
+            history = faster_rcnn.fit(frcnn_model, 1, train_loader, val_loader, "cuda", opt, num_batches=10, fp16=True)
+
+            self.assertIsInstance(history, Dict)
+            exp_keys = ("train", "val")
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in history.keys())
+            exp_keys2 = ("train_loss")
+            for exp_k2 in exp_keys2:
+                self.assertTrue(exp_k2 in history["train"].keys())
+            exp_keys3 = ("val_iou", "val_giou")
+            for exp_k3 in exp_keys3:
+                self.assertTrue(exp_k3 in history["val"].keys())
 
     def test_train_sanity_fit(self):
         pass

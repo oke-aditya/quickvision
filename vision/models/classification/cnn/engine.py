@@ -205,7 +205,7 @@ def val_step(model, val_loader, criterion, device, num_batches=None,
     return metrics
 
 
-def fit(epochs, model, train_loader, val_loader, criterion,
+def fit(model, epochs, train_loader, val_loader, criterion,
         device, optimizer, scheduler=None, early_stopper=None,
         num_batches: int = None, log_interval: int = 100,
         grad_penalty: bool = False, fp16: bool = False,
@@ -214,8 +214,8 @@ def fit(epochs, model, train_loader, val_loader, criterion,
     """
     A fit function that performs training for certain number of epochs.
     Args:
-        epochs: Number of epochs to train.
         model : A pytorch CNN Model.
+        epochs: Number of epochs to train.
         train_loader : Train loader.
         val_loader : Validation loader.
         criterion : Loss function to be optimized.
