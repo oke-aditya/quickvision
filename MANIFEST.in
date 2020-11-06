@@ -1,0 +1,30 @@
+# Adopted from PyTorch Lightning Bolts
+
+# Include the README and MD Files
+include *.md
+
+# Include the license file
+include LICENSE
+exclude *.sh
+exclude *.toml
+exclude *.svg
+
+# Include the Requirements
+include requirements.txt
+recursive-include requirements *.txt
+
+# exclude tests from package
+recursive-exclude tests *
+recursive-exclude site *
+exclude tests
+recursive-exclude * __pycache_
+
+# Exclude the documentation files
+recursive-exclude docs *
+exclude docs
+
+# Exclude build configs
+exclude *.yml
+
+prune .git
+prune .github

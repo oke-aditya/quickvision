@@ -1,0 +1,24 @@
+# git
+.git
+.gitattributes
+.gitignore
+*.github
+
+# python
+**/__pycache__
+
+# Common
+*.md
+docker-compose.yml
+Dockerfile
+
+# JetBrains
+.idea
+
+# Configutration files
+.editorconfig
+
+# Editor files
+*.vscode
+*.vs
+
