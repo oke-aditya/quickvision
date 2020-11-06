@@ -4,16 +4,16 @@
 
 <div align="center">
 
-[![GitHub issues](https://img.shields.io/github/issues/VAUV/vision)](https://github.com/VAUV/vision/issues)
-[![GitHub forks](https://img.shields.io/github/forks/VAUV/vision)](https://github.com/VAUV/vision/network)
-[![GitHub stars](https://img.shields.io/github/stars/VAUV/vision)](https://github.com/VAUV/vision/stargazers)
-[![GitHub license](https://img.shields.io/github/license/VAUV/vision)](https://github.com/VAUV/vision)
-[![codecov](https://codecov.io/gh/VAUV/vision/branch/master/graph/badge.svg?token=KM2TLB42R8)](undefined)
+[![GitHub issues](https://img.shields.io/github/issues/Quick-AI/quickvision)](https://github.com/Quick-AI/quickvision/issues)
+[![GitHub forks](https://img.shields.io/github/forks/Quick-AI/quickvision)](https://github.com/Quick-AI/quickvision/network)
+[![GitHub stars](https://img.shields.io/github/stars/Quick-AI/quickvision)](https://github.com/Quick-AI/quickvision/stargazers)
+[![GitHub license](https://img.shields.io/github/license/Quick-AI/quickvision)](https://github.com/Quick-AI/quickvision)
+[![codecov](https://codecov.io/gh/Quick-AI/quickvision/branch/master/graph/badge.svg?token=KM2TLB42R8)](undefined)
 
-![PEP8](https://github.com/VAUV/vision/workflows/Check%20Code%20formatting/badge.svg)
-![CI Tests](https://github.com/VAUV/vision/workflows/CI%20Tests/badge.svg)
-![Docs](https://github.com/VAUV/vision/workflows/Deploy%20mkdocs/badge.svg)
-![PyPi Release](https://github.com/VAUV/vision/workflows/PyPi%20Release/badge.svg)
+![PEP8](https://github.com/Quick-AI/quickvision/workflows/Check%20Code%20formatting/badge.svg)
+![CI Tests](https://github.com/Quick-AI/quickvision/workflows/CI%20Tests/badge.svg)
+![Docs](https://github.com/Quick-AI/quickvision/workflows/Deploy%20mkdocs/badge.svg)
+![PyPi Release](https://github.com/Quick-AI/quickvision/workflows/PyPi%20Release/badge.svg)
 
 </div>
 
