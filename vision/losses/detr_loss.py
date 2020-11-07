@@ -8,7 +8,7 @@ from torchvision.ops.misc import interpolate
 from torchvision.ops import generalized_box_iou, box_convert
 from torchvision.ops import sigmoid_focal_loss
 from vision.models.model_utils import accuracy, nested_tensor_from_tensor_list
-from vision.losses import dice_loss
+from vision.losses.segmentation import dice_loss
 import torch.nn.functional as F
 
 __all__ = ["HungarianMatcher", "build_matcher", "SetCriterion"]
