@@ -52,7 +52,7 @@ class AverageMeter(object):
         self.count += n
         self.avg = self.sum / self.count
 
-
+@torch.no_grad()
 def accuracy(output, target, topk=(1,)):
     """Computes the accuracy over the k top predictions for the specified values of k"""
     maxk = max(topk)
