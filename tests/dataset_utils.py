@@ -12,7 +12,6 @@ class DummyDetectionDataset(Dataset):
     """
     Generate a dummy dataset for detection
     Example::
-        from pl_bolts.datasets import DummyDetectionDataset
         >>> ds = DummyDetectionDataset()
         >>> dl = DataLoader(ds, batch_size=7)
     """

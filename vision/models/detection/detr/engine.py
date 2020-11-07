@@ -9,7 +9,7 @@ __all__ = ["train_step", "val_step", "fit", "train_sanity_fit",
            "val_sanity_fit", "sanity_fit", ]
 
 
-def train_step(model, train_dataloader, criterion, optimizer, device, scheduler=None):
+def train_step(model, train_loader, criterion, optimizer, device, scheduler=None):
     model.train()
     criterion.train()
 
@@ -18,10 +18,8 @@ def train_step(model, train_dataloader, criterion, optimizer, device, scheduler=
     giou_loss = model_utils.AverageMeter()
     labels_loss = model_utils.AverageMeter()
 
-    for images, targets in tqdm(train_dataloader):
-        images = list(image.to(device) for image in images)
-        # it's key:value for t in targets.items
-        # This is the format detr expects
+    for batch_idx, (inputs, targets) in enumerate(train_loader):
+        images = list(image.to(device) for image in inputs)
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
         outputs = model(images)
@@ -36,7 +34,7 @@ def train_step(model, train_dataloader, criterion, optimizer, device, scheduler=
         if scheduler is not None:
             scheduler.step()
 
-        total_loss.update(losses.item(), config.TRAIN_BATCH_SIZE)
+        total_loss.update(losses.item(), inputs.size(0))
         bbox_loss.update(loss_dict["loss_bbox"].item())
         giou_loss.update(loss_dict["loss_giou"].item())
         labels_loss.update(loss_dict["loss_ce"].item())
@@ -55,16 +53,16 @@ def val_step(val_dataloader, model, criterion, device):
     giou_loss = model_utils.AverageMeter()
     labels_loss = model_utils.AverageMeter()
     with torch.no_grad():
-        for images, targets in tqdm(val_dataloader):
+        for inputs, targets in tqdm(val_dataloader):
             # print("Here I was")
-            images = list(image.to(device) for image in images)
+            images = list(image.to(device) for image in inputs)
             targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
             outputs = model(images)
             loss_dict = criterion(outputs, targets)
             weight_dict = criterion.weight_dict
             losses = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
 
-            total_loss.update(losses.item(), config.VALID_BATCH_SIZE)
+            total_loss.update(losses.item(), inputs.size(0))
             bbox_loss.update(loss_dict["loss_bbox"].item())
             giou_loss.update(loss_dict["loss_giou"].item())
             labels_loss.update(loss_dict["loss_ce"].item())
