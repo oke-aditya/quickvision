@@ -206,5 +206,6 @@ class LightningTester(unittest.TestCase):
         flag = True
         self.assertTrue(flag)
 
+
 if __name__ == '__main__':
     unittest.main()
