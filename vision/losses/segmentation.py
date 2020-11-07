@@ -3,7 +3,7 @@ import torch
 __all__ = ["dice_loss"]
 
 
-def dice_loss(inputs, targets, num_boxes):
+def dice_loss(inputs, targets):
     """
     Compute the DICE loss, similar to generalized IOU for masks
     Args:
@@ -18,4 +18,4 @@ def dice_loss(inputs, targets, num_boxes):
     numerator = 2 * (inputs * targets).sum(1)
     denominator = inputs.sum(-1) + targets.sum(-1)
     loss = 1 - (numerator + 1) / (denominator + 1)
-    return loss.sum() / num_boxes
+    return loss.sum()

@@ -201,9 +201,10 @@ class SetCriterion(nn.Module):
         target_masks = target_masks[tgt_idx].flatten(1)
         focal_loss = sigmoid_focal_loss(src_masks, target_masks)
         box_norm_focal_loss = focal_loss.mean(1).sum() / num_boxes
+        norm_dice_loss = dice_loss(src_masks, target_masks) / num_boxes
         losses = {
             "loss_mask": box_norm_focal_loss,
-            "loss_dice": dice_loss(src_masks, target_masks, num_boxes),
+            "loss_dice": norm_dice_loss,
         }
         return losses
 

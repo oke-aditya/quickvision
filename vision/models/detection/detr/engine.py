@@ -9,7 +9,8 @@ __all__ = ["train_step", "val_step", "fit", "train_sanity_fit",
            "val_sanity_fit", "sanity_fit", ]
 
 
-def train_step(model, train_loader, criterion, optimizer, device, scheduler=None):
+def train_step(model, train_loader, criterion, device, optimizer, scheduler=None,
+               num_batches: int = None, log_interval: int = 100, scaler=None,):
     model.train()
     criterion.train()
 
@@ -45,7 +46,9 @@ def train_step(model, train_loader, criterion, optimizer, device, scheduler=None
     return total_loss
 
 
-def val_step(val_dataloader, model, criterion, device):
+def val_step(model, val_dataloader, criterion, device,
+             num_batches: int = None, log_interval: int = 100):
+
     model.eval()
     criterion.eval()
     total_loss = model_utils.AverageMeter()
