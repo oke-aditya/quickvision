@@ -111,7 +111,7 @@ class cnnTester(unittest.TestCase):
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
             # scheduler = torch.optim.lr_scheduler.CyclicLR(optimizer=opt, base_lr=1e-4, max_lr=1e-3, mode="min")
-            history = cnn.fit(1, model, train_loader, val_loader, loss, device="cpu",
+            history = cnn.fit(model, 1, train_loader, val_loader, loss, device="cpu",
                               optimizer=opt, num_batches=100)
             self.assertIsInstance(history, Dict)
             exp_keys = ("train", "val")
@@ -130,7 +130,7 @@ class cnnTester(unittest.TestCase):
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
             # scheduler = torch.optim.lr_scheduler.CyclicLR(optimizer=opt, base_lr=1e-4, max_lr=1e-3, mode="min")
-            history = cnn.fit(1, model, train_loader, val_loader, loss, device="cuda",
+            history = cnn.fit(model, 1, train_loader, val_loader, loss, device="cuda",
                               optimizer=opt, num_batches=100, fp16=True)
 
             self.assertIsInstance(history, Dict)
