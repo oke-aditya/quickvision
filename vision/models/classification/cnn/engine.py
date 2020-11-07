@@ -414,11 +414,11 @@ def val_sanity_fit(model, val_loader,
                     print(f"Sanity check passed till {cnt} validation batches")
                     print("All specicied batches done.")
                     val_sanity_end = time.time()
-                    print(f"Training Sanity check passed in time {val_sanity_end - val_sanity_start} !!")
+                    print(f"Validation Sanity check passed in time {val_sanity_end - val_sanity_start} !!")
                     return True
 
     val_sanity_end = time.time()
-    print("Training Sanity check passed in time {val_sanity_end - val_sanity_start} !!")
+    print(f"Validation Sanity check passed in time {val_sanity_end - val_sanity_start} !!")
     return True
 
 

@@ -200,7 +200,7 @@ def train_sanity_fit(model, train_loader,
     It iterates over both train_loader and val_loader for given batches.
     Note: - It does not to loss.backward().
     Args:
-        model : A pytorch Model.
+        model : A pytorch Faster RCNN Model.
         train_loader : Train loader.
         device : "cuda" or "cpu"
         num_batches : (optional) Integer To limit sanity fit over certain batches.
@@ -221,7 +221,7 @@ def val_sanity_fit(model, val_loader,
     It iterates over both train_loader and val_loader for given batches.
     Note: - It does not to loss.backward().
     Args:
-        model : A pytorch CNN Model.
+        model : A pytorch Faster RCNN Model.
         val_loader : Validation loader.
         device : "cuda" or "cpu"
         num_batches : (optional) Integer To limit sanity fit over certain batches.
@@ -241,7 +241,7 @@ def sanity_fit(model, train_loader, val_loader,
     It iterates over both train_loader and val_loader for given batches.
     Note: - It does not to loss.backward().
     Args:
-        model : A pytorch CNN Model.
+        model : A pytorch Faster RCNN Model.
         train_loader : Training loader.
         val_loader : Validation loader.
         device : "cuda" or "cpu"
