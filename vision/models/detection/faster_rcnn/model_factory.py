@@ -33,12 +33,13 @@ def create_fastercnn_backbone(name: str, fpn: bool = True, pretrained: bool = Tr
 
     """
     Args:
-        backbone (str): If none creates a default resnet50_fpn model trained on MS COCO 2017
+        name (str): If none creates a default resnet50_fpn model trained on MS COCO 2017
             Supported backones are: "resnet18", "resnet34","resnet50", "resnet101", "resnet152",
             "resnext50_32x4d", "resnext101_32x8d", "wide_resnet50_2", "wide_resnet101_2",
             as resnets with fpn backbones.
             Without fpn backbones supported are: "resnet18", "resnet34", "resnet50","resnet101",
             "resnet152", "resnext101_32x8d", "mobilenet", "vgg11", "vgg13", "vgg16", "vgg19",
+        fpn (bool): If True then constructs fpn as well.
         pretrained (bool): Creates a pretrained backbone with imagenet weights.
     """
 
