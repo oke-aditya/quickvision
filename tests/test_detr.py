@@ -131,6 +131,17 @@ class LightningTester(unittest.TestCase):
         flag = True
         self.assertTrue(flag)
 
+    def test_lit_forward(self):
+        model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=False)
+        image = torch.rand(1, 3, 400, 400)
+        out = model(image)
+        pass
+        # self.assertIsInstance(out, list)
+        # self.assertIsInstance(out[0], Dict)
+        # self.assertIsInstance(out[0]["boxes"], torch.Tensor)
+        # self.assertIsInstance(out[0]["labels"], torch.Tensor)
+        # self.assertIsInstance(out[0]["scores"], torch.Tensor)
+
 
 if __name__ == '__main__':
     unittest.main()
