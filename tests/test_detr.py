@@ -6,6 +6,7 @@ import torch.nn as nn
 import pytorch_lightning as pl
 from torch_utils import im2tensor
 from vision.models.detection import detr
+from vision.models.detection.detr import create_detr_backbone
 from vision.models import model_utils
 from vision.models.detection.detr import engine
 from dataset_utils import DummyDetectionDataset
@@ -16,8 +17,8 @@ if(torch.cuda.is_available()):
 train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, num_samples=10)
 val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, num_samples=10)
 
-supported_detr_backbones = ["resnet50", "resnet50_dc5", ]
-#  "resnet101", "resnet101_dc5"]
+supported_detr_backbones = ["resnet50", "resnet50_dc5", "resnet101", "resnet101_dc5"]
+error_bbone = "invalid_model"
 
 
 def collate_fn(batch):
@@ -36,6 +37,9 @@ class ModelFactoryTester(unittest.TestCase):
         for supp_bb in supported_detr_backbones:
             bbone = detr.create_detr_backbone(supp_bb, pretrained=False)
             self.assertTrue(isinstance(bbone, nn.Module))
+
+    def test_detr_invalidbackbone(self):
+        self.assertRaises(ValueError, create_detr_backbone, error_bbone)
 
     def test_vision_detr(self):
         for supp_bb in supported_detr_backbones:

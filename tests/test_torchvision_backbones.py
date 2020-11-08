@@ -15,7 +15,7 @@ error_model = "invalid_model"
 class BackboneTester(unittest.TestCase):
     def test_torchvision_backbones(self):
         for model_name in supported_tv_models:
-            ft_backbone, out_channels = create_torchvision_backbone(model_name)
+            ft_backbone, out_channels = create_torchvision_backbone(model_name, pretrained=False)
             self.assertTrue(isinstance(ft_backbone, nn.Module))
             self.assertTrue(isinstance(out_channels, int))
 
