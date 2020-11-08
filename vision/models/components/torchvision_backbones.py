@@ -52,7 +52,7 @@ def create_torchvision_backbone(model_name: str, pretrained: bool = True):
         model_name (str) : Name of the model. E.g. resnet18
         pretrained (bool) : If true uses modelwweights pretrained on ImageNet.
     """
-    if model_name == "mobilenet":
+    if model_name == "mobilenet_v2":
         mobile_net = torchvision.models.mobilenet_v2(pretrained)
         out_channels = 1280
         ft_backbone = _create_backbone_features(mobile_net, 1280)

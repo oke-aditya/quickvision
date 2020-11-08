@@ -16,9 +16,9 @@ if(torch.cuda.is_available()):
 fpn_supported_models = ["resnet18", ]  # "resnet34","resnet50", "resnet101", "resnet152",
 #  "resnext50_32x4d", "resnext101_32x8d", "wide_resnet50_2", "wide_resnet101_2"
 
-non_fpn_supported_models = ["mobilenet"]
+non_fpn_supported_models = ["mobilenet_v2"]
 # "resnet18", "resnet34", "resnet50","resnet101",
-# "resnet152", "resnext101_32x8d", "mobilenet", "vgg11", "vgg13", "vgg16", "vgg19"
+# "resnet152", "resnext101_32x8d", "mobilenet_v2", "vgg11", "vgg13", "vgg16", "vgg19"
 
 train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, num_samples=10, )
 val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, num_samples=10, )
@@ -205,6 +205,16 @@ class LightningTester(unittest.TestCase):
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)
+
+    def test_lit_forward(self):
+        model = faster_rcnn.lit_frcnn(num_classes=3, pretrained=False, pretrained_backbone=False)
+        image = torch.rand(1, 3, 400, 400)
+        out = model(image)
+        self.assertIsInstance(out, list)
+        self.assertIsInstance(out[0], Dict)
+        self.assertIsInstance(out[0]["boxes"], torch.Tensor)
+        self.assertIsInstance(out[0]["labels"], torch.Tensor)
+        self.assertIsInstance(out[0]["scores"], torch.Tensor)
 
 
 if __name__ == '__main__':
