@@ -3,7 +3,12 @@ import torch
 import torch.nn as nn
 from vision.models.components.torchvision_backbones import create_torchvision_backbone
 
-supported_tv_models = ["resnet18", "vgg13", "resnet50", "mobilenet", "mnasnet0_5", ]
+supported_tv_models = ["vgg11", "vgg13", "vgg16", "vgg19", "resnet18",
+                       "resnet34", "resnet50", "resnet101", "resnet152",
+                       "resnext50_32x4d", "resnext101_32x8d",
+                       "mnasnet0_5", "mnasnet0_75", "mnasnet1_0", "mnasnet1_3",
+                       "mobilenet_v2"]
+
 error_model = "invalid_model"
 
 
