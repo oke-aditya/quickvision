@@ -34,7 +34,7 @@ def train_step(model, train_loader, criterion, device, optimizer,
     """
 
     start_train_step = time.time()
-
+    metrics = OrderedDict()
     model.train()
     last_idx = len(train_loader) - 1
     batch_time_m = model_utils.AverageMeter()
@@ -124,12 +124,16 @@ def train_step(model, train_loader, criterion, device, optimizer,
         if num_batches is not None:
             if cnt >= num_batches:
                 end_train_step = time.time()
-                metrics = OrderedDict([("loss", losses_m.avg), ("top1", top1_m.avg), ("top5", top5_m.avg)])
+                metrics["loss"] = losses_m.avg
+                metrics["top1"] = top1_m.avg
+                metrics["top5"] = top5_m.avg
                 print(f"Done till {num_batches} train batches")
                 print(f"Time taken for train step = {end_train_step - start_train_step} sec")
                 return metrics
 
-    metrics = OrderedDict([("loss", losses_m.avg), ("top1", top1_m.avg), ("top5", top5_m.avg)])
+    metrics["loss"] = losses_m.avg
+    metrics["top1"] = top1_m.avg
+    metrics["top5"] = top5_m.avg
     end_train_step = time.time()
     print(f"Time taken for train step = {end_train_step - start_train_step} sec")
     return metrics
@@ -158,6 +162,7 @@ def val_step(model, val_loader, criterion, device, num_batches=None,
     cnt = 0
     model.eval()
     batch_start = time.time()
+    metrics = OrderedDict()
     with torch.no_grad():
         for batch_idx, (inputs, target) in enumerate(val_loader):
             last_batch = batch_idx == last_idx
@@ -191,13 +196,16 @@ def val_step(model, val_loader, criterion, device, num_batches=None,
             if num_batches is not None:
                 if cnt >= num_batches:
                     end_val_step = time.time()
-                    metrics = OrderedDict([("loss", losses_m.avg), ("top1", top1_m.avg),
-                                           ("top5", top5_m.avg), ])
+                    metrics["loss"] = losses_m.avg
+                    metrics["top1"] = top1_m.avg
+                    metrics["top5"] = top5_m.avg
                     print(f"Done till {num_batches} validation batches")
                     print(f"Time taken for validation step = {end_val_step - start_val_step} sec")
                     return metrics
 
-        metrics = OrderedDict([("loss", losses_m.avg), ("top1", top1_m.avg), ("top5", top5_m.avg)])
+        metrics["loss"] = losses_m.avg
+        metrics["top1"] = top1_m.avg
+        metrics["top5"] = top5_m.avg
         print("Finished the validation epoch")
 
     end_val_step = time.time()
@@ -231,7 +239,7 @@ def fit(model, epochs, train_loader, val_loader, criterion,
     """
     # Declaring necessary variables required to add to keras like history object
     history = {}
-    loss = []
+    loss_t = []
     top1_acc = []
     top5_acc = []
     loss_v = []
@@ -272,19 +280,17 @@ def fit(model, epochs, train_loader, val_loader, criterion,
                                        device, optimizer, scheduler, num_batches, log_interval,
                                        grad_penalty, scaler=scaler, )
 
-        loss_f, top1_acc_f, top5_acc_f = [train_metrics[i] for i in ("loss", "top1", "top5")]
-        loss.append(loss_f)
-        top1_acc.append(top1_acc_f)
-        top5_acc.append(top5_acc_f)
+        loss_t.append(train_metrics["loss"])
+        top1_acc.append(train_metrics["top1"])
+        top5_acc.append(train_metrics["top5"])
 
         print()
         print(f"Validating Epoch = {epoch}")
         valid_metrics = val_step(model, val_loader, criterion, device, num_batches, log_interval)
 
-        loss_f, top1_acc_f, top5_acc_f = [valid_metrics[i] for i in ("loss", "top1", "top5")]
-        loss_v.append(loss_f)
-        top1_acc_v.append(top1_acc_f)
-        top5_acc_v.append(top5_acc_f)
+        loss_v.append(valid_metrics["loss"])
+        top1_acc_v.append(valid_metrics["top1"])
+        top5_acc_v.append(valid_metrics["top5"])
 
         validation_loss = valid_metrics["loss"]
         if early_stopper is not None:
@@ -297,7 +303,7 @@ def fit(model, epochs, train_loader, val_loader, criterion,
 
         print("Done Training, Model Saved to Disk")
 
-    history = {"train": {"top1_acc": top1_acc, "top5_acc": top5_acc, "loss": loss},
+    history = {"train": {"top1_acc": top1_acc, "top5_acc": top5_acc, "loss": loss_t},
                "val": {"top1_acc": top1_acc_v, "top5_acc": top5_acc_v, "loss": loss_v}}
 
     return history
