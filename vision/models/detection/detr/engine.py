@@ -91,6 +91,3 @@ def val_sanity_fit():
 
 def sanity_fit():
     pass
-
-
-

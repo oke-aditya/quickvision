@@ -10,7 +10,7 @@ __all__ = ["lit_detr"]
 class lit_detr(pl.LightningModule):
     def __init__(self, learning_rate: float = 1e-3, num_classes: int = 91,
                  num_queries: int = 5, pretrained: bool = False,
-                 backbone: str = 'detr_resnet50', **kwargs, ):
+                 backbone: str = 'resnet50', **kwargs, ):
 
         """
             PyTorch Lightning implementation of `Detr: End-to-End Object Detection with Transformers

@@ -235,4 +235,3 @@ def _onnx_nested_tensor_from_tensor_list(tensor_list: List[Tensor]) -> NestedTen
     mask = torch.stack(padded_masks)
 
     return NestedTensor(tensor, mask=mask)
-

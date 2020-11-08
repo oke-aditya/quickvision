@@ -16,6 +16,9 @@ if(torch.cuda.is_available()):
 train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_samples=10)
 val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_samples=10)
 
+supported_backbones = ["resnet50", "resnet50_dc5", ]
+#  "resnet101", "resnet101_dc5"]
+
 
 def collate_fn(batch):
     return tuple(zip(*batch))
@@ -30,7 +33,23 @@ val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=2,
 
 class ModelFactoryTester(unittest.TestCase):
     def test_detr_backbones(self):
-        pass
+        for supp_bb in supported_backbones:
+            bbone = detr.create_detr_backbone(supp_bb, pretrained=False)
+            self.assertTrue(isinstance(bbone, nn.Module))
+
+    def test_vision_detr(self):
+        for supp_bb in supported_backbones:
+            bbone = detr.create_detr_backbone(supp_bb, pretrained=False)
+            self.assertTrue(isinstance(bbone, nn.Module))
+            model = detr.vision_detr(num_classes=91, num_queries=5, backbone=bbone)
+            self.assertTrue(isinstance(bbone, nn.Module))
+
+    def test_create_vision_detr(self):
+        for supp_bb in supported_backbones:
+            bbone = detr.create_detr_backbone(supp_bb, pretrained=False)
+            self.assertTrue(isinstance(bbone, nn.Module))
+            model = detr.create_vision_detr(num_classes=91, num_queries=5, backbone=bbone)
+            self.assertTrue(isinstance(bbone, nn.Module))
 
 
 class EngineTester(unittest.TestCase):

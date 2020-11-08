@@ -64,4 +64,3 @@ def create_detr_backbone(name: str, pretrained: bool = True,):
         raise ValueError("Unuspported backbone")
 
     return backbone
-

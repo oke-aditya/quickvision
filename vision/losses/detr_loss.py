@@ -1,4 +1,5 @@
-# It also contains code for the loss fn used in orignal detr repo.
+# Slight modification to orignal FaceBook's code
+# Using their license as this code is not fully from quickvision
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 
 import torch
