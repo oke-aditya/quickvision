@@ -206,6 +206,16 @@ class LightningTester(unittest.TestCase):
         flag = True
         self.assertTrue(flag)
 
+    def test_lit_forward(self):
+        model = faster_rcnn.lit_frcnn(num_classes=3, pretrained=False, pretrained_backbone=False)
+        image = torch.rand(1, 3, 400, 400)
+        out = model(image)
+        self.assertIsInstance(out, list)
+        self.assertIsInstance(out[0], Dict)
+        self.assertIsInstance(out[0]["boxes"], torch.Tensor)
+        self.assertIsInstance(out[0]["labels"], torch.Tensor)
+        self.assertIsInstance(out[0]["scores"], torch.Tensor)
+
 
 if __name__ == '__main__':
     unittest.main()
