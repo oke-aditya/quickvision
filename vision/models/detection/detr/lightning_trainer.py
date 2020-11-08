@@ -9,13 +9,11 @@ __all__ = ["lit_detr"]
 
 class lit_detr(pl.LightningModule):
     def __init__(self, learning_rate: float = 1e-3, num_classes: int = 91,
-                 num_queries: int = 5, pretrained: bool = False,
-                 backbone: str = 'resnet50', **kwargs, ):
+                 num_queries: int = 5, pretrained: bool = True,
+                 backbone: str = "resnet50", **kwargs, ):
 
         """
             PyTorch Lightning implementation of `Detr: End-to-End Object Detection with Transformers
-            Paper authors: Nicolas Carion, Francisco Massa, Gabriel Synnaeve, Nicolas Usunier,
-                           Alexander Kirillov, and Sergey Zagoruyko
             During training, the model expects both the input tensors, as well as targets (list of dictionary),
             containing:
                 - boxes (`FloatTensor[N, 4]`): the ground truth boxes in `[x1, y1, x2, y2]` format.
