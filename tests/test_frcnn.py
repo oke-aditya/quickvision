@@ -20,8 +20,8 @@ non_fpn_supported_models = ["mobilenet"]
 # "resnet18", "resnet34", "resnet50","resnet101",
 # "resnet152", "resnext101_32x8d", "mobilenet", "vgg11", "vgg13", "vgg16", "vgg19"
 
-train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_samples=10)
-val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_samples=10)
+train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, num_samples=10, )
+val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, num_samples=10, )
 
 
 def collate_fn(batch):
