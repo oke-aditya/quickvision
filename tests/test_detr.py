@@ -8,14 +8,15 @@ from torch_utils import im2tensor
 from vision.models.detection import detr
 from vision.models.detection.detr import create_detr_backbone
 from vision.models import model_utils
+from vision.losses import detr_loss
 from vision.models.detection.detr import engine
 from dataset_utils import DummyDetectionDataset
 
 if(torch.cuda.is_available()):
     from torch.cuda import amp
 
-train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, num_samples=10)
-val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, num_samples=10)
+train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=3, num_samples=10)
+val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=3, num_samples=10)
 
 supported_detr_backbones = ["resnet50", "resnet50_dc5", "resnet101", "resnet101_dc5"]
 error_bbone = "invalid_model"
@@ -80,32 +81,38 @@ class EngineTester(unittest.TestCase):
 
     def test_train_step(self):
         for bbone in some_supported_backbones:
-            backbone = detr.create_fastercnn_backbone(name=bbone, pretrained=False)
+            backbone = detr.create_detr_backbone(name=bbone, pretrained=False)
             self.assertTrue(isinstance(backbone, nn.Module))
-            detr_model = detr.create_vision_detr(num_classes=5, num_queries=5, backbone=backbone)
+            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
             opt = torch.optim.Adam(detr_model.parameters(), lr=1e-3)
-            met = detr.train_step(detr_model, train_loader, "cpu", opt, num_batches=10)
+            matcher = detr_loss.HungarianMatcher()
+            weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
+            losses = ["labels", "boxes", "cardinality"]
+            criterion = detr_loss.SetCriterion(2, matcher, weight_dict, eos_coef=0.5, losses=losses)
+            met = detr.train_step(detr_model, train_loader, criterion, "cpu", opt, num_batches=10)
             self.assertIsInstance(met, Dict)
-            self.assertIsInstance(met["total_loss"], torch.Tensor)
-            self.assertIsInstance(met["loss_bbox"], torch.Tensor)
-            self.assertIsInstance(met["loss_giou"], torch.Tensor)
-            self.assertIsInstance(met["loss_ce"], torch.Tensor)
+            exp_keys = ("total_loss", "loss_bbox", "loss_giou", "loss_ce")
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in met.keys())
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_step_cuda(self):
         for bbone in some_supported_backbones:
-            backbone = detr.create_fastercnn_backbone(name=bbone, pretrained=False)
+            backbone = detr.create_detr_backbone(name=bbone, pretrained=False)
             self.assertTrue(isinstance(backbone, nn.Module))
-            detr_model = detr.create_vision_detr(num_classes=5, num_queries=5, backbone=backbone)
+            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
             opt = torch.optim.Adam(detr_model.parameters(), lr=1e-3)
-            met = detr.train_step(detr_model, train_loader, "cpu", opt, num_batches=10)
+            matcher = detr_loss.HungarianMatcher()
+            weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
+            losses = ["labels", "boxes", "cardinality"]
+            criterion = detr_loss.SetCriterion(2, matcher, weight_dict, eos_coef=0.5, losses=losses)
+            met = detr.train_step(detr_model, train_loader, criterion, "cpu", opt, num_batches=10)
             self.assertIsInstance(met, Dict)
-            self.assertIsInstance(met["total_loss"], torch.Tensor)
-            self.assertIsInstance(met["loss_bbox"], torch.Tensor)
-            self.assertIsInstance(met["loss_giou"], torch.Tensor)
-            self.assertIsInstance(met["loss_ce"], torch.Tensor)
+            exp_keys = ("total_loss", "loss_bbox", "loss_giou", "loss_ce")
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in met.keys())
 
     def test_val_step(self):
         pass
@@ -139,7 +146,7 @@ class LightningTester(unittest.TestCase):
     def test_lit_detr(self):
         flag = False
         for bbone in supported_detr_backbones:
-            model = detr.lit_detr(num_classes=2, num_queries=5, pretrained=False, backbone=bbone)
+            model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=False, backbone=bbone)
             trainer = pl.Trainer(fast_dev_run=True)
             trainer.fit(model, train_loader, val_loader)
         flag = True
@@ -149,7 +156,7 @@ class LightningTester(unittest.TestCase):
     def test_lit_detr_cuda(self):
         flag = False
         for bbone in supported_detr_backbones:
-            model = detr.lit_detr(num_classes=2, num_queries=5, pretrained=False, backbone=bbone)
+            model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=False, backbone=bbone)
             trainer = pl.Trainer(fast_dev_run=True)
             trainer.fit(model, train_loader, val_loader)
         flag = True

@@ -65,7 +65,7 @@ def train_step(model, train_loader, criterion, device, optimizer, scheduler=None
             scheduler.step()
 
         cnt += 1
-        total_loss.update(losses.item(), inputs.size(0))
+        total_loss.update(losses.item())
         bbox_loss.update(loss_dict["loss_bbox"].item())
         giou_loss.update(loss_dict["loss_giou"].item())
         labels_loss.update(loss_dict["loss_ce"].item())
