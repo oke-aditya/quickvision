@@ -303,8 +303,8 @@ def fit(model, epochs, train_loader, val_loader, criterion,
 
         print("Done Training, Model Saved to Disk")
 
-    history = {"train": {"top1_acc": top1_acc, "top5_acc": top5_acc, "loss": loss_t},
-               "val": {"top1_acc": top1_acc_v, "top5_acc": top5_acc_v, "loss": loss_v}}
+    history = {"train": {"loss": loss_t, "top1_acc": top1_acc, "top5_acc": top5_acc},
+               "val": {"loss": loss_v, "top1_acc": top1_acc_v, "top5_acc": top5_acc_v}}
 
     return history
 

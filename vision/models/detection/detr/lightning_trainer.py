@@ -24,6 +24,14 @@ class lit_detr(pl.LightningModule):
                 num_queries: number of queries to the transformer module.
                 pretrained: if true, returns a model pre-trained on COCO train2017
                 backbone:  Supported Detection backbones are "resnet50", "resnet101", "resnet50_dc5", "resnet101_dc5".
+
+            It returns a dict with the following elements:
+            - "pred_logits": the classification logits (including no-object) for all queries.
+                        Shape= [batch_size x num_queries x (num_classes + 1)]
+            - "pred_boxes": The normalized boxes coordinates for all queries, represented as
+                        (center_x, center_y, height, width). These values are normalized in [0, 1],
+                        relative to the size of each individual image (disregarding possible padding).
+                        See PostProcess for information on how to retrieve the unnormalized bounding box.
         """
         super().__init__()
 
