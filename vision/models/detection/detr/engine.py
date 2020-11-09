@@ -130,17 +130,18 @@ def val_step(model, val_loader, criterion, device,
             last_batch = batch_idx == last_idx
             images = list(image.to(device) for image in inputs)
             targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+
             outputs = model(images)
             loss_dict = criterion(outputs, targets)
             weight_dict = criterion.weight_dict
             losses = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
 
-            total_loss.update(losses.item(), inputs.size(0))
+            cnt += 1
+            total_loss.update(losses.item())
             bbox_loss.update(loss_dict["loss_bbox"].item())
             giou_loss.update(loss_dict["loss_giou"].item())
             labels_loss.update(loss_dict["loss_ce"].item())
 
-            cnt += 1
             batch_time_m.update(time.time() - batch_start)
             batch_start = time.time()
 
@@ -150,12 +151,20 @@ def val_step(model, val_loader, criterion, device,
 
             if num_batches is not None:
                 if cnt >= num_batches:
-                    print(f"Done till {num_batches} Validation batches")
                     end_val_step = time.time()
+                    metrics["total_loss"] = total_loss.avg
+                    metrics["bbox_loss"] = bbox_loss.avg
+                    metrics["giou_loss"] = giou_loss.avg
+                    metrics["labels_loss"] = labels_loss.avg
+                    print(f"Done till {num_batches} Validation batches")
                     print(f"Time taken for validation step = {end_val_step - start_val_step} sec")
                     return metrics
 
     end_val_step = time.time()
+    metrics["total_loss"] = total_loss.avg
+    metrics["bbox_loss"] = bbox_loss.avg
+    metrics["giou_loss"] = giou_loss.avg
+    metrics["labels_loss"] = labels_loss.avg
     print(f"Time taken for validation step = {end_val_step - start_val_step} sec")
     return metrics
 
