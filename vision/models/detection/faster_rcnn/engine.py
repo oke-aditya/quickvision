@@ -3,6 +3,7 @@ from torch.cuda import amp
 from vision.models import model_utils
 from tqdm import tqdm
 import time
+import logging
 from collections import OrderedDict
 from vision.models.detection.utils import _evaluate_iou, _evaluate_giou
 
@@ -208,7 +209,31 @@ def train_sanity_fit(model, train_loader,
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
         fp16: : (optional) If True uses PyTorch native mixed precision Training.
     """
-    pass
+    try:
+
+        if fp16 is True:
+            print("Sanity training fit with Mixed precision fp16 scaler")
+            scaler = amp.GradScaler()
+        else:
+            scaler = None
+
+        with torch.no_grad():
+            for batch_idx, batch in enumerate(train_loader):
+
+                if batch_idx == num_batches:
+                    break
+
+                inputs, targets = batch 
+                images = list(image.to(device) for image in inputs)
+                targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+                out = model(images)
+                iou = torch.stack([_evaluate_iou(t, o) for t, o in zip(targets, out)]).mean()
+                giou = torch.stack([_evaluate_giou(t, o) for t, o in zip(targets, out)]).mean()
+    
+    except Exception as error:
+        logging.error(repr(error))
+
+    
 
 
 def val_sanity_fit(model, val_loader,
@@ -228,7 +253,27 @@ def val_sanity_fit(model, val_loader,
                                  Useful is data is too big even for sanity check.
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
     """
-    pass
+    try:
+
+        model.eval()
+
+        with torch.no_grad():
+            for batch_idx, batch in enumerate(val_loader):
+
+                if batch_idx == num_batches:
+                    break
+
+                inputs, targets = batch 
+                images = list(image.to(device) for image in inputs)
+                targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+                out = model(images)
+
+                iou = torch.stack([_evaluate_iou(t, o) for t, o in zip(targets, out)]).mean()
+                giou = torch.stack([_evaluate_giou(t, o) for t, o in zip(targets, out)]).mean()
+    
+    except Exception as error:
+        logging.error(repr(error))
+
 
 
 def sanity_fit(model, train_loader, val_loader,
@@ -250,4 +295,12 @@ def sanity_fit(model, train_loader, val_loader,
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
     """
 
-    pass
+    if fp16 is True:
+        print("Sanity training with Mixed precision fp16 scaler")
+        scaler = amp.GradScaler()
+    else:
+        scaler = None
+
+    train_sanity_fit(model, train_loader, device,num_batches, log_interval, scaler)
+    val_sanity_fit(model, val_loader, device, num_batches, log_interval)
+
