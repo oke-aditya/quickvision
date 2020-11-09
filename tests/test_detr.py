@@ -183,5 +183,6 @@ class LightningTester(unittest.TestCase):
         self.assertIsInstance(out['pred_logits'], torch.Tensor)
         self.assertIsInstance(out['pred_boxes'], torch.Tensor)
 
+
 if __name__ == '__main__':
     unittest.main()
