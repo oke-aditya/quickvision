@@ -19,6 +19,7 @@ val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, num_
 
 supported_detr_backbones = ["resnet50", "resnet50_dc5", "resnet101", "resnet101_dc5"]
 error_bbone = "invalid_model"
+some_supported_backbones = ["resnet50"]
 
 
 def collate_fn(batch):
@@ -63,6 +64,7 @@ class EngineTester(unittest.TestCase):
         image = Image.open("tests/assets/grace_hopper_517x606.jpg")
         img_tensor = im2tensor(image)
         self.assertEqual(img_tensor.ndim, 4)
+        # Detr Input format is (xc, yc, w, h) Normalized to the image.
         boxes = torch.tensor([[0, 0, 100, 100], [0, 1, 2, 2],
                              [10, 15, 30, 35], [23, 35, 93, 95]], dtype=torch.float)
         labels = torch.tensor([1, 2, 3, 4], dtype=torch.int64)
@@ -77,11 +79,33 @@ class EngineTester(unittest.TestCase):
         return True
 
     def test_train_step(self):
-        pass
+        for bbone in some_supported_backbones:
+            backbone = detr.create_fastercnn_backbone(name=bbone, pretrained=False)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            detr_model = detr.create_vision_detr(num_classes=5, num_queries=5, backbone=backbone)
+            self.assertTrue(isinstance(detr_model, nn.Module))
+            opt = torch.optim.Adam(detr_model.parameters(), lr=1e-3)
+            met = detr.train_step(detr_model, train_loader, "cpu", opt, num_batches=10)
+            self.assertIsInstance(met, Dict)
+            self.assertIsInstance(met["total_loss"], torch.Tensor)
+            self.assertIsInstance(met["loss_bbox"], torch.Tensor)
+            self.assertIsInstance(met["loss_giou"], torch.Tensor)
+            self.assertIsInstance(met["loss_ce"], torch.Tensor)
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_step_cuda(self):
-        pass
+        for bbone in some_supported_backbones:
+            backbone = detr.create_fastercnn_backbone(name=bbone, pretrained=False)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            detr_model = detr.create_vision_detr(num_classes=5, num_queries=5, backbone=backbone)
+            self.assertTrue(isinstance(detr_model, nn.Module))
+            opt = torch.optim.Adam(detr_model.parameters(), lr=1e-3)
+            met = detr.train_step(detr_model, train_loader, "cpu", opt, num_batches=10)
+            self.assertIsInstance(met, Dict)
+            self.assertIsInstance(met["total_loss"], torch.Tensor)
+            self.assertIsInstance(met["loss_bbox"], torch.Tensor)
+            self.assertIsInstance(met["loss_giou"], torch.Tensor)
+            self.assertIsInstance(met["loss_ce"], torch.Tensor)
 
     def test_val_step(self):
         pass
@@ -135,13 +159,9 @@ class LightningTester(unittest.TestCase):
         model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=False)
         image = torch.rand(1, 3, 400, 400)
         out = model(image)
-        pass
-        # self.assertIsInstance(out, list)
-        # self.assertIsInstance(out[0], Dict)
-        # self.assertIsInstance(out[0]["boxes"], torch.Tensor)
-        # self.assertIsInstance(out[0]["labels"], torch.Tensor)
-        # self.assertIsInstance(out[0]["scores"], torch.Tensor)
-
+        self.assertIsInstance(out, Dict)
+        self.assertIsInstance(out['pred_logits'], torch.Tensor)
+        self.assertIsInstance(out['pred_boxes'], torch.Tensor)
 
 if __name__ == '__main__':
     unittest.main()

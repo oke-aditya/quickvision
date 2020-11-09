@@ -40,6 +40,7 @@ def train_step(model, train_loader, criterion, device, optimizer, scheduler=None
     criterion.train()
     cnt = 0
     batch_start = time.time()
+    metrics = OrderedDict()
 
     total_loss = model_utils.AverageMeter()
     bbox_loss = model_utils.AverageMeter()
@@ -78,14 +79,23 @@ def train_step(model, train_loader, criterion, device, optimizer, scheduler=None
 
         if num_batches is not None:
             if cnt >= num_batches:
-                print(f"Done till {num_batches} train batches")
                 end_train_step = time.time()
+                metrics["total_loss"] = total_loss.avg
+                metrics["bbox_loss"] = bbox_loss.avg
+                metrics["giou_loss"] = giou_loss.avg
+                metrics["labels_loss"] = labels_loss.avg
+
+                print(f"Done till {num_batches} train batches")
                 print(f"Time taken for Training step = {end_train_step - start_train_step} sec")
                 return loss_dict
 
     end_train_step = time.time()
+    metrics["total_loss"] = total_loss.avg
+    metrics["bbox_loss"] = bbox_loss.avg
+    metrics["giou_loss"] = giou_loss.avg
+    metrics["labels_loss"] = labels_loss.avg
     print(f"Time taken for Training step = {end_train_step - start_train_step} sec")
-    return loss_dict
+    return metrics
 
 
 def val_step(model, val_loader, criterion, device,
@@ -93,7 +103,7 @@ def val_step(model, val_loader, criterion, device,
     """
     Performs one step of validation. Calculates loss, forward pass and returns metrics.
     Args:
-        model : PyTorch FasterRCNN Model.
+        model : PyTorch Detr Model.
         val_loader : Validation loader.
         criterion : Detr Loss function to be optimized.
         device : "cuda" or "cpu"
