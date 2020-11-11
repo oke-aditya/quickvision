@@ -1,6 +1,7 @@
 import torchvision
 import torch
 import torchvision.transforms as T
+from torchvision.ops import box_convert
 from torchvision import datasets
 from torch.utils.data import Dataset, DataLoader
 from PIL import Image
@@ -16,17 +17,21 @@ class DummyDetectionDataset(Dataset):
         >>> dl = DataLoader(ds, batch_size=7)
     """
     def __init__(self, img_shape: tuple = (3, 256, 256), num_boxes: int = 1, num_classes: int = 2,
-                 num_samples: int = 10000):
+                 num_samples: int = 10000, box_fmt: str = "xyxy"):
         """
         Args:
             *shapes: list of shapes
-            num_samples: how many samples to use in this dataset
+            num_boxes: Number of boxes per images
+            num_classes: Number of classes for image.
+            num_samples: how many samples to use in this dataset.
+            box_fmt: Format of Bounding boxes, supported : "xyxy", "xywh", "cxcywh"
         """
         super().__init__()
         self.img_shape = img_shape
         self.num_samples = num_samples
         self.num_boxes = num_boxes
         self.num_classes = num_classes
+        self.box_fmt = box_fmt
 
     def __len__(self):
         return self.num_samples
@@ -35,13 +40,15 @@ class DummyDetectionDataset(Dataset):
         c, h, w = self.img_shape
         xs = torch.randint(w, (2,))
         ys = torch.randint(h, (2,))
-        return [min(xs), min(ys), max(xs), max(ys)]
+        return torch.tensor([min(xs), min(ys), max(xs), max(ys)], dtype=torch.float32)
 
     def __getitem__(self, idx: int):
         img = torch.rand(self.img_shape)
         boxes = torch.tensor([self._random_bbox() for _ in range(self.num_boxes)], dtype=torch.float32)
+        # No problems if we pass same in_fmt and out_fmt, it is covered by box_convert
+        converted_boxes = box_convert(boxes, in_fmt="xyxy", out_fmt=self.box_fmt)
         labels = torch.randint(self.num_classes, (self.num_boxes,), dtype=torch.long)
-        return img, {"boxes": boxes, "labels": labels}
+        return img, {"boxes": converted_boxes, "labels": labels}
 
 
 def create_cifar10_dataset():
