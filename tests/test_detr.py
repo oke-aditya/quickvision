@@ -162,7 +162,7 @@ class LightningTester(unittest.TestCase):
         flag = False
         for bbone in supported_detr_backbones:
             model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=False, backbone=bbone)
-            trainer = pl.Trainer(fast_dev_run=True)
+            trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)
@@ -172,7 +172,7 @@ class LightningTester(unittest.TestCase):
         flag = False
         for bbone in supported_detr_backbones:
             model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=False, backbone=bbone)
-            trainer = pl.Trainer(fast_dev_run=True)
+            trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)

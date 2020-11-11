@@ -12,11 +12,12 @@ pythonenv*/
 # Docs
 docs/site
 
-# Data Folder
+# logs Folder
 data/
 tests/data/
 lightning_logs/
 tests/lightning_logs/
+checkpoints/
 
 # Models
 *.h5

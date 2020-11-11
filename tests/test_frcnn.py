@@ -193,7 +193,7 @@ class LightningTester(unittest.TestCase):
         flag = False
         for bbone in fpn_supported_models:
             model = faster_rcnn.lit_frcnn(num_classes=3, backbone=bbone, fpn=True, pretrained_backbone=False,)
-            trainer = pl.Trainer(fast_dev_run=True)
+            trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)
@@ -203,7 +203,7 @@ class LightningTester(unittest.TestCase):
         flag = False
         for bbone in fpn_supported_models:
             model = faster_rcnn.lit_frcnn(num_classes=3, backbone=bbone, fpn=True, pretrained_backbone=False,)
-            trainer = pl.Trainer(fast_dev_run=True)
+            trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)
