@@ -106,11 +106,12 @@ class EngineTester(unittest.TestCase):
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
             opt = torch.optim.Adam(detr_model.parameters(), lr=1e-3)
+            scaler = amp.GradScaler()
             matcher = detr_loss.HungarianMatcher()
             weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
             losses = ["labels", "boxes", "cardinality"]
             criterion = detr_loss.SetCriterion(2, matcher, weight_dict, eos_coef=0.5, losses=losses)
-            met = detr.train_step(detr_model, train_loader, criterion, "cuda", opt, num_batches=10)
+            met = detr.train_step(detr_model, train_loader, criterion, "cuda", opt, num_batches=10, scaler=scaler)
             self.assertIsInstance(met, Dict)
             exp_keys = ("total_loss", "loss_bbox", "loss_giou", "loss_ce")
             for exp_k in exp_keys:
