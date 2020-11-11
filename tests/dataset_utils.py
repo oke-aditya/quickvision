@@ -40,7 +40,7 @@ class DummyDetectionDataset(Dataset):
         c, h, w = self.img_shape
         xs = torch.randint(w, (2,))
         ys = torch.randint(h, (2,))
-        return torch.tensor([min(xs), min(ys), max(xs), max(ys)], dtype=torch.float32)
+        return [min(xs), min(ys), max(xs), max(ys)]
 
     def __getitem__(self, idx: int):
         img = torch.rand(self.img_shape)

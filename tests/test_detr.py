@@ -16,9 +16,9 @@ if(torch.cuda.is_available()):
     from torch.cuda import amp
 
 train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=3,
-                                      num_samples=10, box_fmt="xyxy")
+                                      num_samples=10, box_fmt="cxcywh")
 val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=3,
-                                    num_samples=10, box_fmt="xyxy")
+                                    num_samples=10, box_fmt="cxcywh")
 
 supported_detr_backbones = ["resnet50", "resnet50_dc5", "resnet101", "resnet101_dc5"]
 error_bbone = "invalid_model"
