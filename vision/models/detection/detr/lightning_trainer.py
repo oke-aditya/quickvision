@@ -55,6 +55,19 @@ class lit_detr(pl.LightningModule):
         targets = [{k: v for k, v in t.items()} for t in targets]
         outputs = self.model(images)
 
+        self.criterion.train()
+        loss_dict = self.criterion(outputs, targets)
+        weight_dict = self.criterion.weight_dict
+        loss = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
+        return {"loss": loss, "log": loss_dict}
+
+    def validation_step(self, batch, batch_idx):
+        images, targets = batch
+        images = list(image for image in images)
+        targets = [{k: v for k, v in t.items()} for t in targets]
+        outputs = self.model(images)
+
+        self.criterion.eval()
         loss_dict = self.criterion(outputs, targets)
         weight_dict = self.criterion.weight_dict
         loss = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
