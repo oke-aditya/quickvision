@@ -53,19 +53,32 @@ def train_step(model, train_loader, criterion, device, optimizer, scheduler=None
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
         optimizer.zero_grad()
-        outputs = model(images)
-        loss_dict = criterion(outputs, targets)
-        weight_dict = criterion.weight_dict
-        losses = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
 
-        losses.backward()
-        optimizer.step()
+        if scaler is not None:
+            with amp.autocast():
+                outputs = model(images)
+                loss_dict = criterion(outputs, targets)
+                weight_dict = criterion.weight_dict
+                loss = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
+                scaler.scale(loss).backward()
+                # Step using scaler.step()
+                scaler.step(optimizer)
+                # Update for next iteration
+                scaler.update()
+
+        else:
+            outputs = model(images)
+            loss_dict = criterion(outputs, targets)
+            weight_dict = criterion.weight_dict
+            loss = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
+            loss.backward()
+            optimizer.step()
 
         if scheduler is not None:
             scheduler.step()
 
         cnt += 1
-        total_loss.update(losses.item())
+        total_loss.update(loss.item())
         bbox_loss.update(loss_dict["loss_bbox"].item())
         giou_loss.update(loss_dict["loss_giou"].item())
         labels_loss.update(loss_dict["loss_ce"].item())
@@ -134,10 +147,10 @@ def val_step(model, val_loader, criterion, device,
             outputs = model(images)
             loss_dict = criterion(outputs, targets)
             weight_dict = criterion.weight_dict
-            losses = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
+            loss = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
 
             cnt += 1
-            total_loss.update(losses.item())
+            total_loss.update(loss.item())
             bbox_loss.update(loss_dict["loss_bbox"].item())
             giou_loss.update(loss_dict["loss_giou"].item())
             labels_loss.update(loss_dict["loss_ce"].item())
