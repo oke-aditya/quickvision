@@ -113,7 +113,7 @@ class EngineTester(unittest.TestCase):
             criterion = detr_loss.SetCriterion(2, matcher, weight_dict, eos_coef=0.5, losses=losses)
             met = detr.train_step(detr_model, train_loader, criterion, "cuda", opt, num_batches=4, scaler=scaler)
             self.assertIsInstance(met, Dict)
-            exp_keys = ("total_loss", "loss_bbox", "loss_giou", "loss_ce")
+            exp_keys = ("total_loss", "giou_loss", "bbox_loss", "labels_loss")
             for exp_k in exp_keys:
                 self.assertTrue(exp_k in met.keys())
 

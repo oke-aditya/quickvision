@@ -92,7 +92,7 @@ def train_step(model, train_loader, criterion, device, optimizer, scheduler=None
 
                 print(f"Done till {num_batches} train batches")
                 print(f"Time taken for Training step = {end_train_step - start_train_step} sec")
-                return loss_dict
+                return metrics
 
     end_train_step = time.time()
     metrics["total_loss"] = total_loss.avg
