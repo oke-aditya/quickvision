@@ -47,4 +47,3 @@ def create_retinanet_backbone(name: str, fpn: bool = True, pretrained: bool = Tr
         # This does not create fpn backbone, it is supported for all models
         backbone, _ = create_torchvision_backbone(name, pretrained)
     return backbone
-
