@@ -13,6 +13,10 @@ from vision.models.detection.detr.engine import (
     sanity_fit,
 )
 
+from vision.models.detection.detr.utils import (
+    PostProcess
+)
+
 from vision.models.detection.detr.lightning_trainer import (
     lit_detr
 )
