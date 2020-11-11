@@ -23,14 +23,6 @@ def train_step(model, train_loader, criterion, device, optimizer, scheduler=None
         num_batches : (optional) Integer To limit training to certain number of batches.
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
         scaler: (optional)  Pass torch.cuda.amp.GradScaler() for fp16 precision Training.
-
-    It returns a dict with the following elements:
-        - "pred_logits": the classification logits (including no-object) for all queries.
-                        Shape= [batch_size x num_queries x (num_classes + 1)]
-        - "pred_boxes": The normalized boxes coordinates for all queries, represented as
-                        (center_x, center_y, height, width). These values are normalized in [0, 1],
-                        relative to the size of each individual image (disregarding possible padding).
-                        See PostProcess for information on how to retrieve the unnormalized bounding box.
     """
 
     start_train_step = time.time()
@@ -203,7 +195,32 @@ def fit(model, epochs, train_loader, val_loader, criterion,
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
         fp16 : (optional) To use Mixed Precision Training using float16 dtype.
     """
-    pass
+    history = {}
+    train_loss = []
+    val_loss = []
+    if fp16 is True:
+        print("Training with Mixed precision fp16 scaler")
+        scaler = amp.GradScaler()
+    else:
+        scaler = None
+
+    for epoch in tqdm(range(epochs)):
+        print()
+        print(f"Training Epoch = {epoch}")
+        train_metrics = train_step(model, train_loader, criterion,
+                                   device, optimizer, scheduler, num_batches, log_interval,
+                                   scaler=scaler, )
+
+        train_loss.append(train_metrics["total_loss"])
+
+        print(f"Validating Epoch = {epoch}")
+        valid_metrics = val_step(model, val_loader, criterion, device, num_batches, log_interval)
+        val_loss.append(valid_metrics["total_loss"])
+
+    history = {"train": {"train_loss": train_loss},
+               "val": {"val_loss": val_loss}}
+
+    return history
 
 
 def train_sanity_fit():
