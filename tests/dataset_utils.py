@@ -1,7 +1,7 @@
 import torchvision
 import torch
 import torchvision.transforms as T
-from torchvision.ops import box_convert
+from torchvision import ops
 from torchvision import datasets
 from torch.utils.data import Dataset, DataLoader
 from PIL import Image
@@ -21,6 +21,7 @@ class DummyDetectionDataset(Dataset):
         """
         Args:
             *shapes: list of shapes
+            img_shape: Tuple of (channels, height, width)
             num_boxes: Number of boxes per images
             num_classes: Number of classes for image.
             num_samples: how many samples to use in this dataset.
@@ -40,13 +41,16 @@ class DummyDetectionDataset(Dataset):
         c, h, w = self.img_shape
         xs = torch.randint(w, (2,))
         ys = torch.randint(h, (2,))
-        return [min(xs), min(ys), max(xs), max(ys)]
+        # A small hacky fix to avoid degenerate boxes.
+        return [min(xs), min(ys), max(xs) + 0.1, max(ys) + 0.1]
 
     def __getitem__(self, idx: int):
         img = torch.rand(self.img_shape)
         boxes = torch.tensor([self._random_bbox() for _ in range(self.num_boxes)], dtype=torch.float32)
+        boxes = ops.clip_boxes_to_image(boxes, (self.img_shape[1], self.img_shape[2]))
+
         # No problems if we pass same in_fmt and out_fmt, it is covered by box_convert
-        converted_boxes = box_convert(boxes, in_fmt="xyxy", out_fmt=self.box_fmt)
+        converted_boxes = ops.box_convert(boxes, in_fmt="xyxy", out_fmt=self.box_fmt)
         labels = torch.randint(self.num_classes, (self.num_boxes,), dtype=torch.long)
         return img, {"boxes": converted_boxes, "labels": labels}
 
