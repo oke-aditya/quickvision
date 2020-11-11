@@ -58,10 +58,34 @@ class EngineTester(unittest.TestCase):
     def test_train(self):
         # Read Image using PIL Here
         # Do forward over image
-        pass
+        image = Image.open("tests/assets/grace_hopper_517x606.jpg")
+        img_tensor = im2tensor(image)
+        self.assertEqual(img_tensor.ndim, 4)
+        boxes = torch.tensor([[0, 0, 100, 100], [0, 1, 2, 2],
+                             [10, 15, 30, 35], [23, 35, 93, 95]], dtype=torch.float)
+        labels = torch.tensor([1, 2, 3, 4], dtype=torch.int64)
+        targets = [{"boxes": boxes, "labels": labels}]
+        retina_model = retinanet.create_vision_fastercnn(num_classes=5)
+        out = retina_model(img_tensor, targets)
+        self.assertIsInstance(out, Dict)
+        self.assertIsInstance(out["loss_classifier"], torch.Tensor)
+        self.assertIsInstance(out["loss_box_reg"], torch.Tensor)
+        self.assertIsInstance(out["loss_objectness"], torch.Tensor)
+        self.assertIsInstance(out["loss_rpn_box_reg"], torch.Tensor)
 
     def test_infer(self):
-        pass
+        # Infer over an image
+        image = Image.open("tests/assets/grace_hopper_517x606.jpg")
+        tensor = im2tensor(image)
+        self.assertEqual(tensor.ndim, 4)
+        retina_model = retinanet.create_vision_fastercnn()
+        retina_model.eval()
+        out = retina_model(tensor)
+        self.assertIsInstance(out, list)
+        self.assertIsInstance(out[0], Dict)
+        self.assertIsInstance(out[0]["boxes"], torch.Tensor)
+        self.assertIsInstance(out[0]["labels"], torch.Tensor)
+        self.assertIsInstance(out[0]["scores"], torch.Tensor)
 
     def test_train_step_fpn(self):
         pass
