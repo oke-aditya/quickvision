@@ -20,8 +20,10 @@ non_fpn_supported_models = ["mobilenet_v2"]
 # "resnet18", "resnet34", "resnet50","resnet101",
 # "resnet152", "resnext101_32x8d", "mobilenet_v2", "vgg11", "vgg13", "vgg16", "vgg19"
 
-train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, num_samples=10, )
-val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, num_samples=10, )
+train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2,
+                                      num_samples=10, box_fmt="xyxy")
+val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2,
+                                    num_samples=10, box_fmt="xyxy")
 
 
 def collate_fn(batch):
@@ -191,7 +193,7 @@ class LightningTester(unittest.TestCase):
         flag = False
         for bbone in fpn_supported_models:
             model = faster_rcnn.lit_frcnn(num_classes=3, backbone=bbone, fpn=True, pretrained_backbone=False,)
-            trainer = pl.Trainer(fast_dev_run=True)
+            trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)
@@ -201,7 +203,7 @@ class LightningTester(unittest.TestCase):
         flag = False
         for bbone in fpn_supported_models:
             model = faster_rcnn.lit_frcnn(num_classes=3, backbone=bbone, fpn=True, pretrained_backbone=False,)
-            trainer = pl.Trainer(fast_dev_run=True)
+            trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)

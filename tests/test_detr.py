@@ -15,8 +15,10 @@ from dataset_utils import DummyDetectionDataset
 if(torch.cuda.is_available()):
     from torch.cuda import amp
 
-train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=3, num_samples=10)
-val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=3, num_samples=10)
+train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=3,
+                                      num_samples=10, box_fmt="cxcywh")
+val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=3,
+                                    num_samples=10, box_fmt="cxcywh")
 
 supported_detr_backbones = ["resnet50", "resnet50_dc5", "resnet101", "resnet101_dc5"]
 error_bbone = "invalid_model"
@@ -160,7 +162,7 @@ class LightningTester(unittest.TestCase):
         flag = False
         for bbone in supported_detr_backbones:
             model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=False, backbone=bbone)
-            trainer = pl.Trainer(fast_dev_run=True)
+            trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)
@@ -170,7 +172,7 @@ class LightningTester(unittest.TestCase):
         flag = False
         for bbone in supported_detr_backbones:
             model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=False, backbone=bbone)
-            trainer = pl.Trainer(fast_dev_run=True)
+            trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)

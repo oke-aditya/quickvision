@@ -189,7 +189,7 @@ class LightningTester(unittest.TestCase):
         flag = False
         for model_name in supported_tv_models:
             model = cnn.lit_cnn(model_name, num_classes=10, pretrained=False)
-            trainer = pl.Trainer(fast_dev_run=True)
+            trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)
@@ -199,7 +199,7 @@ class LightningTester(unittest.TestCase):
         flag = False
         for model_name in supported_tv_models:
             model = cnn.lit_cnn(model_name, num_classes=10, pretrained=False)
-            trainer = pl.Trainer(fast_dev_run=True)
+            trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)
