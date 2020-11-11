@@ -68,10 +68,8 @@ class EngineTester(unittest.TestCase):
         retina_model = retinanet.create_vision_retinanet(num_classes=5)
         out = retina_model(img_tensor, targets)
         self.assertIsInstance(out, Dict)
-        self.assertIsInstance(out["loss_classifier"], torch.Tensor)
-        self.assertIsInstance(out["loss_box_reg"], torch.Tensor)
-        self.assertIsInstance(out["loss_objectness"], torch.Tensor)
-        self.assertIsInstance(out["loss_rpn_box_reg"], torch.Tensor)
+        self.assertIsInstance(out["classification"], torch.Tensor)
+        self.assertIsInstance(out["bbox_regression"], torch.Tensor)
 
     def test_infer(self):
         # Infer over an image
