@@ -65,7 +65,7 @@ class EngineTester(unittest.TestCase):
                              [10, 15, 30, 35], [23, 35, 93, 95]], dtype=torch.float)
         labels = torch.tensor([1, 2, 3, 4], dtype=torch.int64)
         targets = [{"boxes": boxes, "labels": labels}]
-        retina_model = retinanet.create_vision_fastercnn(num_classes=5)
+        retina_model = retinanet.create_vision_retinanet(num_classes=5)
         out = retina_model(img_tensor, targets)
         self.assertIsInstance(out, Dict)
         self.assertIsInstance(out["loss_classifier"], torch.Tensor)
@@ -78,7 +78,7 @@ class EngineTester(unittest.TestCase):
         image = Image.open("tests/assets/grace_hopper_517x606.jpg")
         tensor = im2tensor(image)
         self.assertEqual(tensor.ndim, 4)
-        retina_model = retinanet.create_vision_fastercnn()
+        retina_model = retinanet.create_vision_retinanet()
         retina_model.eval()
         out = retina_model(tensor)
         self.assertIsInstance(out, list)
