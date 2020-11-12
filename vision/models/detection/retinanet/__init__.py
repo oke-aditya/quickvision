@@ -12,4 +12,4 @@ from vision.models.detection.retinanet.engine import (
     sanity_fit,
 )
 
-from vision.models.detection.faster_rcnn.lightning_trainer import lit_retinanet
+from vision.models.detection.retinanet.lightning_trainer import lit_retinanet
