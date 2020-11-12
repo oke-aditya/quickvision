@@ -118,3 +118,38 @@ class EngineTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_sanity_fit_cuda(self):
         pass
+
+
+class LightningTester(unittest.TestCase):
+    def test_lit_retinanet_fpn(self):
+        flag = False
+        for bbone in fpn_supported_models:
+            model = retinanet.lit_retinanet(num_classes=3, backbone=bbone, fpn=True, pretrained_backbone=False,)
+            trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
+            trainer.fit(model, train_loader, val_loader)
+        flag = True
+        self.assertTrue(flag)
+
+    @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
+    def test_lit_cnn_cuda(self):
+        flag = False
+        for bbone in fpn_supported_models:
+            model = retinanet.lit_retinanet(num_classes=3, backbone=bbone, fpn=True, pretrained_backbone=False,)
+            trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
+            trainer.fit(model, train_loader, val_loader)
+        flag = True
+        self.assertTrue(flag)
+
+    def test_lit_forward(self):
+        model = retinanet.lit_retinanet(num_classes=3, pretrained=False, pretrained_backbone=False)
+        image = torch.rand(1, 3, 400, 400)
+        out = model(image)
+        self.assertIsInstance(out, list)
+        self.assertIsInstance(out[0], Dict)
+        self.assertIsInstance(out[0]["boxes"], torch.Tensor)
+        self.assertIsInstance(out[0]["labels"], torch.Tensor)
+        self.assertIsInstance(out[0]["scores"], torch.Tensor)
+
+
+if __name__ == '__main__':
+    unittest.main()
