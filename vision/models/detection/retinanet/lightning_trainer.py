@@ -32,17 +32,16 @@ class lit_retinanet(pl.LightningModule):
         self.backbone = backbone
         if backbone is None:
             self.model = retinanet_resnet50_fpn(pretrained=pretrained,
-                                                pretrained_backbone=pretrained_backbone,
-                                                trainable_backbone_layers=trainable_backbone_layers,)
+                                                pretrained_backbone=pretrained_backbone, **kwargs)
 
             self.model.head = RetinaNetHead(in_channels=self.model.backbone.out_channels,
                                             num_anchors=self.model.head.classification_head.num_anchors,
-                                            num_classes=num_classes,)
+                                            num_classes=num_classes, **kwargs)
 
         else:
             backbone_model = create_retinanet_backbone(self.backbone, fpn, pretrained_backbone,
                                                        trainable_backbone_layers, **kwargs)
-            self.model = RetinaNet(backbone, num_classes=num_classes, **kwargs)
+            self.model = RetinaNet(backbone_model, num_classes=num_classes, **kwargs)
 
     def forward(self, x):
         self.model.eval()
