@@ -86,21 +86,70 @@ class EngineTester(unittest.TestCase):
         self.assertIsInstance(out[0]["scores"], torch.Tensor)
 
     def test_train_step_fpn(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = retinanet.create_retinanet_backbone(name=bbone, pretrained=False)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(retina_model, nn.Module))
+            opt = torch.optim.SGD(retina_model.parameters(), lr=1e-3)
+            train_metrics = retinanet.train_step(retina_model, train_loader, "cpu", opt, num_batches=10)
+            self.assertIsInstance(train_metrics, Dict)
+            exp_keys = ("loss_classifier", "loss_box_reg", )
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in train_metrics.keys())
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_step_fpn_cuda(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = retinanet.create_retinanet_backbone(name=bbone, pretrained=False)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(retina_model, nn.Module))
+            opt = torch.optim.SGD(retina_model.parameters(), lr=1e-3)
+            train_metrics = retinanet.train_step(retina_model, train_loader, "cuda", opt, num_batches=10)
+            self.assertIsInstance(train_metrics, Dict)
+            exp_keys = ("loss_classifier", "loss_box_reg", )
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in train_metrics.keys())
 
     def test_val_step_fpn(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = retinanet.create_retinanet_backbone(name=bbone, pretrained=False)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(retina_model, nn.Module))
+            val_metrics = retinanet.val_step(retina_model, train_loader, "cpu", num_batches=10)
+            self.assertIsInstance(val_metrics, Dict)
+            exp_keys = ("iou", "giou")
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in val_metrics.keys())
 
     def test_fit(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = retinanet.create_retinanet_backbone(name=bbone, pretrained=False)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(retina_model, nn.Module))
+            opt = torch.optim.SGD(retina_model.parameters(), lr=1e-3)
+            history = retinanet.fit(retina_model, 1, train_loader, val_loader, "cpu", opt, num_batches=10)
+            self.assertIsInstance(history, Dict)
+            exp_keys = ("train", "val")
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in history.keys())
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_fit_cuda(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = retinanet.create_retinanet_backbone(name=bbone, pretrained=False)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(retina_model, nn.Module))
+            opt = torch.optim.SGD(retina_model.parameters(), lr=1e-3)
+            history = retinanet.fit(retina_model, 1, train_loader, val_loader, "cuda", opt, num_batches=10, fp16=True)
+            self.assertIsInstance(history, Dict)
+            exp_keys = ("train", "val")
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in history.keys())
 
     def test_train_sanity_fit(self):
         pass
