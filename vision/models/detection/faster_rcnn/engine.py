@@ -36,6 +36,13 @@ def train_step(model, train_loader, device, optimizer,
     batch_time_m = model_utils.AverageMeter()
     cnt = 0
     batch_start = time.time()
+    metrics = OrderedDict()
+
+    total_loss = model_utils.AverageMeter()
+    loss_classifier = model_utils.AverageMeter()
+    loss_box_reg = model_utils.AverageMeter()
+    loss_objectness = model_utils.AverageMeter()
+    loss_rpn_box_reg = model_utils.AverageMeter()
 
     for batch_idx, (inputs, targets) in enumerate(train_loader):
         last_batch = batch_idx == last_idx
@@ -63,6 +70,13 @@ def train_step(model, train_loader, device, optimizer,
             scheduler.step()
 
         cnt += 1
+
+        total_loss.update(loss.item())
+        loss_classifier.update(loss_dict["loss_classifier"].item())
+        loss_box_reg.update(loss_dict["loss_box_reg"].item())
+        loss_objectness.update(loss_dict["loss_objectness"].item())
+        loss_rpn_box_reg.update(loss_dict["loss_rpn_box_reg"].item())
+
         batch_time_m.update(time.time() - batch_start)
         batch_start = time.time()
         if last_batch or batch_idx % log_interval == 0:  # If we reach the log intervel
@@ -75,14 +89,25 @@ def train_step(model, train_loader, device, optimizer,
 
         if num_batches is not None:
             if cnt >= num_batches:
-                print(f"Done till {num_batches} train batches")
                 end_train_step = time.time()
+                metrics["total_loss"] = total_loss.avg
+                metrics["loss_classifier"] = loss_classifier.avg
+                metrics["loss_box_reg"] = loss_box_reg.avg
+                metrics["loss_objectness"] = loss_objectness.avg
+                metrics["loss_rpn_box_reg"] = loss_rpn_box_reg.avg
+
+                print(f"Done till {num_batches} train batches")
                 print(f"Time taken for Training step = {end_train_step - start_train_step} sec")
-                return loss_dict
+                return metrics
 
     end_train_step = time.time()
+    metrics["total_loss"] = total_loss.avg
+    metrics["loss_classifier"] = loss_classifier.avg
+    metrics["loss_box_reg"] = loss_box_reg.avg
+    metrics["loss_objectness"] = loss_objectness.avg
+    metrics["loss_rpn_box_reg"] = loss_rpn_box_reg.avg
     print(f"Time taken for Training step = {end_train_step - start_train_step} sec")
-    return loss_dict
+    return metrics
 
 
 def val_step(model, val_loader, device, num_batches=None,
@@ -113,8 +138,6 @@ def val_step(model, val_loader, device, num_batches=None,
             out = model(images)
             iou = torch.stack([_evaluate_iou(t, o) for t, o in zip(targets, out)]).mean()
             giou = torch.stack([_evaluate_giou(t, o) for t, o in zip(targets, out)]).mean()
-            metrics["iou"] = iou
-            metrics["giou"] = giou
 
             cnt += 1
             batch_time_m.update(time.time() - batch_start)
@@ -126,10 +149,19 @@ def val_step(model, val_loader, device, num_batches=None,
 
             if num_batches is not None:
                 if cnt >= num_batches:
+                    avg_iou = torch.stack([iou]).mean()
+                    avg_giou = torch.stack([giou]).mean()
+                    metrics["iou"] = avg_iou
+                    metrics["giou"] = avg_giou
                     print(f"Done till {num_batches} Validation batches")
                     end_val_step = time.time()
                     print(f"Time taken for validation step = {end_val_step - start_val_step} sec")
                     return metrics
+
+    avg_iou = torch.stack([iou]).mean()
+    avg_giou = torch.stack([giou]).mean()
+    metrics["iou"] = avg_iou
+    metrics["giou"] = avg_giou
 
     end_val_step = time.time()
     print(f"Time taken for validation step = {end_val_step - start_val_step} sec")
@@ -170,16 +202,15 @@ def fit(model, epochs, train_loader, val_loader,
     for epoch in tqdm(range(epochs)):
         print()
         print(f"Training Epoch = {epoch}")
-        loss_dict = train_step(model, train_loader, device, optimizer,
-                               scheduler, num_batches, log_interval, scaler)
-        metrics = val_step(model, val_loader, device, num_batches, log_interval)
+        train_metrics = train_step(model, train_loader, device, optimizer,
+                                   scheduler, num_batches, log_interval, scaler)
+        val_metrics = val_step(model, val_loader, device, num_batches, log_interval)
 
         # Possibly we can use individual losses
-        loss = sum(loss_v for loss_v in loss_dict.values())
-        train_loss.append(loss.detach())
+        train_loss.append(train_metrics["total_loss"])
 
-        avg_iou = torch.stack([metrics["iou"]]).mean()
-        avg_giou = torch.stack([metrics["giou"]]).mean()
+        avg_iou = val_metrics["iou"]
+        avg_giou = val_metrics["giou"]
 
         val_iou.append(avg_iou)
         val_giou.append(avg_giou)

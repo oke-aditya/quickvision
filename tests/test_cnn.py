@@ -100,11 +100,11 @@ class cnnTester(unittest.TestCase):
         for model_name in supported_tv_models:
             model = cnn.create_vision_cnn(model_name, 10, pretrained=False)
             loss = nn.CrossEntropyLoss()
-            train_metrics = cnn.val_step(model, val_loader, loss, "cpu", num_batches=10)
-            self.assertIsInstance(train_metrics, Dict)
+            val_metrics = cnn.val_step(model, val_loader, loss, "cpu", num_batches=10)
+            self.assertIsInstance(val_metrics, Dict)
             exp_keys = ("loss", "top1", "top5")
             for exp_k in exp_keys:
-                self.assertTrue(exp_k in train_metrics.keys())
+                self.assertTrue(exp_k in val_metrics.keys())
 
     def test_fit(self):
         for model_name in supported_tv_models:
