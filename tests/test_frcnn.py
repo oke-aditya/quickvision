@@ -94,13 +94,12 @@ class EngineTester(unittest.TestCase):
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
-            opt = torch.optim.Adam(frcnn_model.parameters(), lr=1e-3)
-            met = faster_rcnn.train_step(frcnn_model, train_loader, "cpu", opt, num_batches=10)
-            self.assertIsInstance(met, Dict)
-            self.assertIsInstance(met["loss_classifier"], torch.Tensor)
-            self.assertIsInstance(met["loss_box_reg"], torch.Tensor)
-            self.assertIsInstance(met["loss_objectness"], torch.Tensor)
-            self.assertIsInstance(met["loss_rpn_box_reg"], torch.Tensor)
+            opt = torch.optim.SGD(frcnn_model.parameters(), lr=1e-3)
+            train_metrics = faster_rcnn.train_step(frcnn_model, train_loader, "cpu", opt, num_batches=10)
+            self.assertIsInstance(train_metrics, Dict)
+            exp_keys = ("loss_classifier", "loss_box_reg", "loss_objectness", "loss_rpn_box_reg")
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in train_metrics.keys())
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_step_fpn_cuda(self):
@@ -109,14 +108,12 @@ class EngineTester(unittest.TestCase):
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
-            opt = torch.optim.Adam(frcnn_model.parameters(), lr=1e-3)
-            scaler = amp.GradScaler()
-            out = faster_rcnn.train_step(frcnn_model, train_loader, "cuda", opt, num_batches=10, scaler=scaler)
-            self.assertIsInstance(out, Dict)
-            self.assertIsInstance(out["loss_classifier"], torch.Tensor)
-            self.assertIsInstance(out["loss_box_reg"], torch.Tensor)
-            self.assertIsInstance(out["loss_objectness"], torch.Tensor)
-            self.assertIsInstance(out["loss_rpn_box_reg"], torch.Tensor)
+            opt = torch.optim.SGD(frcnn_model.parameters(), lr=1e-3)
+            train_metrics = faster_rcnn.train_step(frcnn_model, train_loader, "cuda", opt, num_batches=10)
+            self.assertIsInstance(train_metrics, Dict)
+            exp_keys = ("loss_classifier", "loss_box_reg", "loss_objectness", "loss_rpn_box_reg")
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in train_metrics.keys())
 
     def test_val_step_fpn(self):
         for bbone in fpn_supported_models:
@@ -124,10 +121,11 @@ class EngineTester(unittest.TestCase):
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
-            metrics = faster_rcnn.val_step(frcnn_model, train_loader, "cpu", num_batches=10)
-            self.assertIsInstance(metrics, Dict)
-            self.assertIsInstance(metrics["iou"], torch.Tensor)
-            self.assertIsInstance(metrics["giou"], torch.Tensor)
+            val_metrics = faster_rcnn.val_step(frcnn_model, train_loader, "cpu", num_batches=10)
+            self.assertIsInstance(val_metrics, Dict)
+            exp_keys = ("iou", "giou")
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in val_metrics.keys())
 
     def test_fit(self):
         for bbone in fpn_supported_models:
@@ -135,7 +133,7 @@ class EngineTester(unittest.TestCase):
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
-            opt = torch.optim.Adam(frcnn_model.parameters(), lr=1e-3)
+            opt = torch.optim.SGD(frcnn_model.parameters(), lr=1e-3)
             history = faster_rcnn.fit(frcnn_model, 1, train_loader, val_loader, "cpu", opt, num_batches=10)
 
             self.assertIsInstance(history, Dict)
@@ -156,8 +154,8 @@ class EngineTester(unittest.TestCase):
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
-            opt = torch.optim.Adam(frcnn_model.parameters(), lr=1e-3)
-            history = faster_rcnn.fit(frcnn_model, 1, train_loader, val_loader, "cuda", opt, num_batches=10, fp16=True)
+            opt = torch.optim.SGD(frcnn_model.parameters(), lr=1e-3)
+            history = faster_rcnn.fit(frcnn_model, 1, train_loader, val_loader, "cuda", opt, num_batches=4, fp16=True)
 
             self.assertIsInstance(history, Dict)
             exp_keys = ("train", "val")
