@@ -1,5 +1,7 @@
+
 import torch.nn as nn
 import torchvision
+from vision.models.cnn._pretrained_weights import _load_pretrained_weights
 
 __all__ = ["create_torchvision_backbone"]
 
@@ -45,72 +47,78 @@ def _create_backbone_features(model, out_channels: int):
     return ft_backbone
 
 
-def create_torchvision_backbone(model_name: str, pretrained: bool = True):
+def create_torchvision_backbone(model_name: str, pretrained: str = None):
     """
     Creates CNN backbone from Torchvision.
     Args:
         model_name (str) : Name of the model. E.g. resnet18
-        pretrained (bool) : If true uses modelwweights pretrained on ImageNet.
+        pretrained (str) : Pretrained weights dataset "imagenet", etc
     """
+
     if model_name == "mobilenet_v2":
-        mobile_net = torchvision.models.mobilenet_v2(pretrained)
+        net = torchvision.models.mobilenet_v2(pretrained=False)
+        _load_pretrained_weights(net, model_name, pretrained=pretrained)
         out_channels = 1280
-        ft_backbone = _create_backbone_features(mobile_net, 1280)
+        ft_backbone = _create_backbone_features(net, 1280)
         return ft_backbone, out_channels
 
     elif model_name in ["vgg11", "vgg13", "vgg16", "vgg19", ]:
         out_channels = 512
         if model_name == "vgg11":
-            vgg_net = torchvision.models.vgg11(pretrained)
+            net = torchvision.models.vgg11(pretrained=False)
         elif model_name == "vgg13":
-            vgg_net = torchvision.models.vgg13(pretrained)
+            net = torchvision.models.vgg13(pretrained=False)
         elif model_name == "vgg16":
-            vgg_net = torchvision.models.vgg16(pretrained)
+            net = torchvision.models.vgg16(pretrained=False)
         elif model_name == "vgg19":
-            vgg_net = torchvision.models.vgg19(pretrained)
+            net = torchvision.models.vgg19(pretrained=False)
 
-        ft_backbone = _create_backbone_features(vgg_net, out_channels)
+        _load_pretrained_weights(net, model_name, pretrained=pretrained)
+        ft_backbone = _create_backbone_features(net, out_channels)
         return ft_backbone, out_channels
 
     elif model_name in ["resnet18", "resnet34"]:
         out_channels = 512
         if model_name == "resnet18":
-            resnet_net = torchvision.models.resnet18(pretrained)
+            net = torchvision.models.resnet18(pretrained=False)
         elif model_name == "resnet34":
-            resnet_net = torchvision.models.resnet34(pretrained)
+            net = torchvision.models.resnet34(pretrained=False)
 
-        ft_backbone = _create_backbone_adaptive(resnet_net, out_channels)
+        _load_pretrained_weights(net, model_name, pretrained=pretrained)
+        ft_backbone = _create_backbone_adaptive(net, out_channels)
         return ft_backbone, out_channels
 
     elif model_name in ["resnet50", "resnet101", "resnet152", "resnext50_32x4d", "resnext101_32x8d", ]:
         out_channels = 2048
         if model_name == "resnet50":
-            resnet_net = torchvision.models.resnet50(pretrained)
+            net = torchvision.models.resnet50(pretrained=False)
         elif model_name == "resnet101":
-            resnet_net = torchvision.models.resnet101(pretrained)
+            net = torchvision.models.resnet101(pretrained=False)
         elif model_name == "resnet152":
-            resnet_net = torchvision.models.resnet152(pretrained)
+            net = torchvision.models.resnet152(pretrained=False)
         elif model_name == "resnext50_32x4d":
-            resnet_net = torchvision.models.resnext50_32x4d(pretrained)
+            net = torchvision.models.resnext50_32x4d(pretrained=False)
         elif model_name == "resnext101_32x8d":
-            resnet_net = torchvision.models.resnext101_32x8d(pretrained)
+            net = torchvision.models.resnext101_32x8d(pretrained=False)
 
-        ft_backbone = _create_backbone_adaptive(resnet_net, 2048)
+        _load_pretrained_weights(net, model_name, pretrained=pretrained)
+        ft_backbone = _create_backbone_adaptive(net, 2048)
         return ft_backbone, out_channels
 
     elif model_name in ["mnasnet0_5", "mnasnet0_75", "mnasnet1_0", "mnasnet1_3"]:
         out_channels = 1280
         if model_name == "mnasnet0_5":
-            mnasnet_net = torchvision.models.mnasnet0_5(pretrained)
+            net = torchvision.models.mnasnet0_5(pretrained=False)
         elif model_name == "mnasnet0_75":
-            mnasnet_net = torchvision.models.mnasnet0_75(pretrained)
+            net = torchvision.models.mnasnet0_75(pretrained=False)
         elif model_name == "mnasnet1_0":
-            mnasnet_net = torchvision.models.mnasnet1_0(pretrained)
+            net = torchvision.models.mnasnet1_0(pretrained=False)
         elif model_name == "mnasnet1_3":
-            mnasnet_net = torchvision.models.mnasnet1_3(pretrained)
+            net = torchvision.models.mnasnet1_3(pretrained=False)
 
-        ft_backbone = _create_backbone_adaptive(mnasnet_net, 1280)
+        _load_pretrained_weights(net, model_name, pretrained=pretrained)
+        ft_backbone = _create_backbone_adaptive(net, 1280)
         return ft_backbone, out_channels
 
     else:
-        raise ValueError("No such model implemented in torchvision")
+        raise ValueError("Unsupported model")

@@ -13,4 +13,4 @@ from vision.models.classification.cnn.model_factory import (
 )
 from vision.models.classification.cnn.lightning_trainer import lit_cnn
 
-# from vision.models.classification.utils import *
+from vision.models.classification.cnn._pretrained_weights import load_pretrained_weights

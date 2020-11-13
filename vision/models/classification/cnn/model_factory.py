@@ -28,7 +28,7 @@ def create_timm_cnn(model_name: str, num_classes: int,
 
 
 class vision_cnn(nn.Module):
-    def __init__(self, model_name: str, num_classes: int, pretrained: bool = True):
+    def __init__(self, model_name: str, num_classes: int, pretrained: str = None):
         super().__init__()
         self.num_classes = num_classes
         self.bottom, self.out_channels = components.create_torchvision_backbone(model_name, pretrained)
@@ -41,7 +41,7 @@ class vision_cnn(nn.Module):
 
 
 def create_vision_cnn(model_name: str, num_classes: int,
-                      pretrained: bool = True,):
+                      pretrained: str = None,):
 
     # Wrapper function for consistency with timm models.
     # We do not pass in_channels here since torchvision models is not supported with it.
@@ -51,7 +51,7 @@ def create_vision_cnn(model_name: str, num_classes: int,
     Args:
         model_name (str) : Name of the model. E.g. resnet18
         num_classes (int) : Number of classes for classification.
-        pretrained (bool) : If true uses modelwweights pretrained on ImageNet.
+        pretrained (str) : Pretrained weights dataset "imagenet", etc
     """
     model = vision_cnn(model_name, num_classes, pretrained)
     return model
