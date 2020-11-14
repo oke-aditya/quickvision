@@ -1,10 +1,10 @@
 import torch
 from torch.cuda import amp
-from vision.models import model_utils
+from quickvision.models import model_utils
 from tqdm import tqdm
 import time
 from collections import OrderedDict
-from vision.models.detection.utils import _evaluate_iou, _evaluate_giou
+from quickvision.models.detection.utils import _evaluate_iou, _evaluate_giou
 
 
 __all__ = ["train_step", "val_step", "fit", "train_sanity_fit",

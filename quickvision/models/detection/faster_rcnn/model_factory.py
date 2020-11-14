@@ -2,7 +2,7 @@
 import torch.nn as nn
 from torchvision.models.detection.faster_rcnn import fasterrcnn_resnet50_fpn, FasterRCNN, FastRCNNPredictor
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
-from vision.models.components import create_torchvision_backbone
+from quickvision.models.components import create_torchvision_backbone
 
 __all__ = ["create_vision_fastercnn", "create_fastercnn_backbone"]
 

@@ -5,7 +5,7 @@
 
 import torch
 from torch.cuda import amp
-from vision.models import model_utils
+from quickvision.models import model_utils
 from tqdm import tqdm
 import time
 from collections import OrderedDict

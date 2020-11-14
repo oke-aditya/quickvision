@@ -1,9 +1,9 @@
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
-from vision.models.components import create_torchvision_backbone
-from vision.models.detection.faster_rcnn import create_fastercnn_backbone
-from vision.models.detection.utils import _evaluate_iou, _evaluate_giou
+from quickvision.models.components import create_torchvision_backbone
+from quickvision.models.detection.faster_rcnn import create_fastercnn_backbone
+from quickvision.models.detection.utils import _evaluate_iou, _evaluate_giou
 from torchvision.models.detection.faster_rcnn import fasterrcnn_resnet50_fpn, FasterRCNN, FastRCNNPredictor
 
 __all__ = ["lit_frcnn"]
