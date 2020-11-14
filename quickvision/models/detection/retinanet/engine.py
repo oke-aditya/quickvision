@@ -28,6 +28,7 @@ def train_step(model, train_loader, device, optimizer,
         scaler: (optional)  Pass torch.cuda.amp.GradScaler() for fp16 precision Training.
     """
 
+    model = model.to(device)
     start_train_step = time.time()
 
     model.train()
@@ -113,6 +114,8 @@ def val_step(model, val_loader, device, num_batches=None,
         num_batches : (optional) Integer To limit validation to certain number of batches.
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
     """
+
+    model = model.to(device)
     start_val_step = time.time()
     last_idx = len(val_loader) - 1
     batch_time_m = model_utils.AverageMeter()

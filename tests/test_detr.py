@@ -164,7 +164,7 @@ class EngineTester(unittest.TestCase):
             opt = torch.optim.SGD(detr_model.parameters(), lr=1e-3)
             criterion = detr_loss.SetCriterion(2, matcher, weight_dict, eos_coef=0.5, losses=losses)
             history = detr.fit(detr_model, 1, train_loader, val_loader, criterion,
-                               device="cpu", optimizer=opt, num_batches=4, fp16=True)
+                               device="cuda", optimizer=opt, num_batches=4, fp16=True)
             self.assertIsInstance(history, Dict)
             exp_keys = ("train", "val")
             for exp_k in exp_keys:

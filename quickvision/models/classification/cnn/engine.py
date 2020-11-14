@@ -33,6 +33,7 @@ def train_step(model, train_loader, criterion, device, optimizer,
         scaler: (optional)  Pass torch.cuda.amp.GradScaler() for fp16 precision Training.
     """
 
+    model = model.to(device)
     start_train_step = time.time()
     metrics = OrderedDict()
     model.train()
@@ -152,6 +153,8 @@ def val_step(model, val_loader, criterion, device, num_batches=None,
         num_batches : (optional) Integer To limit validation to certain number of batches.
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
     """
+
+    model = model.to(device)
     start_val_step = time.time()
     last_idx = len(val_loader) - 1
     batch_time_m = model_utils.AverageMeter()
@@ -328,6 +331,8 @@ def train_sanity_fit(model, train_loader, criterion,
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
         fp16: : (optional) If True uses PyTorch native mixed precision Training.
     """
+
+    model = model.to(device)
     model.train()
     cnt = 0
     last_idx = len(train_loader) - 1
@@ -396,6 +401,8 @@ def val_sanity_fit(model, val_loader,
                                  Useful is data is too big even for sanity check.
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
     """
+
+    model = model.to(device)
     model.eval()
     cnt = 0
     last_idx = len(val_loader) - 1
