@@ -1,4 +1,4 @@
-from vision import io
+from vision import pretrained
 from vision import layers
 from vision import losses
 from vision import models

@@ -2,7 +2,7 @@
 import torch.nn as nn
 import torchvision
 from vision.utils._pretrained_weights import _load_pretrained_weights
-from vision.models.classification.cnn._pretrained_weights import weights_dict
+from vision.pretrained._pretrained_cnns import weights_dict
 
 __all__ = ["create_torchvision_backbone"]
 
