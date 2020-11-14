@@ -1,16 +1,6 @@
 # flake8: noqa
-import torch
 
-__all__ = ["_load_pretrained_weights"]
-
-
-def _load_pretrained_weights(model, model_name: str, pretrained: str):
-    state_dict = torch.hub.load_state_dict_from_url(weight_paths[model_name][pretrained], map_location="cpu")
-    model.load_state_dict(state_dict)
-    return model
-
-
-weight_paths = {
+weights_dict = {
     "mobilenet_v2": {
         "imagenet": "https://download.pytorch.org/models/mobilenet_v2-b0353104.pth"
     },
