@@ -1,7 +1,7 @@
 import vision
 import torch
 import torchvision
-import vision.io
+import vision.pretrained
 import vision.layers
 import vision.models
 import vision.optimizers
