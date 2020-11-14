@@ -1,12 +1,12 @@
-import vision
+import quickvision
 import torch
 import torchvision
-import vision.pretrained
-import vision.layers
-import vision.models
-import vision.optimizers
-import vision.utils
-import vision.tensorrt
+import quickvision.pretrained
+import quickvision.layers
+import quickvision.models
+import quickvision.optimizers
+import quickvision.utils
+import quickvision.tensorrt
 
 
 def test_torch():

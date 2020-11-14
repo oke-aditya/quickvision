@@ -1,6 +1,6 @@
-# Vision
+# Quickvision
 
-- Computer Vision for Autonomous Vehicles.
+- Faster Computer Vision
 
 <div align="center">
 
@@ -17,5 +17,3 @@
 
 </div>
 
-
-End to End training of various Computer Vision Models

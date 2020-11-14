@@ -14,7 +14,7 @@ local machine. This is the working directory where you will make
 changes:
 
 ```bash
-$ git clone https://github.com/vauv/vision.git
+$ git clone https://github.com/Quick-AI/quickvision
 ```
 
 3.  Install the requirments. You many use miniconda or conda as well.
@@ -29,7 +29,7 @@ $ pip install -r requirements.txt
     with vision easily.
 
 ```bash
-$ git remote add upstream https://github.com/vauv/vision.git
+$ git remote add upstream https://github.com/Quick-AI/quickvision
 ```
 
 2.  Updating your local repo: Pull the upstream (original) repo.
@@ -69,7 +69,7 @@ Add more commits, if necessary.
 #### 1. Create a pull request git
 
 Upload your local branch to your remote GitHub repo
-(github.com/username/vision)
+(github.com/username/quickvision)
 
 ```bash
 git push
@@ -77,13 +77,13 @@ git push
 
 After the push completes, a message may display a URL to automatically
 submit a pull request to the upstream repo. If not, go to the
-vision main repo and GitHub will prompt you to create a pull
+quickvision main repo and GitHub will prompt you to create a pull
 request.
 
 #### 2. Confirm PR was created:
 
 Ensure your pr is listed
-[here](https://github.com/vauv/vision/pulls)
+[here](https://github.com/Quick-AI/quickvision/pulls)
 
 3.  Updating a PR:
 
@@ -102,9 +102,9 @@ git push origin <enter-branch-name-same-as-before>
 Maintainers and other contributors will review your pull request. Please
 participate in the discussion and make the requested changes. When your
 pull request is approved, it will be merged into the upstream
-vision repo.
+quickvision repo.
 
 > **note**
 >
-> vision repository has CI checking. It will automatically check your code
+> quickvision repository has CI checking. It will automatically check your code
 > for build as well.
