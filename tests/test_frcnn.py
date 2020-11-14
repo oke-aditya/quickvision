@@ -40,7 +40,7 @@ val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=2,
 class ModelFactoryTester(unittest.TestCase):
     def test_frcnn_fpn(self):
         for bbone in fpn_supported_models:
-            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=False)
+            backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
 
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
@@ -48,7 +48,7 @@ class ModelFactoryTester(unittest.TestCase):
 
     def test_frcnn_nonfpn(self):
         for bbone in non_fpn_supported_models:
-            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=False, fpn=False)
+            backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None, fpn=False)
             self.assertTrue(isinstance(backbone, nn.Module))
 
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
@@ -90,7 +90,7 @@ class EngineTester(unittest.TestCase):
 
     def test_train_step_fpn(self):
         for bbone in fpn_supported_models:
-            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=False)
+            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
@@ -104,7 +104,7 @@ class EngineTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_step_fpn_cuda(self):
         for bbone in fpn_supported_models:
-            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=False)
+            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
@@ -117,7 +117,7 @@ class EngineTester(unittest.TestCase):
 
     def test_val_step_fpn(self):
         for bbone in fpn_supported_models:
-            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=False)
+            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
@@ -129,7 +129,7 @@ class EngineTester(unittest.TestCase):
 
     def test_fit(self):
         for bbone in fpn_supported_models:
-            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=False)
+            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
@@ -150,7 +150,7 @@ class EngineTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_fit_cuda(self):
         for bbone in fpn_supported_models:
-            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=False)
+            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
@@ -207,7 +207,7 @@ class LightningTester(unittest.TestCase):
         self.assertTrue(flag)
 
     def test_lit_forward(self):
-        model = faster_rcnn.lit_frcnn(num_classes=3, pretrained=False, pretrained_backbone=False)
+        model = faster_rcnn.lit_frcnn(num_classes=3, pretrained=None, pretrained_backbone=False)
         image = torch.rand(1, 3, 400, 400)
         out = model(image)
         self.assertIsInstance(out, list)
