@@ -25,6 +25,8 @@ def train_step(model, train_loader, criterion, device, optimizer, scheduler=None
         scaler: (optional)  Pass torch.cuda.amp.GradScaler() for fp16 precision Training.
     """
 
+    model = model.to(device)
+    criterion = criterion.to(device)
     start_train_step = time.time()
     model.train()
     last_idx = len(train_loader) - 1
@@ -116,6 +118,7 @@ def val_step(model, val_loader, criterion, device,
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
     """
 
+    model = model.to(device)
     start_val_step = time.time()
     last_idx = len(val_loader) - 1
     batch_time_m = model_utils.AverageMeter()
