@@ -26,6 +26,6 @@ jobs:
           pip --version
         shell: bash
 
-      - name: PEP8
+      - name: Flake8 Code Formatting
         run: |
           flake8 .
