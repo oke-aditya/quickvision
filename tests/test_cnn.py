@@ -90,7 +90,7 @@ class cnnTester(unittest.TestCase):
             # scheduler = torch.optim.lr_scheduler.CyclicLR(optimizer=opt, base_lr=1e-4, max_lr=1e-3, mode="min")
             scaler = amp.GradScaler()
             train_metrics = cnn.train_step(model, train_loader, loss, "cuda", opt,
-                                           scheduler=scheduler, num_batches=10, scaler=scaler)
+                                           num_batches=10, scaler=scaler)
             self.assertIsInstance(train_metrics, Dict)
             exp_keys = ("loss", "top1", "top5")
             for exp_k in exp_keys:
