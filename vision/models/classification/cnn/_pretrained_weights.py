@@ -1,7 +1,7 @@
 # flake8: noqa
 import torch
 
-__all__ = ["load_pretrained_weights"]
+__all__ = ["_load_pretrained_weights"]
 
 
 def _load_pretrained_weights(model, model_name: str, pretrained: str):
