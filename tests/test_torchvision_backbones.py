@@ -1,7 +1,7 @@
 import unittest
 import torch
 import torch.nn as nn
-from vision.models.components.torchvision_backbones import create_torchvision_backbone
+from quickvision.models.components.torchvision_backbones import create_torchvision_backbone
 
 supported_tv_models = ["vgg11", "vgg13", "vgg16", "vgg19", "resnet18",
                        "resnet34", "resnet50", "resnet101", "resnet152",

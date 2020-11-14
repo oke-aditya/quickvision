@@ -5,11 +5,11 @@ from PIL import Image
 import torch.nn as nn
 import pytorch_lightning as pl
 from torch_utils import im2tensor
-from vision.models.detection import detr
-from vision.models.detection.detr import create_detr_backbone
-from vision.models import model_utils
-from vision.losses import detr_loss
-from vision.models.detection.detr import engine
+from quickvision.models.detection import detr
+from quickvision.models.detection.detr import create_detr_backbone
+from quickvision.models import model_utils
+from quickvision.losses import detr_loss
+from quickvision.models.detection.detr import engine
 from dataset_utils import DummyDetectionDataset
 
 if(torch.cuda.is_available()):

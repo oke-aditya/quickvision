@@ -34,7 +34,7 @@ def load_requirements(path_dir=PATH_ROOT, file_name='requirements.txt', comment_
 
 
 def load_long_description():
-    # url = os.path.join("https://github.com/VAUV/vision/", 'raw', , 'docs')
+    # url = os.path.join("https://github.com/Quick-AI/quickvision", 'raw', , 'docs')
     text = open('README.md', encoding='utf-8').read()
     # replace relative repository path to absolute link to the release
     # text = text.replace('](docs', f']({url}')
@@ -45,8 +45,8 @@ def load_long_description():
 
 # https://packaging.python.org/discussions/install-requires-vs-requirements /
 setup(
-    name='vision',
-    version="0.1.0",
+    name='quickvision',
+    version="0.1.0rc1",
     description="Computer Vision models and training",
     author="Aditya Oke",
     author_email="okeaditya315@gmail.com",
