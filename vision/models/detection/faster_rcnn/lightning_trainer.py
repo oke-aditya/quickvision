@@ -17,7 +17,7 @@ class lit_frcnn(pl.LightningModule):
     def __init__(self, learning_rate: float = 0.0001, num_classes: int = 91,
                  pretrained: bool = False, backbone: str = None, fpn: bool = True,
                  pretrained_backbone: bool = True, trainable_backbone_layers: int = 3,
-                 replace_head: bool = True, **kwargs, ):
+                 **kwargs, ):
         """
         Args:
             learning_rate: the learning rate

@@ -17,7 +17,7 @@ class lit_cnn(pl.LightningModule):
     """
     def __init__(self, pretrained_backbone: str,
                  num_classes: int, learning_rate: float = 0.0001,
-                 pretrained: bool = True, **kwargs,):
+                 pretrained: str = None, **kwargs,):
         super().__init__()
 
         self.num_classes = num_classes

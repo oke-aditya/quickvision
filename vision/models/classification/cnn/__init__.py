@@ -12,5 +12,3 @@ from vision.models.classification.cnn.model_factory import (
     create_vision_cnn,
 )
 from vision.models.classification.cnn.lightning_trainer import lit_cnn
-
-# from vision.models.classification.utils import *

@@ -39,7 +39,7 @@ val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=2,
 class ModelFactoryTester(unittest.TestCase):
     def test_retina_fpn(self):
         for bbone in fpn_supported_models:
-            backbone = retinanet.create_retinanet_backbone(name=bbone, pretrained=False)
+            backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
 
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
@@ -47,7 +47,7 @@ class ModelFactoryTester(unittest.TestCase):
 
     def test_retina_nonfpn(self):
         for bbone in non_fpn_supported_models:
-            backbone = retinanet.create_retinanet_backbone(name=bbone, pretrained=False, fpn=False)
+            backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None, fpn=False)
             self.assertTrue(isinstance(backbone, nn.Module))
 
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
@@ -87,7 +87,7 @@ class EngineTester(unittest.TestCase):
 
     def test_train_step_fpn(self):
         for bbone in fpn_supported_models:
-            backbone = retinanet.create_retinanet_backbone(name=bbone, pretrained=False)
+            backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(retina_model, nn.Module))
@@ -101,7 +101,7 @@ class EngineTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_step_fpn_cuda(self):
         for bbone in fpn_supported_models:
-            backbone = retinanet.create_retinanet_backbone(name=bbone, pretrained=False)
+            backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(retina_model, nn.Module))
@@ -114,7 +114,7 @@ class EngineTester(unittest.TestCase):
 
     def test_val_step_fpn(self):
         for bbone in fpn_supported_models:
-            backbone = retinanet.create_retinanet_backbone(name=bbone, pretrained=False)
+            backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(retina_model, nn.Module))
@@ -126,7 +126,7 @@ class EngineTester(unittest.TestCase):
 
     def test_fit(self):
         for bbone in fpn_supported_models:
-            backbone = retinanet.create_retinanet_backbone(name=bbone, pretrained=False)
+            backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(retina_model, nn.Module))
@@ -140,7 +140,7 @@ class EngineTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_fit_cuda(self):
         for bbone in fpn_supported_models:
-            backbone = retinanet.create_retinanet_backbone(name=bbone, pretrained=False)
+            backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(retina_model, nn.Module))
@@ -190,7 +190,7 @@ class LightningTester(unittest.TestCase):
         self.assertTrue(flag)
 
     def test_lit_forward(self):
-        model = retinanet.lit_retinanet(num_classes=3, pretrained=False, pretrained_backbone=False)
+        model = retinanet.lit_retinanet(num_classes=3, pretrained=None, pretrained_backbone=False)
         image = torch.rand(1, 3, 400, 400)
         out = model(image)
         self.assertIsInstance(out, list)
