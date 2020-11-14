@@ -26,7 +26,7 @@ def create_vision_retinanet(num_classes: int = 91, backbone: nn.Module = None, *
     return model
 
 
-def create_retinanet_backbone(backbone: str, fpn: bool = True, pretrained_backbone: str = None,
+def create_retinanet_backbone(backbone: str, fpn: bool = True, pretrained: str = None,
                               trainable_backbone_layers: int = 3, **kwargs) -> nn.Module:
     """
     Args:
@@ -47,5 +47,5 @@ def create_retinanet_backbone(backbone: str, fpn: bool = True, pretrained_backbo
     else:
         # This does not create fpn backbone, it is supported for all models
         print("FPN is not supported for Non Resnet Backbones")
-        backbone, _ = create_torchvision_backbone(backbone, pretrained_backbone)
+        backbone, _ = create_torchvision_backbone(backbone, pretrained)
     return backbone
