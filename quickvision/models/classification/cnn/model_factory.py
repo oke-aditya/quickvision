@@ -4,7 +4,7 @@
 
 import timm
 import torchvision
-from vision.models import components
+from quickvision.models import components
 import torch.nn as nn
 
 __all__ = ["create_timm_cnn", "vision_cnn", "create_vision_cnn"]

@@ -1,8 +1,8 @@
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
-from vision.losses import detr_loss
-from vision.models.detection.detr import create_detr_backbone
+from quickvision.losses import detr_loss
+from quickvision.models.detection.detr import create_detr_backbone
 
 __all__ = ["lit_detr"]
 

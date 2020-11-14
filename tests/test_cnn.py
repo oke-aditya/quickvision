@@ -1,7 +1,7 @@
 import unittest
 import torch
 import torch.nn as nn
-from vision.models.classification import cnn
+from quickvision.models.classification import cnn
 from PIL import Image
 from dataset_utils import create_cifar10_dataset, create_loaders
 from torch_utils import im2tensor

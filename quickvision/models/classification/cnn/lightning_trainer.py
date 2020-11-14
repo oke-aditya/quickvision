@@ -3,7 +3,7 @@
 
 import pytorch_lightning as pl
 import torch
-from vision.models.components import create_torchvision_backbone
+from quickvision.models.components import create_torchvision_backbone
 import torch.nn as nn
 from torch.nn import functional as F
 from pytorch_lightning.metrics.functional import accuracy

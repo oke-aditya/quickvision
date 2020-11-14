@@ -1,7 +1,7 @@
 import torch.nn as nn
 from torchvision.models.detection.retinanet import RetinaNet, retinanet_resnet50_fpn, RetinaNetHead
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
-from vision.models.components import create_torchvision_backbone
+from quickvision.models.components import create_torchvision_backbone
 
 __all__ = ["create_vision_retinanet", "create_retinanet_backbone"]
 

@@ -1,9 +1,9 @@
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
-from vision.models.components import create_torchvision_backbone
-from vision.models.detection.retinanet import create_retinanet_backbone
-from vision.models.detection.utils import _evaluate_iou, _evaluate_giou
+from quickvision.models.components import create_torchvision_backbone
+from quickvision.models.detection.retinanet import create_retinanet_backbone
+from quickvision.models.detection.utils import _evaluate_iou, _evaluate_giou
 from torchvision.models.detection.retinanet import retinanet_resnet50_fpn, RetinaNet, RetinaNetHead
 
 __all__ = ["lit_retinanet"]
