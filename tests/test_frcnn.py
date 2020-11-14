@@ -90,7 +90,7 @@ class EngineTester(unittest.TestCase):
 
     def test_train_step_fpn(self):
         for bbone in fpn_supported_models:
-            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=None)
+            backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
@@ -104,7 +104,7 @@ class EngineTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_step_fpn_cuda(self):
         for bbone in fpn_supported_models:
-            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=None)
+            backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
@@ -117,7 +117,7 @@ class EngineTester(unittest.TestCase):
 
     def test_val_step_fpn(self):
         for bbone in fpn_supported_models:
-            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=None)
+            backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
@@ -129,7 +129,7 @@ class EngineTester(unittest.TestCase):
 
     def test_fit(self):
         for bbone in fpn_supported_models:
-            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=None)
+            backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
@@ -150,7 +150,7 @@ class EngineTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_fit_cuda(self):
         for bbone in fpn_supported_models:
-            backbone = faster_rcnn.create_fastercnn_backbone(name=bbone, pretrained=None)
+            backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
