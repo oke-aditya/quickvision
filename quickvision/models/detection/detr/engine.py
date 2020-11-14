@@ -26,6 +26,7 @@ def train_step(model, train_loader, criterion, device, optimizer, scheduler=None
     """
 
     model = model.to(device)
+    criterion = criterion.to(device)
     start_train_step = time.time()
     model.train()
     last_idx = len(train_loader) - 1
