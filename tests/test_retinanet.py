@@ -5,7 +5,6 @@ from PIL import Image
 import torch.nn as nn
 import pytorch_lightning as pl
 from torch_utils import im2tensor
-from quickvision.models import model_utils
 from quickvision.models.detection import retinanet
 from dataset_utils import DummyDetectionDataset
 

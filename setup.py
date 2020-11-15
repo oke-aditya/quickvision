@@ -67,7 +67,7 @@ setup(
 
     project_urls={
         "Bug Tracker": "https://github.com/Quick-AI/quickvision/issues",
-        "Documentation": "",
+        "Documentation": "https://quick-ai.github.io/quickvision/",
         "Source Code": "https://github.com/Quick-AI/quickvision",
     },
 

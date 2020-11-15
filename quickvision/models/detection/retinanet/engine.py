@@ -1,6 +1,6 @@
 import torch
 from torch.cuda import amp
-from quickvision.models import model_utils
+from quickvision import utils
 from tqdm import tqdm
 import time
 from collections import OrderedDict
@@ -33,14 +33,14 @@ def train_step(model, train_loader, device, optimizer,
 
     model.train()
     last_idx = len(train_loader) - 1
-    batch_time_m = model_utils.AverageMeter()
+    batch_time_m = utils.AverageMeter()
     cnt = 0
     batch_start = time.time()
     metrics = OrderedDict()
 
-    total_loss = model_utils.AverageMeter()
-    loss_classifier = model_utils.AverageMeter()
-    loss_box_reg = model_utils.AverageMeter()
+    total_loss = utils.AverageMeter()
+    loss_classifier = utils.AverageMeter()
+    loss_box_reg = utils.AverageMeter()
 
     for batch_idx, (inputs, targets) in enumerate(train_loader):
         last_batch = batch_idx == last_idx
@@ -118,7 +118,7 @@ def val_step(model, val_loader, device, num_batches=None,
     model = model.to(device)
     start_val_step = time.time()
     last_idx = len(val_loader) - 1
-    batch_time_m = model_utils.AverageMeter()
+    batch_time_m = utils.AverageMeter()
     cnt = 0
     model.eval()
     batch_start = time.time()
@@ -177,7 +177,7 @@ def fit(model, epochs, train_loader, val_loader,
         device : "cuda" or "cpu"
         optimizer : PyTorch optimizer.
         scheduler : (optional) Learning Rate scheduler.
-        early_stopper: (optional) A model_utils provided early stopper, based on validation loss.
+        early_stopper: (optional) A utils provided early stopper, based on validation loss.
         num_batches : (optional) Integer To limit validation to certain number of batches.
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
         fp16 : (optional) To use Mixed Precision Training using float16 dtype.
