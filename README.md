@@ -51,5 +51,5 @@ It provides: -
 
 ### Do you want multi GPU training but worried about model configuration?
 
-- Just inherit the PyTorch Lightning model! 
+- Just subclass the PyTorch Lightning model! 
 - Implement the `train_step`, `val_step`.
