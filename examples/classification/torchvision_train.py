@@ -5,10 +5,9 @@ import torch.optim as optim
 import torch.nn.functional as F
 from tqdm import tqdm
 import torchvision.transforms as T
-from vision.models.classification.cnn import model_factory
+from quickvision.models.classification import cnn
 import config
-from vision.models.classification import utils
-from vision.models.classification import engine
+from quickvision import utils
 
 
 def create_cifar10_dataset(train_transforms, valid_transforms):
@@ -56,8 +55,7 @@ if __name__ == "__main__":
     print("Train and Validation Datasets Created")
 
     print("Creating DataLoaders")
-    train_loader, valid_loader = create_loaders(train_set, train_set, config.TRAIN_BATCH_SIZE,
-                                                config.VALID_BATCH_SIZE, config.NUM_WORKERS,)
+    train_loader, valid_loader = create_loaders(train_set, train_set, train_batch_size=32, valid_batch_size=32,)
 
     print("Train and Validation Dataloaders Created")
     print("Creating Model")
@@ -65,14 +63,15 @@ if __name__ == "__main__":
     # model = model_factory.create_timm_model(config.MODEL_NAME, num_classes=config.NUM_ClASSES,
     #                                         in_channels=config.IN_CHANNELS, pretrained=config.PRETRAINED,)
 
-    model = model_factory.create_vision_cnn(config.MODEL_NAME, num_classes=config.NUM_ClASSES,
-                                            pretrained=config.PRETRAINED,)
+    model = cnn.create_vision_cnn("resnet50", num_classes=10, pretrained="imagenet",)
 
     if torch.cuda.is_available():
         print("Model Created. Moving it to CUDA")
+        device = "cuda"
     else:
         print("Model Created. Training on CPU only")
-    model.to(device)
+        device = "cpu"
+
     optimizer = optim.Adam(model.parameters(), lr=config.LEARNING_RATE)
 
     # Optionially a schedulear
@@ -82,8 +81,8 @@ if __name__ == "__main__":
 
     early_stopper = utils.EarlyStopping(patience=7, verbose=True, path=config.SAVE_PATH)
 
-    history = engine.fit(epochs=config.EPOCHS, model=model, train_loader=train_loader,
-                         valid_loader=valid_loader, criterion=criterion, device=device,
-                         optimizer=optimizer, early_stopper=early_stopper,)
+    history = cnn.fit(model=model, epochs=10, train_loader=train_loader,
+                      valid_loader=valid_loader, criterion=criterion, device=device,
+                      optimizer=optimizer, early_stopper=early_stopper,)
 
     print("Done !!")

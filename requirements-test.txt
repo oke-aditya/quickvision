@@ -1,0 +1,4 @@
+timm
+pytorch_lightning
+scipy
+pandas
