@@ -5,7 +5,7 @@
 
 import torch
 from torch.cuda import amp
-from quickvision.models import model_utils
+from quickvision import utils
 from tqdm import tqdm
 import time
 from collections import OrderedDict
@@ -38,11 +38,11 @@ def train_step(model, train_loader, criterion, device, optimizer,
     metrics = OrderedDict()
     model.train()
     last_idx = len(train_loader) - 1
-    batch_time_m = model_utils.AverageMeter()
-    # data_time_m = model_utils.AverageMeter()
-    losses_m = model_utils.AverageMeter()
-    top1_m = model_utils.AverageMeter()
-    top5_m = model_utils.AverageMeter()
+    batch_time_m = utils.AverageMeter()
+    # data_time_m = utils.AverageMeter()
+    losses_m = utils.AverageMeter()
+    top1_m = utils.AverageMeter()
+    top5_m = utils.AverageMeter()
     cnt = 0
     batch_start = time.time()
     # num_updates = epoch * len(loader)
@@ -106,7 +106,7 @@ def train_step(model, train_loader, criterion, device, optimizer,
             scheduler.step()
 
         cnt += 1
-        acc1, acc5 = model_utils.accuracy(output, target, topk=(1, 5))
+        acc1, acc5 = utils.accuracy(output, target, topk=(1, 5))
 
         top1_m.update(acc1.item(), output.size(0))
         top5_m.update(acc5.item(), output.size(0))
@@ -157,11 +157,11 @@ def val_step(model, val_loader, criterion, device, num_batches=None,
     model = model.to(device)
     start_val_step = time.time()
     last_idx = len(val_loader) - 1
-    batch_time_m = model_utils.AverageMeter()
-    # data_time_m = model_utils.AverageMeter()
-    losses_m = model_utils.AverageMeter()
-    top1_m = model_utils.AverageMeter()
-    top5_m = model_utils.AverageMeter()
+    batch_time_m = utils.AverageMeter()
+    # data_time_m = utils.AverageMeter()
+    losses_m = utils.AverageMeter()
+    top1_m = utils.AverageMeter()
+    top5_m = utils.AverageMeter()
     cnt = 0
     model.eval()
     batch_start = time.time()
@@ -178,7 +178,7 @@ def val_step(model, val_loader, criterion, device, num_batches=None,
 
             loss = criterion(output, target)
             cnt += 1
-            acc1, acc5 = model_utils.accuracy(output, target, topk=(1, 5))
+            acc1, acc5 = utils.accuracy(output, target, topk=(1, 5))
             reduced_loss = loss.data
 
             losses_m.update(reduced_loss.item(), inputs.size(0))
@@ -233,12 +233,12 @@ def fit(model, epochs, train_loader, val_loader, criterion,
         device : "cuda" or "cpu"
         optimizer : PyTorch optimizer.
         scheduler : (optional) Learning Rate scheduler.
-        early_stopper: (optional) A model_utils provied early stopper, based on validation loss.
+        early_stopper: (optional) A utils provied early stopper, based on validation loss.
         num_batches : (optional) Integer To limit validation to certain number of batches.
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
         fp16 : (optional) To use Mixed Precision Training using float16 dtype.
         swa_start : (optional) To use Stochastic Weighted Averaging while Training
-        swa_scheduler : (optional) A torch.optim.swa_model_utils.scheduler to be used during SWA Training epochs.
+        swa_scheduler : (optional) A torch.optim.swa_utils.scheduler to be used during SWA Training epochs.
     """
     # Declaring necessary variables required to add to keras like history object
     history = {}
@@ -250,7 +250,7 @@ def fit(model, epochs, train_loader, val_loader, criterion,
     top5_acc_v = []
 
     if swa_start is not None:
-        swa_model = torch.optim.swa_model_utils.AveragedModel(model)
+        swa_model = torch.optim.swa_utils.AveragedModel(model)
         print("Training with Stochastic Weighted averaging (SWA) Scheduler")
 
     if fp16 is True:
