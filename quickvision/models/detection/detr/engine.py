@@ -1,6 +1,6 @@
 import torch
 from torch.cuda import amp
-from quickvision.models import model_utils
+from quickvision import utils
 from tqdm import tqdm
 import time
 from collections import OrderedDict
@@ -30,16 +30,16 @@ def train_step(model, train_loader, criterion, device, optimizer, scheduler=None
     start_train_step = time.time()
     model.train()
     last_idx = len(train_loader) - 1
-    batch_time_m = model_utils.AverageMeter()
+    batch_time_m = utils.AverageMeter()
     criterion.train()
     cnt = 0
     batch_start = time.time()
     metrics = OrderedDict()
 
-    total_loss = model_utils.AverageMeter()
-    bbox_loss = model_utils.AverageMeter()
-    giou_loss = model_utils.AverageMeter()
-    labels_loss = model_utils.AverageMeter()
+    total_loss = utils.AverageMeter()
+    bbox_loss = utils.AverageMeter()
+    giou_loss = utils.AverageMeter()
+    labels_loss = utils.AverageMeter()
 
     for batch_idx, (inputs, targets) in enumerate(train_loader):
         last_batch = batch_idx == last_idx
@@ -121,17 +121,17 @@ def val_step(model, val_loader, criterion, device,
     model = model.to(device)
     start_val_step = time.time()
     last_idx = len(val_loader) - 1
-    batch_time_m = model_utils.AverageMeter()
+    batch_time_m = utils.AverageMeter()
     cnt = 0
     model.eval()
     criterion.eval()
     batch_start = time.time()
     metrics = OrderedDict()
 
-    total_loss = model_utils.AverageMeter()
-    bbox_loss = model_utils.AverageMeter()
-    giou_loss = model_utils.AverageMeter()
-    labels_loss = model_utils.AverageMeter()
+    total_loss = utils.AverageMeter()
+    bbox_loss = utils.AverageMeter()
+    giou_loss = utils.AverageMeter()
+    labels_loss = utils.AverageMeter()
 
     with torch.no_grad():
         for batch_idx, (inputs, targets) in enumerate(val_loader):
@@ -193,7 +193,7 @@ def fit(model, epochs, train_loader, val_loader, criterion,
         device : "cuda" or "cpu"
         optimizer : PyTorch optimizer.
         scheduler : (optional) Learning Rate scheduler.
-        early_stopper: (optional) A model_utils provied early stopper, based on validation loss.
+        early_stopper: (optional) A utils provied early stopper, based on validation loss.
         num_batches : (optional) Integer To limit validation to certain number of batches.
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
         fp16 : (optional) To use Mixed Precision Training using float16 dtype.

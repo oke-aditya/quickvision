@@ -4,3 +4,4 @@ from quickvision import losses
 from quickvision import models
 from quickvision import optimizers
 from quickvision import datasets
+from quickvision import metrics
