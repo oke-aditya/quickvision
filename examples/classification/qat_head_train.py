@@ -3,7 +3,7 @@
 
 import torchvision
 import torchvision.models.quantization as models
-from vision.models.classification.cnn import engine
+from quickvision.models.classification import cnn
 import config
 import torch
 from vision.models import model_utils
@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     early_stopper = model_utils.EarlyStopping(patience=3, verbose=True, path=config.SAVE_PATH)
 
-    history = engine.fit(config.EPOCHS, q_model, train_loader,
-                         valid_loader, criterion, device, optimizer,
-                         exp_lr_scheduler, early_stopper, num_batches=50,)
+    history = cnn.fit(q_model, config.EPOCHS, train_loader,
+                      valid_loader, criterion, device, optimizer,
+                      exp_lr_scheduler, early_stopper, num_batches=50,)
     print("Done")

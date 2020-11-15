@@ -9,7 +9,7 @@ IN_CHANNELS = 3
 USE_TORCHVISION = False  # If you need to use timm models set to False.
 
 # USE_TORCHVISION = True # Should use Torchvision Models or timm models
-PRETRAINED = True  # If True -> Fine Tuning else Scratch Training
+PRETRAINED = "imagenet"  # If True -> Fine Tuning else Scratch Training
 EPOCHS = 5
 TRAIN_BATCH_SIZE = 512  # Training Batch Size
 VALID_BATCH_SIZE = 512  # Validation Batch Size
