@@ -6,6 +6,7 @@
 import torch
 from torch.cuda import amp
 from quickvision import utils
+from quickvision.metrics import accuracy
 from tqdm import tqdm
 import time
 from collections import OrderedDict
@@ -106,7 +107,7 @@ def train_step(model, train_loader, criterion, device, optimizer,
             scheduler.step()
 
         cnt += 1
-        acc1, acc5 = utils.accuracy(output, target, topk=(1, 5))
+        acc1, acc5 = accuracy(output, target, topk=(1, 5))
 
         top1_m.update(acc1.item(), output.size(0))
         top5_m.update(acc5.item(), output.size(0))
@@ -178,7 +179,7 @@ def val_step(model, val_loader, criterion, device, num_batches=None,
 
             loss = criterion(output, target)
             cnt += 1
-            acc1, acc5 = utils.accuracy(output, target, topk=(1, 5))
+            acc1, acc5 = accuracy(output, target, topk=(1, 5))
             reduced_loss = loss.data
 
             losses_m.update(reduced_loss.item(), inputs.size(0))
