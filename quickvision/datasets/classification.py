@@ -9,7 +9,7 @@ import os
 import torch
 from PIL import Image
 
-__all__ = ["create_folder_dataset", "CSVDataset", ]
+__all__ = ["create_folder_dataset", "CSVDataset"]
 
 
 def create_folder_dataset(root_dir, transforms, split: float = 0.8, **kwargs):
@@ -40,26 +40,31 @@ class CSVDataset(Dataset):
     """
     Creates Torchvision Dataset From CSV File.
     Args:
-        df: DataFrame with a column 2 columns image_id and target
+        df: DataFrame with 2 columns ``image_id`` and ``target``.
         data_dir: Directory from where data is to be read.
-        target: target column name
+        image_id: Column name which has IDs of the images.
+        target: target column name.
         transform: Trasforms to apply while creating Dataset.
+        img_type: Type of the image like `png` or `jpg` etc.
     """
 
-    def __init__(self, df, data_dir, target, transform):
+    def __init__(self, df, data_dir, image_id, target, transform, img_type):
         super().__init__()
         self.df = df
         self.data_dir = data_dir
+        self.image_id = image_id
+        self.target = target
         self.transform = transform
+        self.img_type = img_type
 
     def __len__(self):
         return len(self.df)
 
     def __getitem__(self, idx):
-        img_name = self.df.image_id[idx]
-        label = self.df.target[idx]
+        img_name = self.df[self.image_id][idx]
+        label = self.df[self.target][idx]
 
-        img_path = os.path.join(self.data_dir, img_name)
+        img_path = os.path.join(self.data_dir, str(img_name) + f'.{self.img_type}')
         image = Image.open(img_path)
         image = self.transform(image)
 
