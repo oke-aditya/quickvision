@@ -6,7 +6,6 @@ import torch.nn as nn
 import pytorch_lightning as pl
 from torch_utils import im2tensor
 from quickvision.models.detection import faster_rcnn
-from quickvision.models import model_utils
 from quickvision.models.detection.faster_rcnn import engine
 from dataset_utils import DummyDetectionDataset
 
