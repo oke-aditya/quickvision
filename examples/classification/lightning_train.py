@@ -1,7 +1,7 @@
 import pytorch_lightning as pl
 import torch
 import torchvision
-from vision.models.classification.cnn.lightning_trainer import CNN
+from quickvision.models.classification.cnn import lit_cnn
 import config
 
 
@@ -53,7 +53,15 @@ if __name__ == "__main__":
     print("Train and Validation Dataloaders Created")
 
     print("Creating Model")
-    model = CNN("resnet18", num_classes=10, pretrained=True)
-    # print(model)
+    # To fit a model pretrained over imagenet weights
+    model_imagenet = lit_cnn("resnet18", num_classes=10, pretrained="imagenet")
+    # print(model_imagenet)
     trainer = pl.Trainer(max_epochs=2)
-    trainer.fit(model, train_loader, valid_loader)
+    trainer.fit(model_imagenet, train_loader, valid_loader)
+
+    # To fit a model pretrained over Semi supervised learning weights
+
+    model_ssl = lit_cnn("resnet18", num_classes=10, pretrained="ssl")
+    # print(model_ssl)
+    trainer = pl.Trainer(max_epochs=2)
+    trainer.fit(model_ssl, train_loader, valid_loader)
