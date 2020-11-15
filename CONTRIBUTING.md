@@ -23,6 +23,12 @@ $ git clone https://github.com/Quick-AI/quickvision
 $ pip install -r requirements.txt
 ```
 
+4. Install this package in develop mode. Go to Root of this package and run.
+
+```bash
+$ python setup.py develop
+```
+
 ## Step 2: Stay in Sync with the original (upstream) repo
 
 1.  Set the upstream to sync with this repo. This will keep you in sync

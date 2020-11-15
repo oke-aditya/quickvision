@@ -5,10 +5,9 @@ import torch.optim as optim
 import torch.nn.functional as F
 from tqdm import tqdm
 import torchvision.transforms as T
-from vision.models.classification.cnn import model_factory
+from quickvision.models.classification import cnn
 import config
-from vision.models import model_utils
-from vision.models.classification import engine
+from quickvision import utils
 
 
 def create_cifar10_dataset(train_transforms, valid_transforms):
@@ -52,7 +51,7 @@ if __name__ == "__main__":
     MODEL_NAME = "resnet18"
     NUM_ClASSES = 10
     IN_CHANNELS = 3
-    PRETRAINED = True  # If True -> Fine Tuning else Scratch Training
+    PRETRAINED = "imagenet"  # If True -> Fine Tuning else Scratch Training
     EPOCHS = 5
     EARLY_STOPPING = True  # If you need early stoppoing for validation loss
     SAVE_PATH = f"{MODEL_NAME}.pt"
@@ -62,7 +61,7 @@ if __name__ == "__main__":
     train_transforms = T.Compose([T.ToTensor(), T.Normalize((0.5,), (0.5,))])
     valid_transforms = T.Compose([T.ToTensor(), T.Normalize((0.5,), (0.5,))])
 
-    model_utils.seed_everything(SEED)
+    utils.seed_everything(SEED)
     print(f"Setting Seed for the run, seed = {config.SEED}")
 
     print("Creating Train and Validation Dataset")
@@ -74,27 +73,28 @@ if __name__ == "__main__":
     print("Train and Validation Dataloaders Created")
 
     print("Creating Model")
-    model = model_factory.create_torchvision_model(MODEL_NAME, num_classes=NUM_ClASSES, pretrained=True)
+    model = cnn.create_vision_cnn(MODEL_NAME, num_classes=NUM_ClASSES, pretrained="imagenet")
 
     if torch.cuda.is_available():
         print("Model Created. Moving it to CUDA")
+        device = "cuda"
     else:
         print("Model Created. Training on CPU only")
-    model.to(device)
+        device = "cpu"
 
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
     criterion = (nn.CrossEntropyLoss())  # All classification problems we need Cross entropy loss
-    early_stopper = model_utils.EarlyStopping(patience=7, verbose=True, path=SAVE_PATH)
+    early_stopper = utils.EarlyStopping(patience=7, verbose=True, path=SAVE_PATH)
 
     for epoch in tqdm(range(EPOCHS)):
         print()
         print(f"Training Epoch = {epoch}")
-        train_metrics = engine.train_step(model, train_loader, criterion, device, optimizer)
+        train_metrics = cnn.train_step(model, train_loader, criterion, device, optimizer)
         print()
 
         print(f"Validating Epoch = {epoch}")
-        valid_metrics = engine.val_step(model, valid_loader, criterion, device)
+        valid_metrics = cnn.val_step(model, valid_loader, criterion, device)
 
         validation_loss = valid_metrics["loss"]
         early_stopper(validation_loss, model=model)
