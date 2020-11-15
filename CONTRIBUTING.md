@@ -4,12 +4,12 @@
 
 ## Step 1: Forking and Installing vision
 
-​1. Fork the repo to your own github account. click the Fork button to
+​1. Fork the repo to your own github account. Click the Fork button to
 create your own repo copy under your GitHub account. Once forked, you're
 responsible for keeping your repo copy up-to-date with the upstream
-vision repo.
+quickvision repo.
 
-​2. Download a copy of your remote username/vision repo to your
+​2. Download a copy of your remote username/quickvision repo to your
 local machine. This is the working directory where you will make
 changes:
 
@@ -17,13 +17,13 @@ changes:
 $ git clone https://github.com/Quick-AI/quickvision
 ```
 
-3.  Install the requirments. You many use miniconda or conda as well.
+3.  Install the requirements. You may use miniconda or conda as well.
 
 ```bash
-$ pip install -r requirements.txt
+$ pip install -r requirements-test.txt
 ```
 
-4. Install this package in develop mode. Go to Root of this package and run.
+4. Install this package in develop mode. Go to root of this package and run the following:
 
 ```bash
 $ python setup.py develop
@@ -32,7 +32,7 @@ $ python setup.py develop
 ## Step 2: Stay in Sync with the original (upstream) repo
 
 1.  Set the upstream to sync with this repo. This will keep you in sync
-    with vision easily.
+    with quickvision easily.
 
 ```bash
 $ git remote add upstream https://github.com/Quick-AI/quickvision
@@ -51,7 +51,7 @@ $ git pull upstream master
 $ git checkout -b feature-name
 $ git branch
  master 
- * feature_name: 
+ * feature-name: 
 ```
 
 ## Step 4: Make changes, and commit your file changes
@@ -88,7 +88,7 @@ request.
 
 #### 2. Confirm PR was created:
 
-Ensure your pr is listed
+Ensure your PR is listed
 [here](https://github.com/Quick-AI/quickvision/pulls)
 
 3.  Updating a PR:
@@ -110,7 +110,7 @@ participate in the discussion and make the requested changes. When your
 pull request is approved, it will be merged into the upstream
 quickvision repo.
 
-> **note**
+> **Note**
 >
 > quickvision repository has CI checking. It will automatically check your code
 > for build as well.

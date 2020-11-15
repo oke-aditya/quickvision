@@ -19,7 +19,7 @@
 
 ![demo](/assets/demo.png)
 
-## What is Quickvision ??
+## What is Quickvision?
 
 - Quickvision makes Computer Vision tasks much faster and easier with PyTorch.
 
@@ -34,22 +34,22 @@ It provides: -
 
 - Train your models faster. Quickvision has already implmented the long learning in torch.
 
-## Quickvision is just Torch !!
+## Quickvision is just Torch!!
 
-- Quickvision does not make you learn a new library. If you know PyTorch you are good to go !!!
+- Quickvision does not make you learn a new library. If you know PyTorch you are good to go!!!
 - Quickvision does not abstract any code from torch, nor implements any custom classes over it.
 - It keeps the data format in `Tensor` only. You don't need to convert it.
 
-### Do you want just a model with some backbone configuration ?
+### Do you want just a model with some backbone configuration?
 
 - Use model made by us. It's just a `nn.Module` which has Tensors only Input and Output format.
-- Quickvision provides reference scripts too for training it !.
+- Quickvision provides reference scripts too for training it!
 
-### Do You wan't to train your model but not write lengthy loops ?
+### Do you want to train your model but not write lengthy loops?
 
 - Just use our training methods such as `fit()`, `train_step()`, `val_step()`.
 
-### Do You wan't multi GPU training. But are worried about model configuration ?
+### Do you want multi GPU training but worried about model configuration?
 
-- Just Subclass the PyTorch Lightning model ! 
-- Implement the `train_step`, `val_step`
+- Just subclass the PyTorch Lightning model! 
+- Implement the `train_step`, `val_step`.
