@@ -40,16 +40,16 @@ It provides: -
 - Quickvision does not abstract any code from torch, nor implements any custom classes over it.
 - It keeps the data format in `Tensor` only. You don't need to convert it.
 
-###  If you want just a model with some backbone configuration.
+### Do you want just a model with some backbone configuration ?
 
 - Use model made by us. It's just a `nn.Module` which has Tensors only Input and Output format.
 - Quickvision provides reference scripts too for training it !.
 
-### You wan't to train your model ?
+### Do You wan't to train your model but not write lengthy loops ?
 
 - Just use our training methods such as `fit()`, `train_step()`, `val_step()`.
 
-### You wan't multi GPU training. But are worried about model configuration ?
+### Do You wan't multi GPU training. But are worried about model configuration ?
 
 - Just Subclass the PyTorch Lightning model ! 
 - Implement the `train_step`, `val_step`
