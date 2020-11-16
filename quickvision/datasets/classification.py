@@ -9,7 +9,7 @@ import os
 import torch
 from PIL import Image
 
-__all__ = ["create_folder_dataset", "CSVDataset", ]
+__all__ = ["create_folder_dataset", "CSVSingleLabelDataset"]
 
 
 def create_folder_dataset(root_dir, transforms, split: float = 0.8, **kwargs):
@@ -36,7 +36,7 @@ def create_folder_dataset(root_dir, transforms, split: float = 0.8, **kwargs):
     return train_set, valid_set
 
 
-class CSVDataset(Dataset):
+class CSVSingleLabelDataset(Dataset):
     """
     Creates Torchvision Dataset From CSV File.
     Args:
