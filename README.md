@@ -19,6 +19,14 @@
 
 ![demo](/assets/demo.png)
 
+### Install Quickvision
+
+- Install directly from GitHub. Very soon it will be available over PyPi.
+
+```
+pip install -q git+https://github.com/Quick-AI/quickvision.git
+```
+
 ## What is Quickvision?
 
 - Quickvision makes Computer Vision tasks much faster and easier with PyTorch.
