@@ -206,7 +206,7 @@ class LightningTester(unittest.TestCase):
         self.assertTrue(flag)
 
     def test_lit_forward(self):
-        model = faster_rcnn.lit_frcnn(num_classes=3, pretrained=None, pretrained_backbone=False)
+        model = faster_rcnn.lit_frcnn(num_classes=3, pretrained_backbone=False)
         image = torch.rand(1, 3, 400, 400)
         out = model(image)
         self.assertIsInstance(out, list)
