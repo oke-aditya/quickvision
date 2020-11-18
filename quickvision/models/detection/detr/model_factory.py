@@ -66,7 +66,8 @@ def create_detr_backbone(model_name: str, pretrained: str = None,):
         raise ValueError("Unuspported backbone")
 
     if pretrained is not None:
-        backbone = _load_pretrained_weights(detr_weights_dict, backbone, model_name, pretrained=pretrained,)
+        checkpoint = _load_pretrained_weights(detr_weights_dict, model_name, pretrained=pretrained,)
+        backbone.load_state_dict(checkpoint["model"])
         return backbone
 
     return backbone
