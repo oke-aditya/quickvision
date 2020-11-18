@@ -29,7 +29,7 @@ class vision_detr(nn.Module):
         return self.model(images)
 
 
-def create_vision_detr(num_classes, num_queries, backbone):
+def create_vision_detr(num_classes: int, num_queries: int, backbone):
     """
     Creates Detr Model for Object Detection
     Args:
