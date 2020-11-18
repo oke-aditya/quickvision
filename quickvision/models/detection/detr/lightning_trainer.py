@@ -9,7 +9,7 @@ __all__ = ["lit_detr"]
 
 class lit_detr(pl.LightningModule):
     def __init__(self, learning_rate: float = 1e-3, num_classes: int = 91,
-                 num_queries: int = 5, pretrained: bool = True,
+                 num_queries: int = 5, pretrained: str = None,
                  backbone: str = "resnet50", **kwargs, ):
 
         """
@@ -22,7 +22,7 @@ class lit_detr(pl.LightningModule):
                 learning_rate: the learning rate
                 num_classes: number of detection classes (including background)
                 num_queries: number of queries to the transformer module.
-                pretrained: if true, returns a model pre-trained on COCO train2017
+                pretrained: if "coco", returns a model pre-trained on COCO train2017
                 backbone:  Supported Detection backbones are "resnet50", "resnet101", "resnet50_dc5", "resnet101_dc5".
 
             It returns a dict with the following elements:

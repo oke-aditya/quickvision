@@ -82,7 +82,7 @@ class EngineTester(unittest.TestCase):
 
     def test_train_step(self):
         for bbone in some_supported_backbones:
-            backbone = detr.create_detr_backbone(name=bbone, pretrained=False)
+            backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
@@ -100,7 +100,7 @@ class EngineTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_step_cuda(self):
         for bbone in some_supported_backbones:
-            backbone = detr.create_detr_backbone(name=bbone, pretrained=False)
+            backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
@@ -118,7 +118,7 @@ class EngineTester(unittest.TestCase):
 
     def test_val_step(self):
         for bbone in some_supported_backbones:
-            backbone = detr.create_detr_backbone(name=bbone, pretrained=False)
+            backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
@@ -134,7 +134,7 @@ class EngineTester(unittest.TestCase):
 
     def test_fit(self):
         for bbone in some_supported_backbones:
-            backbone = detr.create_detr_backbone(name=bbone, pretrained=False)
+            backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
@@ -153,7 +153,7 @@ class EngineTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_fit_cuda(self):
         for bbone in some_supported_backbones:
-            backbone = detr.create_detr_backbone(name=bbone, pretrained=False)
+            backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
@@ -191,7 +191,7 @@ class LightningTester(unittest.TestCase):
     def test_lit_detr(self):
         flag = False
         for bbone in supported_detr_backbones:
-            model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=False, backbone=bbone)
+            model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=None, backbone=bbone)
             trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
@@ -201,14 +201,14 @@ class LightningTester(unittest.TestCase):
     def test_lit_detr_cuda(self):
         flag = False
         for bbone in supported_detr_backbones:
-            model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=False, backbone=bbone)
+            model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=None, backbone=bbone)
             trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)
 
     def test_lit_forward(self):
-        model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=False)
+        model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=None)
         image = torch.rand(1, 3, 400, 400)
         out = model(image)
         self.assertIsInstance(out, Dict)

@@ -1,5 +1,7 @@
 import torch
 import torch.nn as nn
+from quickvision.pretrained._pretrained_weights import _load_pretrained_weights
+from quickvision.pretrained._pretrained_detection import detr_weights_dict
 
 __all__ = ["vision_detr", "create_detr_backbone"]
 
@@ -40,27 +42,31 @@ def create_vision_detr(num_classes, num_queries, backbone):
     return model
 
 
-def create_detr_backbone(name: str, pretrained: bool = True,):
+def create_detr_backbone(model_name: str, pretrained: str = None,):
     """
         Creates Detr Backbone for Detection.
         Args:
-            name: Name of supported bacbone. Supported Backbones are
+            model_name: Name of supported bacbone. Supported Backbones are
                   "resnet50", "resnet101", "resnet50_dc5", "resnet101_dc5"
-            pretrained: If True, returns backbone pretrained on COCO Dataset.
+            pretrained: (str) If "coco", returns Detr pretrained on COCO Dataset.
     """
-    if(name == "resnet50"):
-        backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet50', pretrained=pretrained)
+    if(model_name == "resnet50"):
+        backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet50', pretrained=False)
 
-    elif(name == "resnet101"):
-        backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet101', pretrained=pretrained)
+    elif(model_name == "resnet101"):
+        backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet101', pretrained=False)
 
-    elif(name == "resnet50_dc5"):
-        backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet50_dc5', pretrained=pretrained)
+    elif(model_name == "resnet50_dc5"):
+        backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet50_dc5', pretrained=False)
 
-    elif(name == "resnet101_dc5"):
-        backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet50_dc5', pretrained=pretrained)
+    elif(model_name == "resnet101_dc5"):
+        backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet50_dc5', pretrained=False)
 
     else:
         raise ValueError("Unuspported backbone")
+
+    if pretrained is not None:
+        backbone = _load_pretrained_weights(detr_weights_dict, backbone, model_name, pretrained=pretrained,)
+        return backbone
 
     return backbone
