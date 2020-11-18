@@ -242,7 +242,29 @@ def train_sanity_fit(model, train_loader,
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
         fp16: : (optional) If True uses PyTorch native mixed precision Training.
     """
-    pass
+    
+    model = model.to(device)
+    model.train()
+
+    cnt = 0
+
+    for batch_idx, (input, targets) in enumerate(train_loader):
+        
+        images = list(image.to(device) for image in outputs)
+        targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+
+        loss_dict = model(images, targets)
+
+        cnt += 1
+
+        if num_batches is not None:
+            if cnt >= num_batches:
+                print(f"Done till {num_batches} train batches")
+                break
+        
+    
+    return True
+        
 
 
 def val_sanity_fit(model, val_loader,
@@ -262,8 +284,28 @@ def val_sanity_fit(model, val_loader,
                                  Useful is data is too big even for sanity check.
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
     """
-    pass
+    model = model.to(device)
+    model.eval()
 
+    cnt = 0
+
+    with torch.no_grad():
+        for batch_idx, (inputs, targets) in enumerate(val_loader):
+            
+            images = list(image.to(device) for k,v in t.items()} for t in targets)
+            targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+            out = model(images)
+
+            cnt += 1
+
+            if num_batches is not None:
+                if cnt >= num_batches:
+                    print(f"Done till {num_batches} validation batches")
+                    break
+
+            
+    
+    return True
 
 def sanity_fit(model, train_loader, val_loader,
                device, num_batches: int = None,
@@ -284,4 +326,8 @@ def sanity_fit(model, train_loader, val_loader,
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
     """
 
-    pass
+    sanity_train = train_sanity_fit(model, train_loader, device, num_batches, fp16)
+
+    sanity_val = val_sanity_fit(model, val_loader, device, num_batches, fp16)
+
+    return True
