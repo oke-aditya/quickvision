@@ -1,4 +1,5 @@
 import torch
+from torch import nn
 from torch.cuda import amp
 from quickvision import utils
 from tqdm import tqdm
@@ -9,8 +10,9 @@ __all__ = ["train_step", "val_step", "fit", "train_sanity_fit",
            "val_sanity_fit", "sanity_fit", ]
 
 
-def train_step(model, train_loader, criterion, device, optimizer, scheduler=None,
-               num_batches: int = None, log_interval: int = 100, scaler=None,):
+def train_step(model: nn.Module, train_loader, criterion, device: str,
+               optimizer, scheduler=None, num_batches: int = None,
+               log_interval: int = 100, scaler=None,):
     """
     Performs one step of training. Calculates loss, forward pass, computes gradient and returns metrics.
     Args:
@@ -105,7 +107,7 @@ def train_step(model, train_loader, criterion, device, optimizer, scheduler=None
     return metrics
 
 
-def val_step(model, val_loader, criterion, device,
+def val_step(model: nn.Module, val_loader, criterion, device,
              num_batches: int = None, log_interval: int = 100):
     """
     Performs one step of validation. Calculates loss, forward pass and returns metrics.
@@ -177,8 +179,9 @@ def val_step(model, val_loader, criterion, device,
     return metrics
 
 
-def fit(model, epochs, train_loader, val_loader, criterion,
-        device, optimizer, scheduler=None,
+def fit(model: nn.Module, epochs: int, train_loader,
+        val_loader, criterion,
+        device: str, optimizer, scheduler=None,
         num_batches: int = None, log_interval: int = 100,
         fp16: bool = False, ):
 
