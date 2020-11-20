@@ -59,7 +59,8 @@ def create_torchvision_backbone(model_name: str, pretrained: str = None):
     if model_name == "mobilenet_v2":
         net = torchvision.models.mobilenet_v2(pretrained=False)
         if pretrained is not None:
-            _load_pretrained_weights(weights_dict, net, model_name, pretrained=pretrained)
+            state_dict = _load_pretrained_weights(weights_dict, model_name, pretrained=pretrained)
+            net.load_state_dict(state_dict)
 
         out_channels = 1280
         ft_backbone = _create_backbone_features(net, 1280)
@@ -77,7 +78,8 @@ def create_torchvision_backbone(model_name: str, pretrained: str = None):
             net = torchvision.models.vgg19(pretrained=False)
 
         if pretrained is not None:
-            _load_pretrained_weights(weights_dict, net, model_name, pretrained=pretrained)
+            state_dict = _load_pretrained_weights(weights_dict, model_name, pretrained=pretrained)
+            net.load_state_dict(state_dict)
 
         ft_backbone = _create_backbone_features(net, out_channels)
         return ft_backbone, out_channels
@@ -90,7 +92,9 @@ def create_torchvision_backbone(model_name: str, pretrained: str = None):
             net = torchvision.models.resnet34(pretrained=False)
 
         if pretrained is not None:
-            _load_pretrained_weights(weights_dict, net, model_name, pretrained=pretrained)
+            state_dict = _load_pretrained_weights(weights_dict, model_name, pretrained=pretrained)
+            net.load_state_dict(state_dict)
+
         ft_backbone = _create_backbone_adaptive(net, out_channels)
         return ft_backbone, out_channels
 
@@ -108,7 +112,8 @@ def create_torchvision_backbone(model_name: str, pretrained: str = None):
             net = torchvision.models.resnext101_32x8d(pretrained=False)
 
         if pretrained is not None:
-            _load_pretrained_weights(weights_dict, net, model_name, pretrained=pretrained,)
+            state_dict = _load_pretrained_weights(weights_dict, model_name, pretrained=pretrained)
+            net.load_state_dict(state_dict)
 
         ft_backbone = _create_backbone_adaptive(net, 2048)
         return ft_backbone, out_channels
@@ -125,7 +130,8 @@ def create_torchvision_backbone(model_name: str, pretrained: str = None):
             net = torchvision.models.mnasnet1_3(pretrained=False)
 
         if pretrained is not None:
-            _load_pretrained_weights(weights_dict, net, model_name, pretrained=pretrained)
+            state_dict = _load_pretrained_weights(weights_dict, model_name, pretrained=pretrained)
+            net.load_state_dict(state_dict)
 
         ft_backbone = _create_backbone_adaptive(net, 1280)
         return ft_backbone, out_channels
