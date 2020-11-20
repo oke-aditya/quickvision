@@ -7,11 +7,12 @@ from dataset_utils import create_cifar10_dataset, create_loaders
 from torch_utils import im2tensor
 from typing import Dict
 import pytorch_lightning as pl
+from torch.optim.swa_utils import SWALR
 
 if(torch.cuda.is_available()):
     from torch.cuda import amp
 
-supported_tv_models = ["resnet18", "vgg13"
+supported_tv_models = ["resnet18",
                        # "resnet34", # "resnet50", # "resnet101", # "resnet152",
                        # "resnext50_32x4d", # "resnext101_32x8d", # "vgg11",
                        # "vgg13", # "vgg16", # "vgg19", # "mobilenet", # "mnasnet0_5",
@@ -134,6 +135,49 @@ class cnnTester(unittest.TestCase):
             history = cnn.fit(model, 1, train_loader, val_loader, loss, device="cuda",
                               optimizer=opt, num_batches=10, fp16=True)
 
+            self.assertIsInstance(history, Dict)
+            exp_keys = ("train", "val")
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in history.keys())
+
+            exp_keys2 = ("top1_acc", "top5_acc", "loss")
+            for exp_k2 in exp_keys2:
+                self.assertTrue(exp_k2 in history["train"].keys())
+                self.assertTrue(exp_k2 in history["val"].keys())
+
+    def test_fit_swa(self):
+        for model_name in supported_tv_models:
+            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            opt = torch.optim.Adam(model.parameters(), lr=1e-3)
+            loss = nn.CrossEntropyLoss()
+            scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=300)
+            swa_scheduler = SWALR(opt, anneal_strategy="linear", anneal_epochs=20, swa_lr=0.05)
+            swa_start = 2
+            history = cnn.fit(model, 3, train_loader, val_loader, loss, device="cpu",
+                              optimizer=opt, scheduler=scheduler, num_batches=10,
+                              swa_start=swa_start, swa_scheduler=swa_scheduler)
+            self.assertIsInstance(history, Dict)
+            exp_keys = ("train", "val")
+            for exp_k in exp_keys:
+                self.assertTrue(exp_k in history.keys())
+
+            exp_keys2 = ("top1_acc", "top5_acc", "loss")
+            for exp_k2 in exp_keys2:
+                self.assertTrue(exp_k2 in history["train"].keys())
+                self.assertTrue(exp_k2 in history["val"].keys())
+
+    @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
+    def test_fit_swa_cuda(self):
+        for model_name in supported_tv_models:
+            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            opt = torch.optim.Adam(model.parameters(), lr=1e-3)
+            loss = nn.CrossEntropyLoss()
+            scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=300)
+            swa_scheduler = SWALR(opt, anneal_strategy="linear", anneal_epochs=20, swa_lr=0.05)
+            swa_start = 2
+            history = cnn.fit(model, 3, train_loader, val_loader, loss, device="cpu",
+                              optimizer=opt, scheduler=scheduler, num_batches=10,
+                              swa_start=swa_start, swa_scheduler=swa_scheduler)
             self.assertIsInstance(history, Dict)
             exp_keys = ("train", "val")
             for exp_k in exp_keys:
