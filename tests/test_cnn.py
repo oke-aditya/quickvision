@@ -153,7 +153,7 @@ class cnnTester(unittest.TestCase):
             scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=300)
             swa_scheduler = SWALR(opt, anneal_strategy="linear", anneal_epochs=20, swa_lr=0.05)
             swa_start = 2
-            history = cnn.fit(model, 3, train_loader, val_loader, loss, device="cpu",
+            history = cnn.fit(model, 4, train_loader, val_loader, loss, device="cpu",
                               optimizer=opt, scheduler=scheduler, num_batches=10,
                               swa_start=swa_start, swa_scheduler=swa_scheduler)
             self.assertIsInstance(history, Dict)
