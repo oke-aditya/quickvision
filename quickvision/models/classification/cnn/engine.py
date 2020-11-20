@@ -174,9 +174,6 @@ def val_step(model, val_loader, criterion, device, num_batches=None,
             target = target.to(device)
 
             output = model(inputs)
-            if isinstance(output, (tuple, list)):
-                output = output[0]
-
             loss = criterion(output, target)
             cnt += 1
             acc1, acc5 = accuracy(output, target, topk=(1, 5))
