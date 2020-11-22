@@ -15,15 +15,15 @@ class lit_retinanet(pl.LightningModule):
     """
 
     def __init__(self, learning_rate: float = 0.0001, num_classes: int = 91,
-                 pretrained: bool = False, backbone: str = None, fpn: bool = True,
-                 pretrained_backbone: bool = True, trainable_backbone_layers: int = 3,
-                 replace_head: bool = True, **kwargs, ):
+                 backbone: str = None, fpn: bool = True,
+                 pretrained_backbone: str = None, trainable_backbone_layers: int = 3,
+                 **kwargs, ):
         """
         Args:
             learning_rate: the learning rate
             num_classes: number of detection classes (including background)
             pretrained: if true, returns a model pre-trained on COCO train2017
-            pretrained_backbone: if true, returns a model with backbone pre-trained on Imagenet
+            pretrained_backbone (str): if "imagenet", returns a model with backbone pre-trained on Imagenet
             trainable_backbone_layers: number of trainable resnet layers starting from final block
         """
         super().__init__()
@@ -31,8 +31,7 @@ class lit_retinanet(pl.LightningModule):
         self.num_classes = num_classes
         self.backbone = backbone
         if backbone is None:
-            self.model = retinanet_resnet50_fpn(pretrained=pretrained,
-                                                pretrained_backbone=pretrained_backbone, **kwargs)
+            self.model = retinanet_resnet50_fpn(pretrained=True, **kwargs)
 
             self.model.head = RetinaNetHead(in_channels=self.model.backbone.out_channels,
                                             num_anchors=self.model.head.classification_head.num_anchors,
