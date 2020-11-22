@@ -247,21 +247,32 @@ def train_sanity_fit(model, train_loader,
     model.train()
 
     cnt = 0
-
+    train_sanity_start = time.time()
     for batch_idx, (input, targets) in enumerate(train_loader):
-        
+        last_batch = batch_idx == last_idx
         images = list(image.to(device) for image in outputs)
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
-        loss_dict = model(images, targets)
+        if scaler is not None:
+                with amp.autocast():
+                    loss_dict = model(images, targets)
+        else:
+            loss_dict = model(images, targets)
 
         cnt += 1
+
+        if last_batch or batch_idx%log_interval == 0:
+            print(f"Train sanity check passed for batch till {batch_idx} batches")
 
         if num_batches is not None:
             if cnt >= num_batches:
                 print(f"Done till {num_batches} train batches")
                 break
         
+    train_sanity_end = time.time()
+
+    print("All specified batches done")
+    print(f"Train sanity fit check passed in time {train_sanity_end-train_sanity_start")
     
     return True
         
@@ -288,21 +299,29 @@ def val_sanity_fit(model, val_loader,
     model.eval()
 
     cnt = 0
-
+    val_sanity_start = time.time()
     with torch.no_grad():
         for batch_idx, (inputs, targets) in enumerate(val_loader):
-            
+            last_batch = batch_idx == last_idx
             images = list(image.to(device) for k,v in t.items()} for t in targets)
             targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
             out = model(images)
 
             cnt += 1
 
+
+            if last_batch or batch_idx%log_interval == 0:
+                print(f"Val sanity check passed for batch till {batch_idx} batches")
+
             if num_batches is not None:
                 if cnt >= num_batches:
                     print(f"Done till {num_batches} validation batches")
                     break
+    
 
+    val_sanity_end = time.time()
+    print("All specified batches done")
+    print(f"Validation sanity check pased in time {val_sanity_end-val_sanity_start}")
             
     
     return True
