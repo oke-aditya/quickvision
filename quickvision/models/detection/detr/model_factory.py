@@ -14,7 +14,7 @@ class vision_detr(nn.Module):
         num_queries: Number of queries for transformer in Detr.
         backbone: Backbone created from create_detr_backbone.
     """
-    def __init__(self, num_classes, num_queries, backbone):
+    def __init__(self, num_classes: int, num_queries: int, backbone: str):
         super().__init__()
         self.num_classes = num_classes
         self.num_queries = num_queries
@@ -29,7 +29,7 @@ class vision_detr(nn.Module):
         return self.model(images)
 
 
-def create_vision_detr(num_classes: int, num_queries: int, backbone):
+def create_vision_detr(num_classes: int, num_queries: int, backbone: str):
     """
     Creates Detr Model for Object Detection
     Args:
