@@ -4,6 +4,7 @@
 # https://github.com/oke-aditya/pytorch_cnn_trainer
 
 import torch
+from torch import nn
 from torch.cuda import amp
 from quickvision import utils
 from quickvision.metrics import accuracy
@@ -15,7 +16,8 @@ __all__ = ["train_step", "val_step", "fit", "train_sanity_fit",
            "val_sanity_fit", "sanity_fit", ]
 
 
-def train_step(model, train_loader, criterion, device, optimizer,
+def train_step(model: nn.Module, train_loader, criterion,
+               device: str, optimizer,
                scheduler=None, num_batches: int = None,
                log_interval: int = 100, grad_penalty: bool = False,
                scaler=None,):
@@ -141,7 +143,8 @@ def train_step(model, train_loader, criterion, device, optimizer,
     return metrics
 
 
-def val_step(model, val_loader, criterion, device, num_batches=None,
+def val_step(model: nn.Module, val_loader, criterion,
+             device: str, num_batches=None,
              log_interval: int = 100):
 
     """
@@ -214,8 +217,8 @@ def val_step(model, val_loader, criterion, device, num_batches=None,
     return metrics
 
 
-def fit(model, epochs, train_loader, val_loader, criterion,
-        device, optimizer, scheduler=None, early_stopper=None,
+def fit(model: nn.Module, epochs: int, train_loader, val_loader, criterion,
+        device: str, optimizer, scheduler=None, early_stopper=None,
         num_batches: int = None, log_interval: int = 100,
         grad_penalty: bool = False, fp16: bool = False,
         swa_start: int = None, swa_scheduler=None,):
@@ -310,8 +313,8 @@ def fit(model, epochs, train_loader, val_loader, criterion,
     return history
 
 
-def train_sanity_fit(model, train_loader, criterion,
-                     device, num_batches: int = None, log_interval: int = 100,
+def train_sanity_fit(model: nn.Module, train_loader, criterion,
+                     device: str, num_batches: int = None, log_interval: int = 100,
                      grad_penalty: bool = False, fp16: bool = False,):
 
     """
@@ -381,8 +384,8 @@ def train_sanity_fit(model, train_loader, criterion,
     return True
 
 
-def val_sanity_fit(model, val_loader,
-                   criterion, device, num_batches: int = None,
+def val_sanity_fit(model: nn.Module, val_loader,
+                   criterion, device: str, num_batches: int = None,
                    log_interval: int = 100,):
 
     """
@@ -433,8 +436,8 @@ def val_sanity_fit(model, val_loader,
     return True
 
 
-def sanity_fit(model, train_loader, val_loader,
-               criterion, device, num_batches: int = None,
+def sanity_fit(model: nn.Module, train_loader, val_loader,
+               criterion, device: str, num_batches: int = None,
                log_interval: int = 100, grad_penalty: bool = False,
                fp16: bool = False,):
 

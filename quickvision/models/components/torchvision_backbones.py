@@ -7,7 +7,7 @@ from quickvision.pretrained._pretrained_cnns import weights_dict
 __all__ = ["create_torchvision_backbone"]
 
 
-def _create_backbone_generic(model, out_channels: int):
+def _create_backbone_generic(model: nn.Module, out_channels: int):
     """
     Generic Backbone creater. It removes the last linear layer.
     Args:
@@ -23,7 +23,7 @@ def _create_backbone_generic(model, out_channels: int):
 
 # Use this when you have Adaptive Pooling layer in End.
 # When Model.features is not applicable.
-def _create_backbone_adaptive(model, out_channels: int = None):
+def _create_backbone_adaptive(model: nn.Module, out_channels: int = None):
     """
     Creates backbone by removing linear after Adaptive Pooling layer.
     Args:
@@ -36,7 +36,7 @@ def _create_backbone_adaptive(model, out_channels: int = None):
     return _create_backbone_generic(model, out_channels=out_channels)
 
 
-def _create_backbone_features(model, out_channels: int):
+def _create_backbone_features(model: nn.Module, out_channels: int):
     """
     Creates backbone from feature sequential block.
     Args:
