@@ -303,8 +303,9 @@ def val_sanity_fit(model, val_loader,
     with torch.no_grad():
         for batch_idx, (inputs, targets) in enumerate(val_loader):
             last_batch = batch_idx == last_idx
-            images = list(image.to(device) for k,v in t.items()} for t in targets)
+            images = list(image.to(device) for k,v in t.items() for t in targets)
             targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+
             out = model(images)
 
             cnt += 1
