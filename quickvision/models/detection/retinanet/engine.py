@@ -264,7 +264,10 @@ def train_sanity_fit(model: nn.Module, train_loader,
         if num_batches is not None:
             if cnt >= num_batches:
                 print(f"Done till {num_batches} train batches")
-                break
+                print("All specified batches done")
+                train_sanity_end = time.time()
+                print(f"Train sanity fit check passed in time {train_sanity_end-train_sanity_start}")
+                return True
 
     train_sanity_end = time.time()
 
@@ -314,7 +317,10 @@ def val_sanity_fit(model: nn.Module, val_loader,
             if num_batches is not None:
                 if cnt >= num_batches:
                     print(f"Done till {num_batches} validation batches")
-                    break
+                    print("All specified batches done")
+                    val_sanity_end = time.time()
+                    print(f"Val sanity fit check passed in time {val_sanity_end-val_sanity_start}")
+                    return True
 
     val_sanity_end = time.time()
     print("All specified batches done")
