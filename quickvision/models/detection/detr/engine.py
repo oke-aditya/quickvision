@@ -263,7 +263,7 @@ def train_sanity_fit(model: nn.Module, train_loader, criterion, device: str,
         images = list(image.to(device) for image in inputs)
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
-        if scaler is not None:
+        if fp16 is True:
             with amp.autocast():
                 outputs = model(images)
                 loss_dict = criterion(outputs, targets)
