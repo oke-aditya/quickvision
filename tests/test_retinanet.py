@@ -154,9 +154,9 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
-            self.assertTrue(isinstance(frcnn_model, nn.Module))
-            result = retinanet.train_sanity_fit(frcnn_model, train_loader, "cpu", num_batches=10)
+            retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(retina_model, nn.Module))
+            result = retinanet.train_sanity_fit(retina_model, train_loader, "cpu", num_batches=10)
             self.assertTrue(result)
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
@@ -164,27 +164,27 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
-            self.assertTrue(isinstance(frcnn_model, nn.Module))
-            result = retinanet.train_sanity_fit(frcnn_model, train_loader, "cuda", num_batches=10)
+            retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(retina_model, nn.Module))
+            result = retinanet.train_sanity_fit(retina_model, train_loader, "cuda", num_batches=10)
             self.assertTrue(result)
 
     def test_val_sanity_fit(self):
         for bbone in fpn_supported_models:
             backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
-            self.assertTrue(isinstance(frcnn_model, nn.Module))
-            result = retinanet.val_sanity_fit(frcnn_model, val_loader, "cpu", num_batches=10)
+            retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(retina_model, nn.Module))
+            result = retinanet.val_sanity_fit(retina_model, val_loader, "cpu", num_batches=10)
             self.assertTrue(result)
 
     def test_sanity_fit(self):
         for bbone in fpn_supported_models:
             backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
-            self.assertTrue(isinstance(frcnn_model, nn.Module))
-            result = retinanet.sanity_fit(frcnn_model, train_loader, val_loader, "cpu", num_batches=10)
+            retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(retina_model, nn.Module))
+            result = retinanet.sanity_fit(retina_model, train_loader, val_loader, "cpu", num_batches=10)
             self.assertTrue(result)
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
@@ -192,9 +192,9 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
-            self.assertTrue(isinstance(frcnn_model, nn.Module))
-            result = retinanet.sanity_fit(frcnn_model, train_loader, val_loader, "cuda", num_batches=10)
+            retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(retina_model, nn.Module))
+            result = retinanet.sanity_fit(retina_model, train_loader, val_loader, "cuda", num_batches=10)
             self.assertTrue(result)
 
 

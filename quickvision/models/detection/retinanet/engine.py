@@ -344,6 +344,6 @@ def sanity_fit(model: nn.Module, train_loader, val_loader,
 
     sanity_train = train_sanity_fit(model, train_loader, device, num_batches, fp16)
 
-    sanity_val = val_sanity_fit(model, val_loader, device, num_batches, fp16)
+    sanity_val = val_sanity_fit(model, val_loader, device, num_batches)
 
     return True
