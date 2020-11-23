@@ -145,7 +145,7 @@ class EngineTester(unittest.TestCase):
             # exp_keys3 = ("val_iou", "val_giou")
             # for exp_k3 in exp_keys3:
             #     self.assertTrue(exp_k3 in history["val"].keys())
-    
+
 
 
 
@@ -186,7 +186,7 @@ class EngineTester(unittest.TestCase):
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
-            result = faster_rcnn.train_sanity_fit(frcnn_model, train_loader, "gpu", num_batches=10)
+            result = faster_rcnn.train_sanity_fit(frcnn_model, train_loader, "cuda", num_batches=10)
             self.assertTrue(result)
 
     def test_val_sanity_fit(self):
@@ -214,7 +214,7 @@ class EngineTester(unittest.TestCase):
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
-            result = faster_rcnn.sanity_fit(frcnn_model, train_loader, "gpu", num_batches=10)
+            result = faster_rcnn.sanity_fit(frcnn_model, train_loader, "cuda", num_batches=10)
             self.assertTrue(result)
 
 

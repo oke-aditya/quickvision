@@ -243,40 +243,44 @@ def train_sanity_fit(model: nn.Module, train_loader,
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
         fp16: : (optional) If True uses PyTorch native mixed precision Training.
     """
-    
+
     model = model.to(device)
     model.train()
 
     cnt = 0
+    last_idx = len(train_loader) - 1
     train_sanity_start = time.time()
-    for batch_idx, (input, targets) in enumerate(train_loader):
+
+    if fp16 is True:
+        scaler = amp.GradScaler()
+
+    for batch_idx, (inputs, targets) in enumerate(train_loader):
         last_batch = batch_idx == last_idx
-        images = list(image.to(device) for image in outputs)
+        images = list(image.to(device) for image in inputs)
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
-        if scaler is not None:
-                with amp.autocast():
-                    loss_dict = model(images, targets)
+        if fp16 is True:
+            with amp.autocast():
+                loss_dict = model(images, targets)
         else:
             loss_dict = model(images, targets)
 
         cnt += 1
 
-        if last_batch or batch_idx%log_interval == 0:
+        if last_batch or (batch_idx % log_interval) == 0:
             print(f"Train sanity check passed for batch till {batch_idx} batches")
 
         if num_batches is not None:
             if cnt >= num_batches:
                 print(f"Done till {num_batches} train batches")
                 break
-        
+
     train_sanity_end = time.time()
 
     print("All specified batches done")
-    print(f"Train sanity fit check passed in time {train_sanity_end-train_sanity_start")
-    
+    print(f"Train sanity fit check passed in time {train_sanity_end-train_sanity_start}")
+
     return True
-        
 
 
 def val_sanity_fit(model: nn.Module, val_loader,
@@ -301,32 +305,32 @@ def val_sanity_fit(model: nn.Module, val_loader,
 
     cnt = 0
     val_sanity_start = time.time()
+    last_idx = len(val_loader) - 1
+
     with torch.no_grad():
         for batch_idx, (inputs, targets) in enumerate(val_loader):
             last_batch = batch_idx == last_idx
-            images = list(image.to(device) for k,v in t.items() for t in targets)
+            images = list(image.to(device) for image in inputs)
             targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
             out = model(images)
 
             cnt += 1
 
-
-            if last_batch or batch_idx%log_interval == 0:
+            if last_batch or (batch_idx % log_interval) == 0:
                 print(f"Val sanity check passed for batch till {batch_idx} batches")
 
             if num_batches is not None:
                 if cnt >= num_batches:
                     print(f"Done till {num_batches} validation batches")
                     break
-    
 
     val_sanity_end = time.time()
     print("All specified batches done")
     print(f"Validation sanity check pased in time {val_sanity_end-val_sanity_start}")
-            
-    
+
     return True
+
 
 def sanity_fit(model: nn.Module, train_loader, val_loader,
                device: str, num_batches: int = None,
