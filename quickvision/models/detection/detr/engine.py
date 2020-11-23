@@ -229,13 +229,150 @@ def fit(model: nn.Module, epochs: int, train_loader,
     return history
 
 
-def train_sanity_fit():
-    pass
+def train_sanity_fit(model: nn.Module, train_loader, criterion, device: str,
+                     num_batches: int = None, log_interval: int = 100, fp16: bool = False,):
+    """
+    Performs Sanity fit over train loader.
+    Use this to dummy check your train_step function. It does not calculate metrics, timing, or does checkpointing.
+    It iterates over both train_loader for given batches.
+    Note: - It does not to loss.backward().
+    Args:
+         model : A PyTorch Detr Model.
+        train_loader : Train loader.
+        device : "cuda" or "cpu"
+        criterion : Loss function to be optimized.
+        num_batches : (optional) Integer To limit sanity fit over certain batches.
+                                 Useful is data is too big even for sanity check.
+        log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
+        fp16: : (optional) If True uses PyTorch native mixed precision Training.
+    """
+
+    model = model.to(device)
+    criterion = criterion.to(device)
+    train_sanity_start = time.time()
+    model.train()
+
+    last_idx = len(train_loader) - 1
+    criterion.train()
+    cnt = 0
+    if fp16 is True:
+        scaler = amp.GradScaler()
+
+    for batch_idx, (inputs, targets) in enumerate(train_loader):
+        last_batch = batch_idx == last_idx
+        images = list(image.to(device) for image in inputs)
+        targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+
+        if fp16 is True:
+            with amp.autocast():
+                outputs = model(images)
+                loss_dict = criterion(outputs, targets)
+                weight_dict = criterion.weight_dict
+                loss = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
+
+        else:
+            outputs = model(images)
+            loss_dict = criterion(outputs, targets)
+            weight_dict = criterion.weight_dict
+            loss = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
+
+        cnt += 1
+        if last_batch or batch_idx % log_interval == 0:
+            print(f"Train sanity check passed for batch till {batch_idx} batches")
+
+        if num_batches is not None:
+            if cnt >= num_batches:
+                print(f"Done till {num_batches} train batches")
+                print("All specified batches done")
+                train_sanity_end = time.time()
+                print(f"Train sanity fit check passed in time {train_sanity_end-train_sanity_start}")
+                return True
+
+    train_sanity_end = time.time()
+
+    print("All specified batches done")
+    print(f"Train sanity fit check passed in time {train_sanity_end-train_sanity_start}")
+
+    return True
 
 
-def val_sanity_fit():
-    pass
+def val_sanity_fit(model: nn.Module, val_loader, criterion, device,
+                   num_batches: int = None, log_interval: int = 100):
+
+    """
+    Performs Sanity fit over valid loader.
+    Use this to dummy check your val_step function. It does not calculate metrics, timing, or does checkpointing.
+    It iterates over both train_loader and val_loader for given batches.
+    Note: - It does not to loss.backward().
+    Args:
+        model : A PyTorch Detr Model.
+        val_loader : Validation loader.
+        criterion : Loss function to be optimized.
+        device : "cuda" or "cpu"
+        num_batches : (optional) Integer To limit sanity fit over certain batches.
+                                 Useful is data is too big even for sanity check.
+        log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
+    """
+
+    model = model.to(device)
+    criterion = criterion.to(device)
+    train_sanity_start = time.time()
+    model.eval()
+
+    last_idx = len(val_loader) - 1
+    criterion.eval()
+    cnt = 0
+
+    for batch_idx, (inputs, targets) in enumerate(val_loader):
+        last_batch = batch_idx == last_idx
+        images = list(image.to(device) for image in inputs)
+        targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+        outputs = model(images)
+        loss_dict = criterion(outputs, targets)
+        weight_dict = criterion.weight_dict
+        loss = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
+
+        cnt += 1
+        if last_batch or batch_idx % log_interval == 0:
+            print(f"Train sanity check passed for batch till {batch_idx} batches")
+
+        if num_batches is not None:
+            if cnt >= num_batches:
+                print(f"Done till {num_batches} train batches")
+                print("All specified batches done")
+                train_sanity_end = time.time()
+                print(f"Train sanity fit check passed in time {train_sanity_end-train_sanity_start}")
+                return True
+
+    train_sanity_end = time.time()
+
+    print("All specified batches done")
+    print(f"Train sanity fit check passed in time {train_sanity_end-train_sanity_start}")
+
+    return True
 
 
-def sanity_fit():
-    pass
+def sanity_fit(model: nn.Module, train_loader, val_loader, criterion, device: str,
+               num_batches: int = None, log_interval: int = 100, fp16: bool = False,):
+
+    """
+    Performs Sanity fit over train loader and valid loader.
+    Use this to dummy check your fit function. It does not calculate metrics, timing, or does checkpointing.
+    It iterates over both train_loader and val_loader for given batches.
+    Note: - It does not to loss.backward().
+    Args:
+        model : A PyTorch Detr Model.
+        train_loader : Training loader.
+        val_loader : Validation loader.
+        criterion : Loss function to be optimized.
+        device : "cuda" or "cpu"
+        num_batches : (optional) Integer To limit sanity fit over certain batches.
+                                 Useful is data is too big even for sanity check.
+        log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
+    """
+
+    sanity_train = train_sanity_fit(model, train_loader, criterion, device, num_batches, log_interval, fp16)
+
+    sanity_val = val_sanity_fit(model, val_loader, criterion, device, num_batches, log_interval)
+
+    return True

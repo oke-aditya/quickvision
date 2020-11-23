@@ -231,8 +231,8 @@ def train_sanity_fit(model: nn.Module, train_loader,
 
     """
     Performs Sanity fit over train loader.
-    Use this to dummy check your fit function. It does not calculate metrics, timing, or does checkpointing.
-    It iterates over both train_loader and val_loader for given batches.
+    Use this to dummy check your train_step function. It does not calculate metrics, timing, or does checkpointing.
+    It iterates over both train_loader for given batches.
     Note: - It does not to loss.backward().
     Args:
         model : A pytorch Faster RCNN Model.
@@ -292,7 +292,7 @@ def val_sanity_fit(model: nn.Module, val_loader,
 
     """
     Performs Sanity fit over valid loader.
-    Use this to dummy check your fit function. It does not calculate metrics, timing, or does checkpointing.
+    Use this to dummy check your val_step function. It does not calculate metrics, timing, or does checkpointing.
     It iterates over both train_loader and val_loader for given batches.
     Note: - It does not to loss.backward().
     Args:
