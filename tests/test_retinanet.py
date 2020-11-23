@@ -151,21 +151,51 @@ class EngineTester(unittest.TestCase):
                 self.assertTrue(exp_k in history.keys())
 
     def test_train_sanity_fit(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            frcnn_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(frcnn_model, nn.Module))
+            result = retinanet.train_sanity_fit(frcnn_model, train_loader, "cpu", num_batches=10)
+            self.assertTrue(result)
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_sanity_fit_cuda(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            frcnn_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(frcnn_model, nn.Module))
+            result = retinanet.train_sanity_fit(frcnn_model, train_loader, "cuda", num_batches=10)
+            self.assertTrue(result)
 
     def test_val_sanity_fit(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            frcnn_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(frcnn_model, nn.Module))
+            result = retinanet.val_sanity_fit(frcnn_model, val_loader, "cpu", num_batches=10)
+            self.assertTrue(result)
 
     def test_sanity_fit(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            frcnn_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(frcnn_model, nn.Module))
+            result = retinanet.sanity_fit(frcnn_model, train_loader, val_loader, "cpu", num_batches=10)
+            self.assertTrue(result)
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_sanity_fit_cuda(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            frcnn_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(frcnn_model, nn.Module))
+            result = retinanet.sanity_fit(frcnn_model, train_loader, val_loader, "cuda", num_batches=10)
+            self.assertTrue(result)
 
 
 class LightningTester(unittest.TestCase):
