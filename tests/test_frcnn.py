@@ -20,9 +20,9 @@ non_fpn_supported_models = ["mobilenet_v2"]
 # "resnet152", "resnext101_32x8d", "mobilenet_v2", "vgg11", "vgg13", "vgg16", "vgg19"
 
 train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2,
-                                      num_samples=30, box_fmt="xyxy")
+                                      num_samples=10, box_fmt="xyxy")
 val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2,
-                                    num_samples=30, box_fmt="xyxy")
+                                    num_samples=10, box_fmt="xyxy")
 
 
 def collate_fn(batch):
@@ -183,7 +183,7 @@ class EngineTester(unittest.TestCase):
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
-            result = faster_rcnn.train_sanity_fit(frcnn_model, train_loader, "cuda", num_batches=10)
+            result = faster_rcnn.train_sanity_fit(frcnn_model, train_loader, "cuda", num_batches=10, fp16=True)
             self.assertTrue(result)
 
     def test_val_sanity_fit(self):
@@ -211,7 +211,7 @@ class EngineTester(unittest.TestCase):
             self.assertTrue(isinstance(backbone, nn.Module))
             frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
-            result = faster_rcnn.sanity_fit(frcnn_model, train_loader, val_loader, "cuda", num_batches=10)
+            result = faster_rcnn.sanity_fit(frcnn_model, train_loader, val_loader, "cuda", num_batches=10, fp16=True)
             self.assertTrue(result)
 
 

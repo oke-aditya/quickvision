@@ -348,8 +348,8 @@ def sanity_fit(model: nn.Module, train_loader, val_loader,
         log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
     """
 
-    sanity_train = train_sanity_fit(model, train_loader, device, num_batches, fp16)
+    sanity_train = train_sanity_fit(model, train_loader, device, num_batches, log_interval, fp16)
 
-    sanity_val = val_sanity_fit(model, val_loader, device, num_batches)
+    sanity_val = val_sanity_fit(model, val_loader, device, num_batches, log_interval)
 
     return True
