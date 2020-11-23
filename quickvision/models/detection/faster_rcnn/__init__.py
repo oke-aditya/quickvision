@@ -1,6 +1,6 @@
 from quickvision.models.detection.faster_rcnn.model_factory import (
     create_vision_fastercnn,
-    create_fastercnn_backbone
+    create_fastercnn_backbone,
 )
 
 from quickvision.models.detection.faster_rcnn.engine import (

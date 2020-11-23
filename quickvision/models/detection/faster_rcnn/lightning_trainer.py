@@ -4,7 +4,7 @@ import torch.nn as nn
 from quickvision.models.components import create_torchvision_backbone
 from quickvision.models.detection.faster_rcnn import create_fastercnn_backbone
 from quickvision.models.detection.utils import _evaluate_iou, _evaluate_giou
-from torchvision.models.detection.faster_rcnn import fasterrcnn_resnet50_fpn, FasterRCNN, FastRCNNPredictor
+from torchvision.models.detection.faster_rcnn import (fasterrcnn_resnet50_fpn, FasterRCNN, FastRCNNPredictor,)
 
 __all__ = ["lit_frcnn"]
 
@@ -16,8 +16,8 @@ class lit_frcnn(pl.LightningModule):
 
     def __init__(self, learning_rate: float = 0.0001, num_classes: int = 91,
                  backbone: str = None, fpn: bool = True,
-                 pretrained_backbone: str = None, trainable_backbone_layers: int = 3,
-                 **kwargs, ):
+                 pretrained_backbone: str = None, trainable_backbone_layers: int = 3, **kwargs,):
+
         """
         Args:
             learning_rate: the learning rate
@@ -39,7 +39,7 @@ class lit_frcnn(pl.LightningModule):
 
         else:
             backbone_model = create_fastercnn_backbone(self.backbone, fpn, pretrained_backbone,
-                                                       trainable_backbone_layers, **kwargs)
+                                                       trainable_backbone_layers, **kwargs,)
             self.model = FasterRCNN(backbone_model, num_classes=num_classes, **kwargs)
 
     def forward(self, x):
@@ -70,4 +70,5 @@ class lit_frcnn(pl.LightningModule):
         return {"avg_val_iou": avg_iou, "avg_val_giou": avg_giou, "log": logs}
 
     def configure_optimizers(self):
-        return torch.optim.SGD(self.model.parameters(), lr=self.learning_rate, momentum=0.9, weight_decay=0.005,)
+        return torch.optim.SGD(self.model.parameters(), lr=self.learning_rate,
+                               momentum=0.9, weight_decay=0.005,)
