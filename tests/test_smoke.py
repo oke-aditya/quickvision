@@ -6,7 +6,6 @@ import quickvision.layers
 import quickvision.models
 import quickvision.optimizers
 import quickvision.utils
-import quickvision.tensorrt
 
 
 def test_torch():

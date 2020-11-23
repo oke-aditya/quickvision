@@ -1,4 +1,5 @@
 import torch
+from torch import nn, Tensor
 from torch.cuda import amp
 from quickvision import utils
 from tqdm import tqdm
@@ -11,7 +12,7 @@ __all__ = ["train_step", "val_step", "fit", "train_sanity_fit",
            "val_sanity_fit", "sanity_fit", ]
 
 
-def train_step(model, train_loader, device, optimizer,
+def train_step(model: nn.Module, train_loader, device: str, optimizer,
                scheduler=None, num_batches: int = None,
                log_interval: int = 100, scaler=None,):
 
@@ -111,7 +112,7 @@ def train_step(model, train_loader, device, optimizer,
     return metrics
 
 
-def val_step(model, val_loader, device, num_batches=None,
+def val_step(model: nn.Module, val_loader, device: str, num_batches: int = None,
              log_interval: int = 100):
 
     """
@@ -171,8 +172,8 @@ def val_step(model, val_loader, device, num_batches=None,
     return metrics
 
 
-def fit(model, epochs, train_loader, val_loader,
-        device, optimizer, scheduler=None,
+def fit(model: nn.Module, epochs: int, train_loader, val_loader,
+        device: str, optimizer, scheduler=None,
         num_batches: int = None, log_interval: int = 100,
         fp16: bool = False, ):
 
@@ -224,8 +225,8 @@ def fit(model, epochs, train_loader, val_loader,
     return history
 
 
-def train_sanity_fit(model, train_loader,
-                     device, num_batches: int = None, log_interval: int = 100,
+def train_sanity_fit(model: nn.Module, train_loader,
+                     device: str, num_batches: int = None, log_interval: int = 100,
                      fp16: bool = False,):
 
     """
@@ -278,8 +279,8 @@ def train_sanity_fit(model, train_loader,
         
 
 
-def val_sanity_fit(model, val_loader,
-                   device, num_batches: int = None,
+def val_sanity_fit(model: nn.Module, val_loader,
+                   device: str, num_batches: int = None,
                    log_interval: int = 100,):
 
     """
@@ -327,8 +328,8 @@ def val_sanity_fit(model, val_loader,
     
     return True
 
-def sanity_fit(model, train_loader, val_loader,
-               device, num_batches: int = None,
+def sanity_fit(model: nn.Module, train_loader, val_loader,
+               device: str, num_batches: int = None,
                log_interval: int = 100, fp16: bool = False,):
 
     """
