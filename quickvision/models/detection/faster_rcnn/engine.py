@@ -317,7 +317,6 @@ def val_sanity_fit(model: nn.Module, val_loader,
             targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
             out = model(images)
-
             cnt += 1
 
             if last_batch or (batch_idx % log_interval) == 0:
