@@ -170,21 +170,71 @@ class EngineTester(unittest.TestCase):
                 self.assertTrue(exp_k in history.keys())
 
     def test_train_sanity_fit(self):
-        pass
+        for bbone in some_supported_backbones:
+            backbone = detr.create_detr_backbone(bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            self.assertTrue(isinstance(detr_model, nn.Module))
+            matcher = detr_loss.HungarianMatcher()
+            weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
+            losses = ["labels", "boxes", "cardinality"]
+            criterion = detr_loss.SetCriterion(2, matcher, weight_dict, eos_coef=0.5, losses=losses)
+            ret = detr.train_sanity_fit(detr_model, train_loader, criterion, "cpu", num_batches=4)
+            self.assertTrue(ret)
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_sanity_fit_cuda(self):
-        pass
+        for bbone in some_supported_backbones:
+            backbone = detr.create_detr_backbone(bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            self.assertTrue(isinstance(detr_model, nn.Module))
+            matcher = detr_loss.HungarianMatcher()
+            weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
+            losses = ["labels", "boxes", "cardinality"]
+            criterion = detr_loss.SetCriterion(2, matcher, weight_dict, eos_coef=0.5, losses=losses)
+            ret = detr.train_sanity_fit(detr_model, train_loader, criterion, device="cuda", num_batches=4, fp16=True)
+            self.assertTrue(ret)
 
     def test_val_sanity_fit(self):
-        pass
+        for bbone in some_supported_backbones:
+            backbone = detr.create_detr_backbone(bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            self.assertTrue(isinstance(detr_model, nn.Module))
+            matcher = detr_loss.HungarianMatcher()
+            weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
+            losses = ["labels", "boxes", "cardinality"]
+            criterion = detr_loss.SetCriterion(2, matcher, weight_dict, eos_coef=0.5, losses=losses)
+            ret = detr.val_sanity_fit(detr_model, val_loader, criterion, "cpu", num_batches=4)
+            self.assertTrue(ret)
 
     def test_sanity_fit(self):
-        pass
+        for bbone in some_supported_backbones:
+            backbone = detr.create_detr_backbone(bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            self.assertTrue(isinstance(detr_model, nn.Module))
+            matcher = detr_loss.HungarianMatcher()
+            weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
+            losses = ["labels", "boxes", "cardinality"]
+            criterion = detr_loss.SetCriterion(2, matcher, weight_dict, eos_coef=0.5, losses=losses)
+            ret = detr.sanity_fit(detr_model, train_loader, val_loader, criterion, "cpu", num_batches=4)
+            self.assertTrue(ret)
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_sanity_fit_cuda(self):
-        pass
+        for bbone in some_supported_backbones:
+            backbone = detr.create_detr_backbone(bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            self.assertTrue(isinstance(detr_model, nn.Module))
+            matcher = detr_loss.HungarianMatcher()
+            weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
+            losses = ["labels", "boxes", "cardinality"]
+            criterion = detr_loss.SetCriterion(2, matcher, weight_dict, eos_coef=0.5, losses=losses)
+            ret = detr.sanity_fit(detr_model, train_loader, val_loader, criterion, "cuda", num_batches=4)
+            self.assertTrue(ret)
 
 
 class LightningTester(unittest.TestCase):
