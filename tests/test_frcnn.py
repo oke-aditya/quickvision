@@ -168,21 +168,51 @@ class EngineTester(unittest.TestCase):
             #     self.assertTrue(exp_k3 in history["val"].keys())
 
     def test_train_sanity_fit(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(frcnn_model, nn.Module))
+            result = faster_rcnn.train_sanity_fit(frcnn_model, train_loader, "cpu", num_batches=10)
+            self.assertTrue(result)
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_sanity_fit_cuda(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(frcnn_model, nn.Module))
+            result = faster_rcnn.train_sanity_fit(frcnn_model, train_loader, "cuda", num_batches=10, fp16=True)
+            self.assertTrue(result)
 
     def test_val_sanity_fit(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(frcnn_model, nn.Module))
+            result = faster_rcnn.val_sanity_fit(frcnn_model, val_loader, "cpu", num_batches=10)
+            self.assertTrue(result)
 
     def test_sanity_fit(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(frcnn_model, nn.Module))
+            result = faster_rcnn.sanity_fit(frcnn_model, train_loader, val_loader, "cpu", num_batches=10)
+            self.assertTrue(result)
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_sanity_fit_cuda(self):
-        pass
+        for bbone in fpn_supported_models:
+            backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
+            self.assertTrue(isinstance(backbone, nn.Module))
+            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            self.assertTrue(isinstance(frcnn_model, nn.Module))
+            result = faster_rcnn.sanity_fit(frcnn_model, train_loader, val_loader, "cuda", num_batches=10, fp16=True)
+            self.assertTrue(result)
 
 
 class LightningTester(unittest.TestCase):

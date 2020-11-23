@@ -1,6 +1,5 @@
-
 import torch.nn as nn
-from torchvision.models.detection.faster_rcnn import fasterrcnn_resnet50_fpn, FasterRCNN, FastRCNNPredictor
+from torchvision.models.detection.faster_rcnn import (fasterrcnn_resnet50_fpn, FasterRCNN, FastRCNNPredictor,)
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
 from quickvision.models.components import create_torchvision_backbone
 
@@ -29,7 +28,7 @@ def create_vision_fastercnn(num_classes: int = 91, backbone: nn.Module = None, *
 
 
 def create_fastercnn_backbone(backbone: str, fpn: bool = True, pretrained: str = None,
-                              trainable_backbone_layers: int = 3, **kwargs) -> nn.Module:
+                              trainable_backbone_layers: int = 3, **kwargs,) -> nn.Module:
 
     """
     Args:
@@ -47,7 +46,7 @@ def create_fastercnn_backbone(backbone: str, fpn: bool = True, pretrained: str =
         # Creates a torchvision resnet model with fpn added.
         print("Resnet FPN Backbones works only for imagenet weights")
         backbone = resnet_fpn_backbone(backbone, pretrained=True,
-                                       trainable_layers=trainable_backbone_layers, **kwargs)
+                                       trainable_layers=trainable_backbone_layers, **kwargs,)
     else:
         # This does not create fpn backbone, it is supported for all models
         print("FPN is not supported for Non Resnet Backbones")

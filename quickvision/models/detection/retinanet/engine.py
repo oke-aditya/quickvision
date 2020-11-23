@@ -219,16 +219,137 @@ def fit(model: nn.Module, epochs: int, train_loader, val_loader,
 def train_sanity_fit(model: nn.Module, train_loader,
                      device: str, num_batches: int = None, log_interval: int = 100,
                      fp16: bool = False,):
-    pass
+
+    """
+    Performs Sanity fit over train loader.
+    Use this to dummy check your fit function. It does not calculate metrics, timing, or does checkpointing.
+    It iterates over both train_loader and val_loader for given batches.
+    Note: - It does not to loss.backward().
+    Args:
+        model : A pytorch Faster RCNN Model.
+        train_loader : Train loader.
+        device : "cuda" or "cpu"
+        num_batches : (optional) Integer To limit sanity fit over certain batches.
+                                 Useful is data is too big even for sanity check.
+        log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
+        fp16: : (optional) If True uses PyTorch native mixed precision Training.
+    """
+
+    model = model.to(device)
+    model.train()
+
+    cnt = 0
+    last_idx = len(train_loader) - 1
+    train_sanity_start = time.time()
+
+    if fp16 is True:
+        scaler = amp.GradScaler()
+
+    for batch_idx, (inputs, targets) in enumerate(train_loader):
+        last_batch = batch_idx == last_idx
+        images = list(image.to(device) for image in inputs)
+        targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+
+        if fp16 is True:
+            with amp.autocast():
+                loss_dict = model(images, targets)
+        else:
+            loss_dict = model(images, targets)
+
+        cnt += 1
+
+        if last_batch or (batch_idx % log_interval) == 0:
+            print(f"Train sanity check passed for batch till {batch_idx} batches")
+
+        if num_batches is not None:
+            if cnt >= num_batches:
+                print(f"Done till {num_batches} train batches")
+                print("All specified batches done")
+                train_sanity_end = time.time()
+                print(f"Train sanity fit check passed in time {train_sanity_end-train_sanity_start}")
+                return True
+
+    train_sanity_end = time.time()
+
+    print("All specified batches done")
+    print(f"Train sanity fit check passed in time {train_sanity_end-train_sanity_start}")
+
+    return True
 
 
 def val_sanity_fit(model: nn.Module, val_loader,
                    device: str, num_batches: int = None,
                    log_interval: int = 100,):
-    pass
+
+    """
+    Performs Sanity fit over valid loader.
+    Use this to dummy check your fit function. It does not calculate metrics, timing, or does checkpointing.
+    It iterates over both train_loader and val_loader for given batches.
+    Note: - It does not to loss.backward().
+    Args:
+        model : A pytorch Faster RCNN Model.
+        val_loader : Validation loader.
+        device : "cuda" or "cpu"
+        num_batches : (optional) Integer To limit sanity fit over certain batches.
+                                 Useful is data is too big even for sanity check.
+        log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
+    """
+    model = model.to(device)
+    model.eval()
+
+    cnt = 0
+    val_sanity_start = time.time()
+    last_idx = len(val_loader) - 1
+
+    with torch.no_grad():
+        for batch_idx, (inputs, targets) in enumerate(val_loader):
+            last_batch = batch_idx == last_idx
+            images = list(image.to(device) for image in inputs)
+            targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+
+            out = model(images)
+
+            cnt += 1
+
+            if last_batch or (batch_idx % log_interval) == 0:
+                print(f"Val sanity check passed for batch till {batch_idx} batches")
+
+            if num_batches is not None:
+                if cnt >= num_batches:
+                    print(f"Done till {num_batches} validation batches")
+                    print("All specified batches done")
+                    val_sanity_end = time.time()
+                    print(f"Val sanity fit check passed in time {val_sanity_end-val_sanity_start}")
+                    return True
+
+    val_sanity_end = time.time()
+    print("All specified batches done")
+    print(f"Validation sanity check pased in time {val_sanity_end-val_sanity_start}")
+
+    return True
 
 
 def sanity_fit(model: nn.Module, train_loader, val_loader,
                device: str, num_batches: int = None,
                log_interval: int = 100, fp16: bool = False,):
-    pass
+
+    """
+    Performs Sanity fit over train loader and valid loader.
+    Use this to dummy check your fit function. It does not calculate metrics, timing, or does checkpointing.
+    It iterates over both train_loader and val_loader for given batches.
+    Note: - It does not to loss.backward().
+    Args:
+        model : A pytorch Faster RCNN Model.
+        train_loader : Training loader.
+        val_loader : Validation loader.
+        device : "cuda" or "cpu"
+        num_batches : (optional) Integer To limit sanity fit over certain batches.
+                                 Useful is data is too big even for sanity check.
+        log_interval : (optional) Defualt 100. Integer to Log after specified batch ids in every batch.
+    """
+
+    sanity_train = train_sanity_fit(model, train_loader, device, num_batches, log_interval, fp16)
+
+    sanity_val = val_sanity_fit(model, val_loader, device, num_batches, log_interval)
+
+    return True
