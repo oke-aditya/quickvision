@@ -1,10 +1,10 @@
 import pytorch_lightning as pl
+import torch
 import torch.optim as optim
-import torchvision.transforms as T
 from torch.nn import functional as F
 from torch.utils.data import DataLoader
-import torch
 import torchvision
+import torchvision.transforms as T
 from quickvision.models.classification.cnn import lit_cnn
 
 TRAIN_BATCH_SIZE = 512  # Training Batch Size
