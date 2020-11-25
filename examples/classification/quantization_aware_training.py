@@ -13,20 +13,18 @@ import torchvision.transforms as T
 import torch.quantization
 from torch.quantization import convert
 from torch.quantization import QuantStub, DeQuantStub
-
-"""## Install Quickvision"""
-
-# pip install -q git+https://github.com/Quick-AI/quickvision.git
-
 from quickvision.models.classification import cnn
 
-"""## Create CIFAR10 Dataset and DataLoaders"""
+# Install Quickvision
+# pip install -q git+https://github.com/Quick-AI/quickvision.git
+
 
 if __name__ == "__main__":
 
     train_transforms = T.Compose([T.ToTensor(), T.Normalize((0.5,), (0.5,))])
     valid_transforms = T.Compose([T.ToTensor(), T.Normalize((0.5,), (0.5,))])
 
+    # Create CIFAR10 Dataset and DataLoaders"
     train_dataset = torchvision.datasets.CIFAR10("./data", download=True, train=True, transform=train_transforms)
     valid_dataset = torchvision.datasets.CIFAR10("./data", download=True, train=False, transform=valid_transforms)
 
@@ -36,14 +34,14 @@ if __name__ == "__main__":
     train_loader = torch.utils.data.DataLoader(train_dataset, TRAIN_BATCH_SIZE, shuffle=True)
     valid_loader = torch.utils.data.DataLoader(valid_dataset, VALID_BATCH_SIZE, shuffle=False)
 
-    """## Create Quantization Aware Model"""
+    # Create Quantization Aware Model
 
     qat_model = cnn.create_vision_cnn("mobilenet_v2", pretrained="imagenet", num_classes=10)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(qat_model.parameters(), lr=1e-3)
 
-    """## Set Quantization Configurations"""
+    # Set Quantization Configurations
 
     qat_model.config = torch.quantization.get_default_qat_qconfig("fbgemm")
     _ = torch.quantization.prepare_qat(qat_model, inplace=True)
@@ -59,7 +57,7 @@ if __name__ == "__main__":
     NUM_TRAIN_BATCHES = 5  # You can pass these too in train step if you want small subset to train
     NUM_VAL_BATCHES = 5  # You can pass these too in train step if you want small subset to validate
 
-    """## Train with Quickvision !"""
+    # Train with Quickvision !
 
     history = cnn.fit(epochs=3, model=qat_model, train_loader=train_loader,
                       val_loader=valid_loader, criterion=criterion, device=device,
