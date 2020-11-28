@@ -46,7 +46,7 @@ def load_long_description():
 # https://packaging.python.org/discussions/install-requires-vs-requirements /
 setup(
     name='quickvision',
-    version="0.1.0rc4",
+    version="0.1.0",
     description="Computer Vision models and training",
     author="Aditya Oke",
     author_email="okeaditya315@gmail.com",

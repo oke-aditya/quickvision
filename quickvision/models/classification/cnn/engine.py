@@ -305,7 +305,7 @@ def fit(model: nn.Module, epochs: int, train_loader, val_loader, criterion,
                 print("Early Stopping. Ran out of Patience for validation loss")
                 break
 
-        print("Done Training, Model Saved to Disk")
+        print("Done Training")
 
     history = {"train": {"loss": loss_t, "top1_acc": top1_acc, "top5_acc": top5_acc},
                "val": {"loss": loss_v, "top1_acc": top1_acc_v, "top5_acc": top5_acc_v}}
