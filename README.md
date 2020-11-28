@@ -7,13 +7,18 @@
 [![GitHub issues](https://img.shields.io/github/issues/Quick-AI/quickvision)](https://github.com/Quick-AI/quickvision/issues)
 [![GitHub forks](https://img.shields.io/github/forks/Quick-AI/quickvision)](https://github.com/Quick-AI/quickvision/network)
 [![GitHub stars](https://img.shields.io/github/stars/Quick-AI/quickvision)](https://github.com/Quick-AI/quickvision/stargazers)
-[![GitHub license](https://img.shields.io/github/license/Quick-AI/quickvision)](https://github.com/Quick-AI/quickvision)
+[![GitHub license](https://img.shields.io/github/license/Quick-AI/quickvision)](https://github.com/Quick-AI/quickvision/blob/master/LICENSE)
 [![codecov](https://codecov.io/gh/Quick-AI/quickvision/branch/master/graph/badge.svg?token=VAFPQTQK1I)](https://codecov.io/gh/Quick-AI/quickvision)
 
 ![PEP8](https://github.com/Quick-AI/quickvision/workflows/Check%20Code%20formatting/badge.svg)
 ![CI Tests](https://github.com/Quick-AI/quickvision/workflows/CI%20Tests/badge.svg)
 ![Docs](https://github.com/Quick-AI/quickvision/workflows/Deploy%20mkdocs/badge.svg)
 ![PyPi Release](https://github.com/Quick-AI/quickvision/workflows/PyPi%20Release/badge.svg)
+
+[![Slack](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://join.slack.com/t/quickai/shared_invite/zt-iz7tqk3r-IQa4SoxJGIK5WS8VdZhzeQ)
+[![Downloads](https://pepy.tech/badge/quickvision)](https://pepy.tech/project/quickvision)
+[![Downloads](https://pepy.tech/badge/quickvision/month)](https://pepy.tech/project/quickvision)
+[![Downloads](https://pepy.tech/badge/quickvision/week)](https://pepy.tech/project/quickvision)
 
 </div>
 
