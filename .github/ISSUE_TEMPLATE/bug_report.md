@@ -6,6 +6,7 @@ labels: bug
 assignees: ''
 
 ---
+<!-- Taken from pl-bolts -->
 
 ## 🐛 Bug
 **Describe the bug**
@@ -18,14 +19,28 @@ Steps to reproduce the behavior:
 3. Scroll down to '....'
 4. See error
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+<!-- If you have a code sample, error messages, stack traces, please provide it here as well -->
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+#### Code sample
+<!-- Ideally attach a minimal code sample to reproduce the decried issue. 
+Minimal means having the shortest code but still preserving the bug. -->
 
-**Desktop (please complete the following information):**
- - OS: [e.g. ubuntu 18.04]
+### Expected behavior
 
-**Additional context**
-Add any other context about the problem here.
+<!-- A clear and concise description of what you expected to happen. -->
+
+### Environment
+
+ - PyTorch Version (e.g., 1.0):
+ - OS (e.g., Linux):
+ - How you installed PyTorch (`conda`, `pip`, source):
+ - Build command you used (if compiling from source):
+ - Python version:
+ - CUDA/cuDNN version:
+ - GPU models and configuration:
+ - Any other relevant information:
+
+### Additional context
+
+<!-- Add any other context about the problem here. -->
+

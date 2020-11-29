@@ -16,8 +16,6 @@ except ImportError:
 
 PATH_ROOT = os.path.dirname(__file__)
 
-# import vision  # noqa: E402
-
 
 def load_requirements(path_dir=PATH_ROOT, file_name='requirements.txt', comment_char='#'):
     with open(os.path.join(path_dir, file_name), 'r') as file:
@@ -46,7 +44,7 @@ def load_long_description():
 # https://packaging.python.org/discussions/install-requires-vs-requirements /
 setup(
     name='quickvision',
-    version="0.1.0",
+    version="0.2.0rc1",
     description="Computer Vision models and training",
     author="Aditya Oke",
     author_email="okeaditya315@gmail.com",
