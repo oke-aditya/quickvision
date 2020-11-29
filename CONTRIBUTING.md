@@ -29,7 +29,7 @@ $ pip install -r requirements-test.txt
 $ python setup.py develop
 ```
 
-## Step 2: Stay in Sync with the original (upstream) repo
+## Step 2: Set up upstream repo
 
 1.  Set the upstream to sync with this repo. This will keep you in sync
     with quickvision easily.
@@ -56,14 +56,9 @@ $ git branch
 
 ## Step 4: Make changes, and commit your file changes
 
-Edit files in your favorite editor, and format the code with
-[black](https://black.readthedocs.io/en/stable/)
+Stage and commit your changes.
 
-```bash
-# View changes
-git status  # See which files have changed
-git diff    # See changes within files
-
+```
 git add path/to/file.md
 git commit -m "Your meaningful commit message for the change."
 ```
@@ -109,8 +104,3 @@ Maintainers and other contributors will review your pull request. Please
 participate in the discussion and make the requested changes. When your
 pull request is approved, it will be merged into the upstream
 quickvision repo.
-
-> **Note**
->
-> quickvision repository has CI checking. It will automatically check your code
-> for build as well.

@@ -26,10 +26,11 @@
 
 ### Install Quickvision
 
-- Install directly from GitHub. Very soon it will be available over PyPi.
+- Install from PyPi.
+- Current stable release 0.1 needs PyTorch 1.7 and torchvision 0.8.1.
 
 ```
-pip install -q git+https://github.com/Quick-AI/quickvision.git
+pip install quickvision
 ```
 
 ## What is Quickvision?
