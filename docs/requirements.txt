@@ -1,0 +1,4 @@
+sphinx
+sphinx-togglebutton
+sphinx-copybutton
+sphinx-autodoc-typehints
