@@ -1,4 +1,4 @@
-sphinx
+sphinx>=2.0, <3.0
 sphinx-togglebutton
 sphinx-copybutton
 sphinx-autodoc-typehints
