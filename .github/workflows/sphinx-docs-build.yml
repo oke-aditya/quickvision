@@ -13,7 +13,7 @@ jobs:
         with:
           # git is required to clone the docs theme
           # before custom requirement are resolved https://github.com/ammaraskar/sphinx-action/issues/16
-          pre-build-command: "sudo apt-get update -y && sudo apt-get install -y git && pip install -r docs/requirements.txt && pip install ."  
+          pre-build-command: "sudo apt-get update -y && sudo apt-get install -y git && pip install . && pip install -r docs/requirements.txt"  
           docs-folder: "docs/"
       - name: Test Documentation
         env:
@@ -23,6 +23,7 @@ jobs:
           sudo apt-get install python3-sphinx
           sudo apt-get install -y texlive-latex-extra dvipng texlive-pictures
           sudo apt-get install -y cmake
+          pip install .
           pip install -r docs/requirements.txt
           cd docs
           make clean
