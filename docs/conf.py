@@ -42,7 +42,7 @@ release = '0.1.0'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinx_rtd_theme", "sphinx.ext.autodoc", "sphinx_autodoc_typehints",
+extensions = ["sphinx_rtd_theme", "sphinx.ext.autodoc", "sphinx_autodoc_typehints", "recommonmark",
               "sphinx_copybutton", "sphinx_togglebutton", "sphinx_paramlinks", "sphinx_autodoc_typehints"]
 
 # Add any paths that contain templates here, relative to this directory.
