@@ -17,6 +17,6 @@ jobs:
           build-command: "sphinx-build -b html source build"
           docs-folder: "docs/"
       - uses: actions/upload-artifact@v1
-      with:
-        name: DocumentationHTML
-        path: docs/build/
+        with:
+          name: DocumentationHTML
+          path: docs/build/
