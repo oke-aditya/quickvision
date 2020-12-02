@@ -5,4 +5,3 @@ quickvision
    :maxdepth: 4
 
    quickvision
-   setup
