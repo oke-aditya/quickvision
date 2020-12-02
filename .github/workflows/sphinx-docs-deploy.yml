@@ -15,15 +15,22 @@ jobs:
           # git is required to clone the docs theme
           # before custom requirement are resolved https://github.com/ammaraskar/sphinx-action/issues/16
           pre-build-command: "sudo apt-get update -y && sudo apt-get install -y git && pip install -r docs/requirements.txt"  
+          build-command: "sphinx-build -b html source build"
           docs-folder: "docs/"
       - name: Deploy Documentation
-        run: |
-          # First run the same pipeline as Read-The-Docs
-          sudo apt-get install python3-sphinx
-          sudo apt-get install -y texlive-latex-extra dvipng texlive-pictures
-          sudo apt-get install -y cmake
-          pip install .
-          pip install -r docs/requirements.txt
-          cd docs
-          make html
-        shell: bash
+        uses: ad-m/github-push-action@master
+        with:
+          branch: gh-pages
+          directory: master
+          force: true
+      #   run: |
+      #     # First run the same pipeline as Read-The-Docs
+      #     sudo apt-get install python3-sphinx
+      #     sudo apt-get install -y texlive-latex-extra dvipng texlive-pictures
+      #     sudo apt-get install -y cmake
+      #     pip install .
+      #     pip install -r docs/requirements.txt
+      #     cd docs
+      #     make html
+      #   shell: bash
+      # - name: 
