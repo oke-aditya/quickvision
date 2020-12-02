@@ -28,11 +28,6 @@ train_loader, val_loader = create_loaders(train_ds, val_ds, num_workers=1)
 
 
 class ModelFactoryTester(unittest.TestCase):
-    def test_create_timm_cnn(self):
-        for model_name in supported_timm_models:
-            model = cnn.create_timm_cnn(model_name, 10, pretrained=None)
-            self.assertTrue(isinstance(model, nn.Module))
-
     def test_vision_cnn(self):
         for model_name in supported_tv_models:
             model = cnn.vision_cnn(model_name, 10, pretrained=None)
