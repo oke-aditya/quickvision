@@ -4,13 +4,11 @@
    contain the root `toctree` directive.
 
 Quickvision API
-=======================================
+===============
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-   modules
 
 Indices and tables
 ==================

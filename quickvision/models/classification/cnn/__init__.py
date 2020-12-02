@@ -7,7 +7,6 @@ from quickvision.models.classification.cnn.engine import (
     sanity_fit,
 )
 from quickvision.models.classification.cnn.model_factory import (
-    create_timm_cnn,
     vision_cnn,
     create_vision_cnn,
 )

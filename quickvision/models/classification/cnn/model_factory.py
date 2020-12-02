@@ -2,29 +2,11 @@
 # We will remove the Linear Layer and create a new Linear Layer with num_classes
 # Port from pytorch_cnn_trainer https://github.com/oke-aditya/pytorch_cnn_trainer
 
-import timm
 import torchvision
 from quickvision.models import components
 import torch.nn as nn
 
-__all__ = ["create_timm_cnn", "vision_cnn", "create_vision_cnn"]
-
-
-def create_timm_cnn(model_name: str, num_classes: int,
-                    in_channels: int = 3, pretrained: bool = True,):
-
-    """
-    Creates a model from PyTorch Image Models repository.
-    To know which models are supported print(timm.list_models())
-    Args:
-        model_name (str) : Name of the model. E.g. efficientnet_b3
-        num_classes (int) : Number of classes for classification.
-        in_channels (int) : Defualt 3. Number of channels of images, 1 for grayscale, 3 for RGB
-        pretrained (bool) : If true uses modelwweights pretrained on ImageNet.
-    """
-    model = timm.create_model(model_name, pretrained=pretrained, num_classes=num_classes,
-                              in_chans=in_channels,)
-    return model
+__all__ = ["vision_cnn", "create_vision_cnn"]
 
 
 class vision_cnn(nn.Module):
