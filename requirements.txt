@@ -1,3 +1,2 @@
-timm
 pytorch_lightning
 scipy
