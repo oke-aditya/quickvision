@@ -9,10 +9,21 @@ jobs:
   sphinx-check:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-    - uses: ammaraskar/sphinx-action@master
-      with:
-        # git is required to clone the docs theme
-        # before custom requirement are resolved https://github.com/ammaraskar/sphinx-action/issues/16
-        pre-build-command: "apt-get update -y && apt-get install -y git && pip install -r docs/requirements.txt"
-        docs-folder: "docs/"
+      - uses: actions/checkout@master
+      - uses: ammaraskar/sphinx-action@master
+        with:
+          # git is required to clone the docs theme
+          # before custom requirement are resolved https://github.com/ammaraskar/sphinx-action/issues/16
+          pre-build-command: "sudo apt-get update -y && sudo apt-get install -y git && pip install -r docs/requirements.txt"  
+          docs-folder: "docs/"
+      - name: Deploy Documentation
+        run: |
+          # First run the same pipeline as Read-The-Docs
+          sudo apt-get install python3-sphinx
+          sudo apt-get install -y texlive-latex-extra dvipng texlive-pictures
+          sudo apt-get install -y cmake
+          pip install .
+          pip install -r docs/requirements.txt
+          cd docs
+          make html
+        shell: bash
