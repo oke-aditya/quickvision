@@ -1,6 +1,6 @@
 # flake8: noqa
 
-weights_dict = {
+WEIGHTS_DICT = {
     "mobilenet_v2": {
         "imagenet": "https://download.pytorch.org/models/mobilenet_v2-b0353104.pth"
     },
