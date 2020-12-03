@@ -40,6 +40,9 @@ WEIGHTS_DICT = {
         "imagenet": "https://download.pytorch.org/models/resnet50-19c8e357.pth",
         "ssl": "https://dl.fbaipublicfiles.com/semiweaksupervision/model_files/semi_supervised_resnet50-08389792.pth",
         "swsl": "https://dl.fbaipublicfiles.com/semiweaksupervision/model_files/semi_weakly_supervised_resnet50-16a12f1b.pth",
+        "svaw-800": "https://dl.fbaipublicfiles.com/deepcluster/swav_800ep_pretrain.pth.tar",
+        "deepcluster-v2-800": "https://dl.fbaipublicfiles.com/deepcluster/deepclusterv2_800ep_pretrain.pth.tar",
+        "sela-v2-400": "https://dl.fbaipublicfiles.com/deepcluster/selav2_400ep_pretrain.pth.tar",
     },
     "resnet101": {
         "imagenet": "https://download.pytorch.org/models/resnet101-5d3b4d8f.pth",
