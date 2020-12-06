@@ -5,7 +5,7 @@ __all__ = ["dice_loss"]
 
 
 def dice_loss(
-    inputs, targets, weights: Optional[torch.Tensor] = None, reduction: str = "mean"
+    inputs, targets, weights: Optional[torch.Tensor] = None, reduction: str = "sum"
 ):
     """
     Computes the DICE loss, similar to generalized IOU for masks
@@ -27,7 +27,7 @@ def dice_loss(
     if weights is not None:
         loss *= weights
 
-    if reduction == "sum":
-        return loss.sum()
-    else:
+    if reduction == "mean":
         return loss.mean()
+    else:
+        return loss.sum()
