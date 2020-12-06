@@ -21,6 +21,7 @@ def get_args():
         "--masks", action="store_true", help="Train segmentation head if the flag is provided"
     )
     args = parser.parse_args()
+    args.coco_path = os.path.expandvars(args.coco_path)
     return args
 
 
@@ -30,7 +31,6 @@ def collate_fn(batch):
 
 if __name__ == "__main__":
     args = get_args()
-    data_path = os.path.expandvars("$HOME/Dev/datasets/coco")
     dataset = build_dataset("train", args)
     dataset_test = build_dataset("val", args)
     num_workers = 4

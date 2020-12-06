@@ -3,6 +3,13 @@
 COCO dataset which returns image_id for evaluation.
 
 Mostly copy-paste from https://github.com/pytorch/vision/blob/13b35ff/references/detection/coco_utils.py
+
+https://github.com/facebookresearch/detr
+
+path/to/coco/
+  annotations/  # annotation json files
+  train2017/    # train images
+  val2017/      # val images
 """
 from pathlib import Path
 
@@ -11,7 +18,7 @@ import torch.utils.data
 import torchvision
 from pycocotools import mask as coco_mask
 
-import datasets.transforms as T
+import transforms as T
 
 
 class CocoDetection(torchvision.datasets.CocoDetection):
