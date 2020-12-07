@@ -52,10 +52,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install setuptools wheel
-          python setup.py sdist bdist_wheel
+          python setup.py bdist_wheel
           pip install virtualenv
           virtualenv vEnv ; source vEnv/bin/activate
-          pip install flake8 pytest pytest-cov
           pip install dist/*
           cd .. & python
           deactivate ; rm -rf vEnv
@@ -65,10 +64,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install setuptools wheel
-          python setup.py sdist bdist_wheel
+          python setup.py bdist_wheel
           pip install virtualenv
           virtualenv vEnv ; source vEnv/bin/activate
-          pip install flake8 pytest pytest-cov
           pip install dist/*
           cd .. & python
           deactivate ; rm -rf vEnv
@@ -78,10 +76,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install setuptools wheel
-          python setup.py sdist bdist_wheel
+          python setup.py bdist_wheel
           pip install virtualenv
           virtualenv vEnv ; venv\Scripts\activate.bat
-          pip install flake8 pytest pytest-cov
           cd .. & python
           venv\Scripts\deactivate.bat ; rm -r vEnv
 
