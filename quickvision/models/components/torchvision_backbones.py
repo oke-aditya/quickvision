@@ -111,5 +111,16 @@ def create_torchvision_backbone(model_name: str, pretrained: str = None):
         ft_backbone = _create_backbone_adaptive(net, 1280)
         return ft_backbone, out_channels
 
+    elif model_name in ["wide_resnet50_2", "wide_resnet101_2"]:
+        out_channels = 2048
+        net = TORCHVISION_MODEL_ZOO[model_name]
+
+        if pretrained is not None:
+            state_dict = _load_pretrained_weights(WEIGHTS_DICT, model_name, pretrained=pretrained)
+            net.load_state_dict(state_dict)
+
+        ft_backbone = _create_backbone_adaptive(net, 2048)
+        return ft_backbone, out_channels
+
     else:
         raise ValueError(f"Unsupported model: '{model_name}'")
