@@ -15,9 +15,8 @@ class MLP(nn.Module):
         out_features (int): Output layers of network.
     """
 
-    super.__init__()
-
     def __init__(self, in_features: int, hidden_features: int, out_features: int):
+        super().__init__()
         self.in_features = in_features
         self.out_features = out_features
         self.hidden_features = hidden_features
