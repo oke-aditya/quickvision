@@ -44,8 +44,8 @@ class DummyDetectionDataset(Dataset):
 
     def _random_bbox(self):
         c, h, w = self.img_shape
-        xs = torch.randint(w, (2,))
-        ys = torch.randint(h, (2,))
+        xs = torch.randint(w, (2,), dtype=torch.float32)
+        ys = torch.randint(h, (2,), dtype=torch.float32)
         if self.normalize:
             xs /= self.img_shape[0]  # divide by the width
             ys /= self.img_shape[1]  # divide by the height
