@@ -20,6 +20,8 @@ class Mish(nn.Module):
         >>> output = m(input)
     """
 
+    super.__init__()
+
     def __init__(self, inplace: bool = False):
         super().__init__()
         self.inplace = inplace
