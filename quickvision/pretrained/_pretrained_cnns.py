@@ -77,4 +77,10 @@ WEIGHTS_DICT = {
     "resnext101_32x48d": {
         "instagram": "https://download.pytorch.org/models/ig_resnext101_32x48-3e41cc8a.pth",
     },
+    "wide_resnet50_2": {
+        "imagenet": "https://download.pytorch.org/models/wide_resnet50_2-95faca4d.pth",
+    },
+    "wide_resnet101_2": {
+        "imagenet": "https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth",
+    },
 }
