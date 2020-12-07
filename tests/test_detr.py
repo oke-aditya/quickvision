@@ -14,9 +14,9 @@ from dataset_utils import DummyDetectionDataset
 if(torch.cuda.is_available()):
     from torch.cuda import amp
 
-train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=3,
+train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=3, class_start=0, normalize=True,
                                       num_samples=10, box_fmt="cxcywh")
-val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=3,
+val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=3, class_start=0, normalize=True,
                                     num_samples=10, box_fmt="cxcywh")
 
 supported_detr_backbones = ["resnet50", "resnet50_dc5", "resnet101", "resnet101_dc5"]
