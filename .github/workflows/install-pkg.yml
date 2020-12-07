@@ -52,7 +52,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install setuptools wheel
-          python setup.py sdist bdist_wheel
+          python setup.py bdist_wheel
           pip install virtualenv
           virtualenv vEnv ; source vEnv/bin/activate
           pip install dist/*
@@ -64,7 +64,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install setuptools wheel
-          python setup.py sdist bdist_wheel
+          python setup.py bdist_wheel
           pip install virtualenv
           virtualenv vEnv ; source vEnv/bin/activate
           pip install dist/*
@@ -76,7 +76,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install setuptools wheel
-          python setup.py sdist bdist_wheel
+          python setup.py bdist_wheel
           pip install virtualenv
           virtualenv vEnv ; venv\Scripts\activate.bat
           cd .. & python
