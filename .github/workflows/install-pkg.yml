@@ -55,7 +55,7 @@ jobs:
           python setup.py sdist bdist_wheel
           pip install virtualenv
           virtualenv vEnv ; source vEnv/bin/activate
-          pip install flake8 pytest pytest-cov
+          pip install flake8 pytest
           pip install dist/*
           cd .. & python
           deactivate ; rm -rf vEnv
@@ -68,7 +68,7 @@ jobs:
           python setup.py sdist bdist_wheel
           pip install virtualenv
           virtualenv vEnv ; source vEnv/bin/activate
-          pip install flake8 pytest pytest-cov
+          pip install flake8 pytest
           pip install dist/*
           cd .. & python
           deactivate ; rm -rf vEnv
@@ -81,7 +81,7 @@ jobs:
           python setup.py sdist bdist_wheel
           pip install virtualenv
           virtualenv vEnv ; venv\Scripts\activate.bat
-          pip install flake8 pytest pytest-cov
+          pip install flake8 pytest
           cd .. & python
           venv\Scripts\deactivate.bat ; rm -r vEnv
 
