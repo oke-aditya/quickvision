@@ -8,9 +8,9 @@ import PIL
 import torch
 import torchvision.transforms as T
 import torchvision.transforms.functional as F
+from torchvision.ops import box_convert
 
-from box_ops import box_xyxy_to_cxcywh
-from misc import interpolate
+from torchvision.ops.misc import interpolate
 
 
 def crop(image, target, region):
@@ -252,7 +252,7 @@ class Normalize(object):
         h, w = image.shape[-2:]
         if "boxes" in target:
             boxes = target["boxes"]
-            boxes = box_xyxy_to_cxcywh(boxes)
+            boxes = box_convert(boxes, in_fmt="xyxy", out_fmt="cxcywh")
             boxes = boxes / torch.tensor([w, h, w, h], dtype=torch.float32)
             target["boxes"] = boxes
         return image, target
