@@ -46,6 +46,9 @@ class DummyDetectionDataset(Dataset):
         c, h, w = self.img_shape
         xs = torch.randint(w, (2,))
         ys = torch.randint(h, (2,))
+        if self.normalize:
+            xs /= self.img_shape[0]  # divide by the width
+            ys /= self.img_shape[1]  # divide by the height
         # A small hacky fix to avoid degenerate boxes.
         return [min(xs), min(ys), max(xs) + 0.1, max(ys) + 0.1]
 
@@ -53,10 +56,6 @@ class DummyDetectionDataset(Dataset):
         img = torch.rand(self.img_shape)
         boxes = torch.tensor([self._random_bbox() for _ in range(self.num_boxes)], dtype=torch.float32)
         boxes = ops.clip_boxes_to_image(boxes, (self.img_shape[1], self.img_shape[2]))
-
-        if self.normalize:
-            boxes /= self.img_shape
-
         # No problems if we pass same in_fmt and out_fmt, it is covered by box_convert
         converted_boxes = ops.box_convert(boxes, in_fmt="xyxy", out_fmt=self.box_fmt)
         labels = torch.randint(self.class_start, self.class_end, (self.num_boxes,), dtype=torch.long)
