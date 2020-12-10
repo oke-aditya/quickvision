@@ -5,12 +5,12 @@ from quickvision import layers
 
 
 class MishTester(unittest.TestCase):
-    def test_mish():
+    def test_mish(self):
         pass
 
 
 class MLPTester(unittest.TestCase):
-    def test_mlp():
+    def test_mlp(self):
         pass
 
 

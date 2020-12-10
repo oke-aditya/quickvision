@@ -6,11 +6,11 @@ from quickvision.losses import functional as fl
 
 
 class DiceLossTester(unittest.TestCase):
-    def test_dice_loss_functional():
+    def test_dice_loss_functional(self):
         # Same thing what you do with below.
         pass
 
-    def test_dice_loss():
+    def test_dice_loss(self):
         loss_fn = losses.DiceLoss()
         inputs = torch.tensor([[0.4, 0.2, 0.3], [0.6, 0.2, 0.3]], dtype=torch.float32)
         targets = torch.tensor([[0], [1]], dtype=torch.float32)
