@@ -7,7 +7,8 @@
 
 | Quickvision Version | Supported PyTorch Version | Supported Torchvision Version |
 | ------------------- | ------------------------- | ----------------------------- |
-| 0.1.x               |       1.7                 |              0.8.1            |
+| 0.1.0               |       1.7.0               |             0.8.1             |
+| 0.1.1               |       1.7.1               |             0.8.2             |
 
 ## Reporting a Bug
 
