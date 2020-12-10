@@ -15,17 +15,16 @@ class MLP(nn.Module):
         out_features (int): Output layers of network.
     """
 
-    def __init__(self, in_features: int, hidden_features: int, out_features: int):
+    def __init__(self, in_features: int, hidden_features: int, proj_features: int):
         super().__init__()
         self.in_features = in_features
-        self.out_features = out_features
+        self.proj_features = proj_features
         self.hidden_features = hidden_features
         self.l1 = nn.Linear(self.in_features, self.hidden_features)
-        self.l2 = nn.Linear(self.hidden_features, self.out_features)
+        self.l2 = nn.Linear(self.hidden_features, self.proj_features)
 
     def forward(self, x):
         x = self.l1(x)
         x = F.relu(x)
         x = self.l2(x)
-        x = F.relu(x)
         return (x)
