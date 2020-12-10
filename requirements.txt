@@ -1,2 +1,2 @@
-pytorch_lightning
-scipy
+pytorch_lightning==1.0.8
+scipy==1.5.4

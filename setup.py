@@ -18,7 +18,7 @@ PATH_ROOT = os.path.dirname(__file__)
 
 
 def load_requirements(path_dir=PATH_ROOT, file_name='requirements.txt', comment_char='#'):
-    with open(os.path.join(path_dir, file_name), 'r') as file:
+    with open(os.path.join(path_dir, file_name), 'r', encoding="utf-8", errors="ignore") as file:
         lines = [ln.strip() for ln in file.readlines()]
     reqs = []
     for ln in lines:
@@ -33,7 +33,7 @@ def load_requirements(path_dir=PATH_ROOT, file_name='requirements.txt', comment_
 
 def load_long_description():
     # url = os.path.join("https://github.com/Quick-AI/quickvision", 'raw', , 'docs')
-    text = open('README.md', encoding='utf-8').read()
+    text = open('README.md', encoding='utf-8', errors="ignore").read()
     # replace relative repository path to absolute link to the release
     # text = text.replace('](docs', f']({url}')
     # SVG images are not readable on PyPI, so replace them  with PNG
