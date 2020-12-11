@@ -48,6 +48,7 @@ class cnnTester(unittest.TestCase):
         self.assertEqual(tensor.ndim, 4)
         for model_name in supported_tv_models:
             model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = model.cpu()
             out = model(tensor)
             self.assertEqual(out.shape[1], 10)
             self.assertEqual(out.ndim, 2)
@@ -59,6 +60,7 @@ class cnnTester(unittest.TestCase):
         self.assertEqual(tensor.ndim, 4)
         for model_name in supported_tv_models:
             model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = model.cpu()
             model = model.eval()
             out = model(tensor)
             self.assertEqual(out.shape[1], 10)
@@ -67,6 +69,7 @@ class cnnTester(unittest.TestCase):
     def test_train_step(self):
         for model_name in supported_tv_models:
             model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = model.cpu()
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
             # scheduler = torch.optim.lr_scheduler.CyclicLR(optimizer=opt, base_lr=1e-4, max_lr=1e-3, mode="min")
@@ -95,6 +98,7 @@ class cnnTester(unittest.TestCase):
     def test_val_step(self):
         for model_name in supported_tv_models:
             model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = model.cpu()
             loss = nn.CrossEntropyLoss()
             val_metrics = cnn.val_step(model, val_loader, loss, "cpu", num_batches=10)
             self.assertIsInstance(val_metrics, Dict)
@@ -105,6 +109,7 @@ class cnnTester(unittest.TestCase):
     def test_fit(self):
         for model_name in supported_tv_models:
             model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = model.cpu()
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
             # scheduler = torch.optim.lr_scheduler.CyclicLR(optimizer=opt, base_lr=1e-4, max_lr=1e-3, mode="min")
@@ -143,6 +148,7 @@ class cnnTester(unittest.TestCase):
     def test_fit_swa(self):
         for model_name in supported_tv_models:
             model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = model.cpu()
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
             scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=300)
@@ -186,6 +192,7 @@ class cnnTester(unittest.TestCase):
     def test_train_sanity_fit(self):
         for model_name in supported_tv_models:
             model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = model.cpu()
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
             res = cnn.train_sanity_fit(model, train_loader, loss, "cpu", num_batches=10)
@@ -203,6 +210,7 @@ class cnnTester(unittest.TestCase):
     def test_val_sanity_fit(self):
         for model_name in supported_tv_models:
             model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = model.cpu()
             loss = nn.CrossEntropyLoss()
             res = cnn.val_sanity_fit(model, val_loader, loss, "cpu", num_batches=10)
             self.assertTrue(res)
@@ -210,6 +218,7 @@ class cnnTester(unittest.TestCase):
     def test_sanity_fit(self):
         for model_name in supported_tv_models:
             model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = model.cpu()
             loss = nn.CrossEntropyLoss()
             res = cnn.sanity_fit(model, train_loader, val_loader, loss, "cpu", num_batches=10)
             self.assertTrue(res)

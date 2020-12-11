@@ -85,6 +85,7 @@ class EngineTester(unittest.TestCase):
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr_model.cpu()
             self.assertTrue(isinstance(detr_model, nn.Module))
             opt = torch.optim.SGD(detr_model.parameters(), lr=1e-3)
             matcher = detr_loss.HungarianMatcher()
@@ -121,6 +122,7 @@ class EngineTester(unittest.TestCase):
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr_model.cpu()
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
             weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
@@ -137,6 +139,7 @@ class EngineTester(unittest.TestCase):
             backbone = detr.create_detr_backbone(bbone, pretrained="coco")
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr_model.cpu()
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
             weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
@@ -174,6 +177,7 @@ class EngineTester(unittest.TestCase):
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr_model.cpu()
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
             weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
@@ -201,6 +205,7 @@ class EngineTester(unittest.TestCase):
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr_model.cpu()
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
             weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
@@ -214,6 +219,7 @@ class EngineTester(unittest.TestCase):
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr_model.cpu()
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
             weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
