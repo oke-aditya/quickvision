@@ -65,6 +65,7 @@ class EngineTester(unittest.TestCase):
         labels = torch.tensor([1, 2, 3, 4], dtype=torch.int64)
         targets = [{"boxes": boxes, "labels": labels}]
         retina_model = retinanet.create_vision_retinanet(num_classes=5)
+        retina_model = retina_model.cpu()
         out = retina_model(img_tensor, targets)
         self.assertIsInstance(out, Dict)
         self.assertIsInstance(out["classification"], torch.Tensor)
@@ -76,6 +77,7 @@ class EngineTester(unittest.TestCase):
         tensor = im2tensor(image)
         self.assertEqual(tensor.ndim, 4)
         retina_model = retinanet.create_vision_retinanet()
+        retina_model = retina_model.cpu()
         retina_model.eval()
         out = retina_model(tensor)
         self.assertIsInstance(out, list)
@@ -89,6 +91,7 @@ class EngineTester(unittest.TestCase):
             backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            retina_model = retina_model.cpu()
             self.assertTrue(isinstance(retina_model, nn.Module))
             opt = torch.optim.SGD(retina_model.parameters(), lr=1e-3)
             train_metrics = retinanet.train_step(retina_model, train_loader, "cpu", opt, num_batches=4)
@@ -116,6 +119,7 @@ class EngineTester(unittest.TestCase):
             backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            retina_model = retina_model.cpu()
             self.assertTrue(isinstance(retina_model, nn.Module))
             val_metrics = retinanet.val_step(retina_model, train_loader, "cpu", num_batches=4)
             self.assertIsInstance(val_metrics, Dict)
@@ -128,6 +132,7 @@ class EngineTester(unittest.TestCase):
             backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            retina_model = retina_model.cpu()
             self.assertTrue(isinstance(retina_model, nn.Module))
             opt = torch.optim.SGD(retina_model.parameters(), lr=1e-3)
             history = retinanet.fit(retina_model, 1, train_loader, val_loader, "cpu", opt, num_batches=4)
@@ -155,6 +160,7 @@ class EngineTester(unittest.TestCase):
             backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            retina_model = retina_model.cpu()
             self.assertTrue(isinstance(retina_model, nn.Module))
             result = retinanet.train_sanity_fit(retina_model, train_loader, "cpu", num_batches=10)
             self.assertTrue(result)
@@ -174,6 +180,7 @@ class EngineTester(unittest.TestCase):
             backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            retina_model = retina_model.cpu()
             self.assertTrue(isinstance(retina_model, nn.Module))
             result = retinanet.val_sanity_fit(retina_model, val_loader, "cpu", num_batches=10)
             self.assertTrue(result)
@@ -183,6 +190,7 @@ class EngineTester(unittest.TestCase):
             backbone = retinanet.create_retinanet_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             retina_model = retinanet.create_vision_retinanet(num_classes=3, backbone=backbone)
+            retina_model = retina_model.cpu()
             self.assertTrue(isinstance(retina_model, nn.Module))
             result = retinanet.sanity_fit(retina_model, train_loader, val_loader, "cpu", num_batches=10)
             self.assertTrue(result)
@@ -209,7 +217,7 @@ class LightningTester(unittest.TestCase):
         self.assertTrue(flag)
 
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
-    def test_lit_cnn_cuda(self):
+    def test_lit_retina_cuda(self):
         flag = False
         for bbone in fpn_supported_models:
             model = retinanet.lit_retinanet(num_classes=3, backbone=bbone, fpn=True, pretrained_backbone=False,)
