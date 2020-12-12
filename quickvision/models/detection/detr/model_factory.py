@@ -60,7 +60,7 @@ def create_detr_backbone(model_name: str, pretrained: str = None,):
         backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet50_dc5', pretrained=False)
 
     elif(model_name == "resnet101_dc5"):
-        backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet50_dc5', pretrained=False)
+        backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet101_dc5', pretrained=False)
 
     else:
         raise ValueError("Unuspported backbone")
