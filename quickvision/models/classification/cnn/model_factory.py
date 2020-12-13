@@ -25,7 +25,6 @@ class vision_cnn(nn.Module):
 def create_vision_cnn(model_name: str, num_classes: int,
                       pretrained: str = None,):
 
-    # Wrapper function for consistency with timm models.
     # We do not pass in_channels here since torchvision models is not supported with it.
 
     """
