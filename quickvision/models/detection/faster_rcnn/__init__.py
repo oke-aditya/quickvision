@@ -1,5 +1,5 @@
 from quickvision.models.detection.faster_rcnn.model_factory import (
-    create_vision_fastercnn,
+    create_fastercnn,
     create_fastercnn_backbone,
 )
 
@@ -12,4 +12,4 @@ from quickvision.models.detection.faster_rcnn.engine import (
     sanity_fit,
 )
 
-from quickvision.models.detection.faster_rcnn.lightning_trainer import lit_frcnn
+from quickvision.models.detection.faster_rcnn.lightning_trainer import LitFRCNN
