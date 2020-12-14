@@ -6,10 +6,10 @@ from quickvision.models.detection.retinanet import create_retinanet_backbone
 from quickvision.models.detection.utils import _evaluate_iou, _evaluate_giou
 from torchvision.models.detection.retinanet import retinanet_resnet50_fpn, RetinaNet, RetinaNetHead
 
-__all__ = ["lit_retinanet"]
+__all__ = ["LitRetinanet"]
 
 
-class lit_retinanet(pl.LightningModule):
+class LitRetinanet(pl.LightningModule):
     """
     Creates a ReinaNet which can be fine-tuned.
     """

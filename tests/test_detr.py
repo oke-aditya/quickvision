@@ -44,18 +44,18 @@ class ModelFactoryTester(unittest.TestCase):
     def test_detr_invalidbackbone(self):
         self.assertRaises(ValueError, create_detr_backbone, error_bbone)
 
-    def test_vision_detr(self):
+    def test_detr(self):
         for supp_bb in supported_detr_backbones:
             bbone = detr.create_detr_backbone(supp_bb, pretrained=None)
             self.assertTrue(isinstance(bbone, nn.Module))
-            model = detr.vision_detr(num_classes=91, num_queries=5, backbone=bbone)
+            model = detr.create_detr(num_classes=91, num_queries=5, backbone=bbone)
             self.assertTrue(isinstance(bbone, nn.Module))
 
-    def test_create_vision_detr(self):
+    def test_create_detr(self):
         for supp_bb in supported_detr_backbones:
             bbone = detr.create_detr_backbone(supp_bb, pretrained=None)
             self.assertTrue(isinstance(bbone, nn.Module))
-            model = detr.create_vision_detr(num_classes=91, num_queries=5, backbone=bbone)
+            model = detr.create_detr(num_classes=91, num_queries=5, backbone=bbone)
             self.assertTrue(isinstance(bbone, nn.Module))
 
 
@@ -84,7 +84,7 @@ class EngineTester(unittest.TestCase):
         for bbone in some_supported_backbones:
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr.create_detr(num_classes=3, num_queries=5, backbone=backbone)
             detr_model = detr_model.cpu()
             self.assertTrue(isinstance(detr_model, nn.Module))
             opt = torch.optim.SGD(detr_model.parameters(), lr=1e-3)
@@ -103,7 +103,7 @@ class EngineTester(unittest.TestCase):
         for bbone in some_supported_backbones:
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr.create_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
             opt = torch.optim.SGD(detr_model.parameters(), lr=1e-3)
             scaler = amp.GradScaler()
@@ -121,7 +121,7 @@ class EngineTester(unittest.TestCase):
         for bbone in some_supported_backbones:
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr.create_detr(num_classes=3, num_queries=5, backbone=backbone)
             detr_model = detr_model.cpu()
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
@@ -138,7 +138,7 @@ class EngineTester(unittest.TestCase):
         for bbone in some_supported_backbones:
             backbone = detr.create_detr_backbone(bbone, pretrained="coco")
             self.assertTrue(isinstance(backbone, nn.Module))
-            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr.create_detr(num_classes=3, num_queries=5, backbone=backbone)
             detr_model = detr_model.cpu()
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
@@ -158,7 +158,7 @@ class EngineTester(unittest.TestCase):
         for bbone in some_supported_backbones:
             backbone = detr.create_detr_backbone(bbone, pretrained="coco")
             self.assertTrue(isinstance(backbone, nn.Module))
-            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr.create_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
             weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
@@ -176,7 +176,7 @@ class EngineTester(unittest.TestCase):
         for bbone in some_supported_backbones:
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr.create_detr(num_classes=3, num_queries=5, backbone=backbone)
             detr_model = detr_model.cpu()
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
@@ -191,7 +191,7 @@ class EngineTester(unittest.TestCase):
         for bbone in some_supported_backbones:
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr.create_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
             weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
@@ -204,7 +204,7 @@ class EngineTester(unittest.TestCase):
         for bbone in some_supported_backbones:
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr.create_detr(num_classes=3, num_queries=5, backbone=backbone)
             detr_model = detr_model.cpu()
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
@@ -218,7 +218,7 @@ class EngineTester(unittest.TestCase):
         for bbone in some_supported_backbones:
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr.create_detr(num_classes=3, num_queries=5, backbone=backbone)
             detr_model = detr_model.cpu()
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
@@ -233,7 +233,7 @@ class EngineTester(unittest.TestCase):
         for bbone in some_supported_backbones:
             backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
+            detr_model = detr.create_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
             matcher = detr_loss.HungarianMatcher()
             weight_dict = {"loss_ce": 1, "loss_bbox": 1, "loss_giou": 1}
@@ -247,7 +247,7 @@ class LightningTester(unittest.TestCase):
     def test_lit_detr(self):
         flag = False
         for bbone in some_supported_backbones:
-            model = detr.lit_detr(num_classes=3, num_queries=5, pretrained="coco", backbone=bbone)
+            model = detr.LitDETR(num_classes=3, num_queries=5, pretrained="coco", backbone=bbone)
             trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
@@ -257,14 +257,14 @@ class LightningTester(unittest.TestCase):
     def test_lit_detr_cuda(self):
         flag = False
         for bbone in some_supported_backbones:
-            model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=None, backbone=bbone)
+            model = detr.LitDETR(num_classes=3, num_queries=5, pretrained=None, backbone=bbone)
             trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)
 
     def test_lit_forward(self):
-        model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=None)
+        model = detr.LitDETR(num_classes=3, num_queries=5, pretrained=None)
         image = torch.rand(1, 3, 400, 400)
         out = model(image)
         self.assertIsInstance(out, Dict)

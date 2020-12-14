@@ -8,10 +8,10 @@ import torch.nn as nn
 from torch.nn import functional as F
 from pytorch_lightning.metrics.functional import accuracy
 
-__all__ = ["lit_cnn"]
+__all__ = ["LitCNN"]
 
 
-class lit_cnn(pl.LightningModule):
+class LitCNN(pl.LightningModule):
     """
     Creates a CNN which can be fine-tuned.
     """

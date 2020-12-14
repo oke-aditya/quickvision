@@ -6,8 +6,10 @@ import quickvision.layers
 import quickvision.models
 import quickvision.optimizers
 import quickvision.utils
+import unittest
 
 
-def test_torch():
-    print(torch.__version__)
-    return 1
+class HelloTester(unittest.TestCase):
+    def test_torch(self,):
+        print(torch.__version__)
+        return True

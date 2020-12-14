@@ -3,10 +3,10 @@ from torchvision.models.detection.retinanet import RetinaNet, retinanet_resnet50
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
 from quickvision.models.components import create_torchvision_backbone
 
-__all__ = ["create_vision_retinanet", "create_retinanet_backbone"]
+__all__ = ["create_retinanet", "create_retinanet_backbone"]
 
 
-def create_vision_retinanet(num_classes: int = 91, backbone: nn.Module = None, **kwargs,):
+def create_retinanet(num_classes: int = 91, backbone: nn.Module = None, **kwargs,):
     """
     Creates RetinaNet implementation based on torchvision library.
     Args:

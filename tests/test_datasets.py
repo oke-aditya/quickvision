@@ -8,11 +8,7 @@ from quickvision.models.classification import cnn
 
 df = pd.read_csv("tests/assets/csv_dataset.csv")
 data_dir = "tests/assets/"
-tfms = T.Compose(
-    [
-        T.ToTensor(),
-    ]
-)
+tfms = T.Compose([T.ToTensor(),])
 
 
 class CSVSingleLabelDatasetTester(unittest.TestCase):

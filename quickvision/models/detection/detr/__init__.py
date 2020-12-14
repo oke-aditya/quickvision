@@ -1,7 +1,6 @@
 from quickvision.models.detection.detr.model_factory import (
     create_detr_backbone,
-    vision_detr,
-    create_vision_detr
+    create_detr
 )
 
 from quickvision.models.detection.detr.engine import (
@@ -18,5 +17,5 @@ from quickvision.models.detection.detr.utils import (
 )
 
 from quickvision.models.detection.detr.lightning_trainer import (
-    lit_detr
+    LitDETR
 )

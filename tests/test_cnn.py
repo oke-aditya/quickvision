@@ -28,14 +28,14 @@ train_loader, val_loader = create_loaders(train_ds, val_ds, num_workers=1)
 
 
 class ModelFactoryTester(unittest.TestCase):
-    def test_vision_cnn(self):
+    def test_cnn(self):
         for model_name in supported_tv_models:
-            model = cnn.vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.cnn(model_name, 10, pretrained=None)
             self.assertTrue(isinstance(model, nn.Module))
 
-    def test_create_vision_cnn(self):
+    def test_create_cnn(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             self.assertTrue(isinstance(model, nn.Module))
 
 
@@ -47,7 +47,7 @@ class cnnTester(unittest.TestCase):
         tensor = im2tensor(image)
         self.assertEqual(tensor.ndim, 4)
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             model = model.cpu()
             out = model(tensor)
             self.assertEqual(out.shape[1], 10)
@@ -59,7 +59,7 @@ class cnnTester(unittest.TestCase):
         tensor = im2tensor(image)
         self.assertEqual(tensor.ndim, 4)
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             model = model.cpu()
             model = model.eval()
             out = model(tensor)
@@ -68,7 +68,7 @@ class cnnTester(unittest.TestCase):
 
     def test_train_step(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             model = model.cpu()
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
@@ -83,7 +83,7 @@ class cnnTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_step_cuda(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
             # scheduler = torch.optim.lr_scheduler.CyclicLR(optimizer=opt, base_lr=1e-4, max_lr=1e-3, mode="min")
@@ -97,7 +97,7 @@ class cnnTester(unittest.TestCase):
 
     def test_val_step(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             model = model.cpu()
             loss = nn.CrossEntropyLoss()
             val_metrics = cnn.val_step(model, val_loader, loss, "cpu", num_batches=10)
@@ -108,7 +108,7 @@ class cnnTester(unittest.TestCase):
 
     def test_fit(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             model = model.cpu()
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
@@ -128,7 +128,7 @@ class cnnTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_fit_cuda(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
             # scheduler = torch.optim.lr_scheduler.CyclicLR(optimizer=opt, base_lr=1e-4, max_lr=1e-3, mode="min")
@@ -147,7 +147,7 @@ class cnnTester(unittest.TestCase):
 
     def test_fit_swa(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             model = model.cpu()
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
@@ -170,7 +170,7 @@ class cnnTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_fit_swa_cuda(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
             scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=300)
@@ -191,7 +191,7 @@ class cnnTester(unittest.TestCase):
 
     def test_train_sanity_fit(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             model = model.cpu()
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
@@ -201,7 +201,7 @@ class cnnTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_train_sanity_fit_cuda(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             opt = torch.optim.Adam(model.parameters(), lr=1e-3)
             loss = nn.CrossEntropyLoss()
             res = cnn.train_sanity_fit(model, train_loader, loss, "cuda", num_batches=10, fp16=True)
@@ -209,7 +209,7 @@ class cnnTester(unittest.TestCase):
 
     def test_val_sanity_fit(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             model = model.cpu()
             loss = nn.CrossEntropyLoss()
             res = cnn.val_sanity_fit(model, val_loader, loss, "cpu", num_batches=10)
@@ -217,7 +217,7 @@ class cnnTester(unittest.TestCase):
 
     def test_sanity_fit(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             model = model.cpu()
             loss = nn.CrossEntropyLoss()
             res = cnn.sanity_fit(model, train_loader, val_loader, loss, "cpu", num_batches=10)
@@ -226,7 +226,7 @@ class cnnTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_sanity_fit_cuda(self):
         for model_name in supported_tv_models:
-            model = cnn.create_vision_cnn(model_name, 10, pretrained=None)
+            model = cnn.create_cnn(model_name, 10, pretrained=None)
             loss = nn.CrossEntropyLoss()
             res = cnn.sanity_fit(model, train_loader, val_loader, loss, "cuda", num_batches=10, fp16=True)
             self.assertTrue(res)
@@ -236,7 +236,7 @@ class LightningTester(unittest.TestCase):
     def test_lit_cnn(self):
         flag = False
         for model_name in supported_tv_models:
-            model = cnn.lit_cnn(model_name, num_classes=10, pretrained=None)
+            model = cnn.LitCNN(model_name, num_classes=10, pretrained=None)
             trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
@@ -246,7 +246,7 @@ class LightningTester(unittest.TestCase):
     def test_lit_cnn_cuda(self):
         flag = False
         for model_name in supported_tv_models:
-            model = cnn.lit_cnn(model_name, num_classes=10, pretrained=None)
+            model = cnn.LitCNN(model_name, num_classes=10, pretrained=None)
             trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
