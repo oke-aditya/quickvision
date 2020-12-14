@@ -7,7 +7,7 @@ from quickvision.models.classification.cnn.engine import (
     sanity_fit,
 )
 from quickvision.models.classification.cnn.model_factory import (
-    VisionCNN,
+    CNN,
     create_cnn,
 )
 from quickvision.models.classification.cnn.lightning_trainer import LitCNN

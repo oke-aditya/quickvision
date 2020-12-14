@@ -6,10 +6,10 @@ import torchvision
 from quickvision.models import components
 import torch.nn as nn
 
-__all__ = ["VisionCNN", "create_cnn"]
+__all__ = ["CNN", "create_cnn"]
 
 
-class VisionCNN(nn.Module):
+class CNN(nn.Module):
     def __init__(self, model_name: str, num_classes: int, pretrained: str = None):
         super().__init__()
         self.num_classes = num_classes
@@ -34,5 +34,5 @@ def create_cnn(model_name: str, num_classes: int,
         num_classes (int) : Number of classes for classification.
         pretrained (str) : Pretrained weights dataset "imagenet", etc
     """
-    model = VisionCNN(model_name, num_classes, pretrained)
+    model = CNN(model_name, num_classes, pretrained)
     return model

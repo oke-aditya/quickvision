@@ -19,7 +19,7 @@ class CSVSingleLabelDatasetTester(unittest.TestCase):
         self.assertTrue(complete_dataset[0])
 
         train_loader = torch.utils.data.DataLoader(complete_dataset, num_workers=1)
-        model = cnn.create_vision_cnn("resnet18", 2, pretrained=None)
+        model = cnn.create_cnn("resnet18", 2, pretrained=None)
         opt = torch.optim.Adam(model.parameters(), lr=1e-3)
         loss = nn.CrossEntropyLoss()
         res = cnn.train_sanity_fit(model, train_loader, loss, "cpu", num_batches=1)
