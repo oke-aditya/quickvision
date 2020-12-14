@@ -4,10 +4,10 @@ import torch.nn as nn
 from quickvision.losses import detr_loss
 from quickvision.models.detection.detr import create_detr_backbone
 
-__all__ = ["LitDetr"]
+__all__ = ["LitDETR"]
 
 
-class LitDetr(pl.LightningModule):
+class LitDETR(pl.LightningModule):
     def __init__(self, learning_rate: float = 1e-3, num_classes: int = 91,
                  num_queries: int = 5, pretrained: str = None,
                  backbone: str = "resnet50", **kwargs, ):
