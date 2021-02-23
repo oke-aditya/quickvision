@@ -3,10 +3,10 @@ import torch.nn as nn
 from quickvision.pretrained._pretrained_weights import _load_pretrained_weights
 from quickvision.pretrained._pretrained_detection import detr_weights_dict
 
-__all__ = ["vision_detr", "create_detr_backbone"]
+__all__ = ["DETR", "create_detr", "create_detr_backbone",]
 
 
-class vision_detr(nn.Module):
+class DETR(nn.Module):
     """
     Creates Detr Model for Object Detection.
     Args:
@@ -29,7 +29,7 @@ class vision_detr(nn.Module):
         return self.model(images)
 
 
-def create_vision_detr(num_classes: int, num_queries: int, backbone: str):
+def create_detr(num_classes: int, num_queries: int, backbone: str):
     """
     Creates Detr Model for Object Detection
     Args:
@@ -38,7 +38,7 @@ def create_vision_detr(num_classes: int, num_queries: int, backbone: str):
         backbone: Backbone created from create_detr_backbone.
     """
 
-    model = vision_detr(num_classes, num_queries, backbone)
+    model = DETR(num_classes, num_queries, backbone)
     return model
 
 
@@ -60,7 +60,7 @@ def create_detr_backbone(model_name: str, pretrained: str = None,):
         backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet50_dc5', pretrained=False)
 
     elif(model_name == "resnet101_dc5"):
-        backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet50_dc5', pretrained=False)
+        backbone = torch.hub.load('facebookresearch/detr', 'detr_resnet101_dc5', pretrained=False)
 
     else:
         raise ValueError("Unuspported backbone")

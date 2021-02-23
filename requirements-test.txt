@@ -1,4 +1,7 @@
-timm
-pytorch_lightning==1.0.8
+--find-links  https://download.pytorch.org/whl/torch_stable.html
+torch==1.7.1+cpu
+torchvision==0.8.2+cpu
+pytorch_lightning==1.1.0
 scipy==1.5.4
+timm
 pandas
