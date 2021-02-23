@@ -134,7 +134,7 @@ class EngineTester(unittest.TestCase):
 
     def test_fit(self):
         for bbone in some_supported_backbones:
-            backbone = detr.create_detr_backbone(bbone, pretrained="coco")
+            backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
@@ -153,7 +153,7 @@ class EngineTester(unittest.TestCase):
     @unittest.skipIf(not torch.cuda.is_available(), "CUDA unavailable")
     def test_fit_cuda(self):
         for bbone in some_supported_backbones:
-            backbone = detr.create_detr_backbone(bbone, pretrained="coco")
+            backbone = detr.create_detr_backbone(bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
             detr_model = detr.create_vision_detr(num_classes=3, num_queries=5, backbone=backbone)
             self.assertTrue(isinstance(detr_model, nn.Module))
@@ -241,7 +241,7 @@ class LightningTester(unittest.TestCase):
     def test_lit_detr(self):
         flag = False
         for bbone in some_supported_backbones:
-            model = detr.lit_detr(num_classes=3, num_queries=5, pretrained="coco", backbone=bbone)
+            model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=None, backbone=bbone)
             trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
