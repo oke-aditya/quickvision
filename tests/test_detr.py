@@ -247,7 +247,7 @@ class LightningTester(unittest.TestCase):
     def test_lit_detr(self):
         flag = False
         for bbone in some_supported_backbones:
-            model = detr.lit_detr(num_classes=3, num_queries=5, pretrained=None, backbone=bbone)
+            model = detr.LitDETR(num_classes=3, num_queries=5, pretrained=None, backbone=bbone)
             trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
