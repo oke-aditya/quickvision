@@ -2,6 +2,6 @@
 torch==1.8.0+cpu
 torchvision==0.9.0+cpu
 pytorch_lightning==1.2.1
-scipy==scipy==1.5.4
+scipy==1.5.4
 timm
 pandas
