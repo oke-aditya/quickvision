@@ -4,12 +4,12 @@ from typing import Dict
 from PIL import Image
 import torch.nn as nn
 import pytorch_lightning as pl
-from quickvision.tests.torch_utils import im2tensor
+from torch_utils import im2tensor
 from quickvision.models.detection import detr
 from quickvision.models.detection.detr import create_detr_backbone
 from quickvision.losses import detr_loss
 from quickvision.models.detection.detr import engine
-from quickvision.tests.dataset_utils import DummyDetectionDataset
+from dataset_utils import DummyDetectionDataset
 
 if(torch.cuda.is_available()):
     from torch.cuda import amp
