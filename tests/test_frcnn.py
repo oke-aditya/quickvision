@@ -19,9 +19,9 @@ non_fpn_supported_models = ["mobilenet_v2"]
 # "resnet18", "resnet34", "resnet50","resnet101",
 # "resnet152", "resnext101_32x8d", "mobilenet_v2", "vgg11", "vgg13", "vgg16", "vgg19"
 
-train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2,
+train_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, class_start=1,
                                       num_samples=10, box_fmt="xyxy")
-val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2,
+val_dataset = DummyDetectionDataset(img_shape=(3, 256, 256), num_classes=2, class_start=1,
                                     num_samples=10, box_fmt="xyxy")
 
 
@@ -42,7 +42,7 @@ class ModelFactoryTester(unittest.TestCase):
             backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
 
-            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = faster_rcnn.create_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
 
     def test_frcnn_nonfpn(self):
@@ -50,7 +50,7 @@ class ModelFactoryTester(unittest.TestCase):
             backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None, fpn=False)
             self.assertTrue(isinstance(backbone, nn.Module))
 
-            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = faster_rcnn.create_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
 
 
@@ -65,7 +65,8 @@ class EngineTester(unittest.TestCase):
                              [10, 15, 30, 35], [23, 35, 93, 95]], dtype=torch.float)
         labels = torch.tensor([1, 2, 3, 4], dtype=torch.int64)
         targets = [{"boxes": boxes, "labels": labels}]
-        frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=5)
+        frcnn_model = faster_rcnn.create_fastercnn(num_classes=5)
+        frcnn_model = frcnn_model.cpu()
         out = frcnn_model(img_tensor, targets)
         self.assertIsInstance(out, Dict)
         self.assertIsInstance(out["loss_classifier"], torch.Tensor)
@@ -78,7 +79,8 @@ class EngineTester(unittest.TestCase):
         image = Image.open("tests/assets/grace_hopper_517x606.jpg")
         tensor = im2tensor(image)
         self.assertEqual(tensor.ndim, 4)
-        frcnn_model = faster_rcnn.create_vision_fastercnn()
+        frcnn_model = faster_rcnn.create_fastercnn()
+        frcnn_model = frcnn_model.cpu()
         frcnn_model.eval()
         out = frcnn_model(tensor)
         self.assertIsInstance(out, list)
@@ -91,7 +93,8 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = faster_rcnn.create_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = frcnn_model.cpu()
             self.assertTrue(isinstance(frcnn_model, nn.Module))
             opt = torch.optim.SGD(frcnn_model.parameters(), lr=1e-3)
             train_metrics = faster_rcnn.train_step(frcnn_model, train_loader, "cpu", opt, num_batches=10)
@@ -105,7 +108,7 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = faster_rcnn.create_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
             opt = torch.optim.SGD(frcnn_model.parameters(), lr=1e-3)
             train_metrics = faster_rcnn.train_step(frcnn_model, train_loader, "cuda", opt, num_batches=10)
@@ -118,7 +121,8 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = faster_rcnn.create_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = frcnn_model.cpu()
             self.assertTrue(isinstance(frcnn_model, nn.Module))
             val_metrics = faster_rcnn.val_step(frcnn_model, train_loader, "cpu", num_batches=10)
             self.assertIsInstance(val_metrics, Dict)
@@ -130,7 +134,8 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = faster_rcnn.create_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = frcnn_model.cpu()
             self.assertTrue(isinstance(frcnn_model, nn.Module))
             opt = torch.optim.SGD(frcnn_model.parameters(), lr=1e-3)
             history = faster_rcnn.fit(frcnn_model, 1, train_loader, val_loader, "cpu", opt, num_batches=10)
@@ -151,7 +156,7 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = faster_rcnn.create_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
             opt = torch.optim.SGD(frcnn_model.parameters(), lr=1e-3)
             history = faster_rcnn.fit(frcnn_model, 1, train_loader, val_loader, "cuda", opt, num_batches=4, fp16=True)
@@ -171,7 +176,8 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = faster_rcnn.create_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = frcnn_model.cpu()
             self.assertTrue(isinstance(frcnn_model, nn.Module))
             result = faster_rcnn.train_sanity_fit(frcnn_model, train_loader, "cpu", num_batches=10)
             self.assertTrue(result)
@@ -181,7 +187,7 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = faster_rcnn.create_fastercnn(num_classes=3, backbone=backbone)
             self.assertTrue(isinstance(frcnn_model, nn.Module))
             result = faster_rcnn.train_sanity_fit(frcnn_model, train_loader, "cuda", num_batches=10, fp16=True)
             self.assertTrue(result)
@@ -190,7 +196,8 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = faster_rcnn.create_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = frcnn_model.cpu()
             self.assertTrue(isinstance(frcnn_model, nn.Module))
             result = faster_rcnn.val_sanity_fit(frcnn_model, val_loader, "cpu", num_batches=10)
             self.assertTrue(result)
@@ -199,7 +206,8 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = faster_rcnn.create_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = frcnn_model.cpu()
             self.assertTrue(isinstance(frcnn_model, nn.Module))
             result = faster_rcnn.sanity_fit(frcnn_model, train_loader, val_loader, "cpu", num_batches=10)
             self.assertTrue(result)
@@ -209,7 +217,8 @@ class EngineTester(unittest.TestCase):
         for bbone in fpn_supported_models:
             backbone = faster_rcnn.create_fastercnn_backbone(backbone=bbone, pretrained=None)
             self.assertTrue(isinstance(backbone, nn.Module))
-            frcnn_model = faster_rcnn.create_vision_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = faster_rcnn.create_fastercnn(num_classes=3, backbone=backbone)
+            frcnn_model = frcnn_model.cpu()
             self.assertTrue(isinstance(frcnn_model, nn.Module))
             result = faster_rcnn.sanity_fit(frcnn_model, train_loader, val_loader, "cuda", num_batches=10, fp16=True)
             self.assertTrue(result)
@@ -219,7 +228,7 @@ class LightningTester(unittest.TestCase):
     def test_lit_frcnn_fpn(self):
         flag = False
         for bbone in fpn_supported_models:
-            model = faster_rcnn.lit_frcnn(num_classes=3, backbone=bbone, fpn=True, pretrained_backbone=False,)
+            model = faster_rcnn.LitFRCNN(num_classes=3, backbone=bbone, fpn=True, pretrained_backbone=False,)
             trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
@@ -229,14 +238,14 @@ class LightningTester(unittest.TestCase):
     def test_lit_cnn_cuda(self):
         flag = False
         for bbone in fpn_supported_models:
-            model = faster_rcnn.lit_frcnn(num_classes=3, backbone=bbone, fpn=True, pretrained_backbone=False,)
+            model = faster_rcnn.LitFRCNN(num_classes=3, backbone=bbone, fpn=True, pretrained_backbone=False,)
             trainer = pl.Trainer(fast_dev_run=True, logger=False, checkpoint_callback=False)
             trainer.fit(model, train_loader, val_loader)
         flag = True
         self.assertTrue(flag)
 
     def test_lit_forward(self):
-        model = faster_rcnn.lit_frcnn(num_classes=3, pretrained_backbone=False)
+        model = faster_rcnn.LitFRCNN(num_classes=3, pretrained_backbone=False)
         image = torch.rand(1, 3, 400, 400)
         out = model(image)
         self.assertIsInstance(out, list)

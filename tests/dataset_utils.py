@@ -16,8 +16,10 @@ class DummyDetectionDataset(Dataset):
         >>> ds = DummyDetectionDataset()
         >>> dl = DataLoader(ds, batch_size=7)
     """
-    def __init__(self, img_shape: tuple = (3, 256, 256), num_boxes: int = 1, num_classes: int = 2,
-                 num_samples: int = 10000, box_fmt: str = "xyxy"):
+    def __init__(self, img_shape: tuple = (3, 256, 256), num_boxes: int = 1,
+                 num_classes: int = 2, class_start: int = 0,
+                 num_samples: int = 10000, box_fmt: str = "xyxy",
+                 normalize: bool = False):
         """
         Args:
             *shapes: list of shapes
@@ -33,14 +35,20 @@ class DummyDetectionDataset(Dataset):
         self.num_boxes = num_boxes
         self.num_classes = num_classes
         self.box_fmt = box_fmt
+        self.class_start = class_start
+        self.class_end = self.class_start + self.num_classes
+        self.normalize = normalize
 
     def __len__(self):
         return self.num_samples
 
     def _random_bbox(self):
         c, h, w = self.img_shape
-        xs = torch.randint(w, (2,))
-        ys = torch.randint(h, (2,))
+        xs = torch.randint(w, (2,), dtype=torch.float32)
+        ys = torch.randint(h, (2,), dtype=torch.float32)
+        if self.normalize:
+            xs /= self.img_shape[0]  # divide by the width
+            ys /= self.img_shape[1]  # divide by the height
         # A small hacky fix to avoid degenerate boxes.
         return [min(xs), min(ys), max(xs) + 0.1, max(ys) + 0.1]
 
@@ -48,10 +56,9 @@ class DummyDetectionDataset(Dataset):
         img = torch.rand(self.img_shape)
         boxes = torch.tensor([self._random_bbox() for _ in range(self.num_boxes)], dtype=torch.float32)
         boxes = ops.clip_boxes_to_image(boxes, (self.img_shape[1], self.img_shape[2]))
-
         # No problems if we pass same in_fmt and out_fmt, it is covered by box_convert
         converted_boxes = ops.box_convert(boxes, in_fmt="xyxy", out_fmt=self.box_fmt)
-        labels = torch.randint(self.num_classes, (self.num_boxes,), dtype=torch.long)
+        labels = torch.randint(self.class_start, self.class_end, (self.num_boxes,), dtype=torch.long)
         return img, {"boxes": converted_boxes, "labels": labels}
 
 

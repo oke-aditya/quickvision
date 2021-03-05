@@ -10,7 +10,7 @@ from torchvision.ops import generalized_box_iou, box_convert
 from torchvision.ops import sigmoid_focal_loss
 from quickvision.utils import nested_tensor_from_tensor_list
 from quickvision.metrics import accuracy
-from quickvision.losses.segmentation import dice_loss
+from quickvision.losses.functional import dice_loss
 import torch.nn.functional as F
 
 __all__ = ["HungarianMatcher", "build_matcher", "SetCriterion"]
