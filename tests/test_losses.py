@@ -16,7 +16,7 @@ class DiceLossTester(unittest.TestCase):
         # And now compare this loss with known valueQ
         # self.assertTrue()
         pass
-0
+
     def test_dice_loss(self):
         # loss_fn = losses.DiceLoss()
         # inputs = torch.tensor([[0.4, 0.2, 0.3], [0.6, 0.2, 0.3]], dtype=torch.float32)
