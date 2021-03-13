@@ -4,6 +4,12 @@ WEIGHTS_DICT = {
     "mobilenet_v2": {
         "imagenet": "https://download.pytorch.org/models/mobilenet_v2-b0353104.pth"
     },
+    "mobilenet_v3_small": {
+        "imagenet": "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth"
+    },
+    "mobilenet_v3_large": {
+        "imagenet": "https://download.pytorch.org/models/mobilenet_v3_large-8738ca79.pth"
+    },
     "mnasnet0_5": {
         "imagenet": "https://download.pytorch.org/models/mnasnet0.5_top1_67.823-3ffadce67e.pth",
     },
