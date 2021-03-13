@@ -3,12 +3,12 @@
 frcnn_weights_dict = {
     "resnet50": {
         "coco": "https://download.pytorch.org/models/fasterrcnn_resnet50_fpn_coco-258fb6c6.pth"
-    }
+    },
     "mobilenet_v3_large_320_fpn": {
-        "coco" : "https://download.pytorch.org/models/fasterrcnn_mobilenet_v3_large_320_fpn-907ea3f9.pth"
+        "coco": "https://download.pytorch.org/models/fasterrcnn_mobilenet_v3_large_320_fpn-907ea3f9.pth"
     },
     "fasterrcnn_mobilenet_v3_large": {
-        "coco" : "https://download.pytorch.org/models/fasterrcnn_mobilenet_v3_large_fpn-fb6a3cc7.pth"
+        "coco": "https://download.pytorch.org/models/fasterrcnn_mobilenet_v3_large_fpn-fb6a3cc7.pth"
     },
 }
 
