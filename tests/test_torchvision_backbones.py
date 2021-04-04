@@ -7,7 +7,7 @@ supported_tv_models = ["vgg11", "vgg13", "vgg16", "vgg19", "resnet18",
                        "resnet34", "resnet50", "resnet101", "resnet152",
                        "resnext50_32x4d", "resnext101_32x8d",
                        "mnasnet0_5", "mnasnet1_0", "mobilenet_v2",
-                       "wide_resnet50_2", "wide_resnet101_2", "mobilenet_v3_small",
+                       "wide_resnet50_2", "wide_resnet101_2",
                        "mobilenet_v3_large"]
 
 error_model = "invalid_model"
