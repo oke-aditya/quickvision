@@ -15,7 +15,8 @@ if(torch.cuda.is_available()):
 supported_tv_models = ["resnet18",
                        # "resnet34", # "resnet50", # "resnet101", # "resnet152",
                        # "resnext50_32x4d", # "resnext101_32x8d", # "vgg11",
-                       # "vgg13", # "vgg16", # "vgg19", # "mobilenet", # "mnasnet0_5",
+                       # "vgg13", # "vgg16", # "vgg19", # "mobilenet_v2", # "mnasnet0_5",
+                       # "mobilenet_v3_large", "mobilenet_v3_small",
                        # "mnasnet1_0",]
                        ]
 

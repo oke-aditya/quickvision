@@ -21,4 +21,6 @@ TORCHVISION_MODEL_ZOO = {
     "mobilenet_v2": torchvision.models.mobilenet_v2(pretrained=False,),
     "wide_resnet50_2": torchvision.models.wide_resnet50_2(pretrained=False,),
     "wide_resnet101_2": torchvision.models.wide_resnet101_2(pretrained=False,),
+    # "mobilenet_v3_small": torchvision.models.mobilenet_v3_small(pretrained=False),
+    "mobilenet_v3_large": torchvision.models.mobilenet_v3_large(pretrained=False),
 }
