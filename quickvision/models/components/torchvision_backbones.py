@@ -1,6 +1,5 @@
 
 import torch.nn as nn
-import torchvision
 from quickvision.pretrained._model_zoo import TORCHVISION_MODEL_ZOO
 from quickvision.pretrained._pretrained_weights import _load_pretrained_weights
 from quickvision.pretrained._pretrained_cnns import WEIGHTS_DICT
@@ -10,7 +9,7 @@ __all__ = ["create_torchvision_backbone"]
 RESNET_SMALL_MODELS = ["resnet18", "resnet34"]
 RESNET_LARGE_MODELS = ["resnet50", "resnet101", "resnet152", "resnext50_32x4d", "resnext101_32x8d",
                        "wide_resnet50_2", "wide_resnet101_2"]
-VGG_MODELS = ["vgg11", "vgg13", "vgg16", "vgg19",]
+VGG_MODELS = ["vgg11", "vgg13", "vgg16", "vgg19", ]
 MNASNET_MODELS = ["mnasnet0_5", "mnasnet0_75", "mnasnet1_0", "mnasnet1_3"]
 MOBILENET_MODELS = ["mobilenet_v2", "mobilenet_v3_large"]
 
