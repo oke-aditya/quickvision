@@ -2,7 +2,6 @@
 # We will remove the Linear Layer and create a new Linear Layer with num_classes
 # Port from pytorch_cnn_trainer https://github.com/oke-aditya/pytorch_cnn_trainer
 
-import torchvision
 from quickvision.models import components
 import torch.nn as nn
 
