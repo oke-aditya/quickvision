@@ -63,7 +63,8 @@ def create_torchvision_backbone(model_name: str, pretrained: str = None):
         pretrained (str) : Pretrained weights dataset "imagenet", etc
     """
 
-    net = TORCHVISION_MODEL_ZOO[model_name]
+    model_selected = TORCHVISION_MODEL_ZOO[model_name]
+    net = model_selected(pretrained=False)
     if pretrained is not None:
         state_dict = _load_pretrained_weights(WEIGHTS_DICT, model_name, pretrained=pretrained)
         net.load_state_dict(state_dict)
