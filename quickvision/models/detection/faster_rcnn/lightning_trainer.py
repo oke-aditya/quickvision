@@ -6,10 +6,10 @@ from quickvision.models.detection.faster_rcnn import create_fastercnn_backbone
 from quickvision.models.detection.utils import _evaluate_iou, _evaluate_giou
 from torchvision.models.detection.faster_rcnn import (fasterrcnn_resnet50_fpn, FasterRCNN, FastRCNNPredictor,)
 
-__all__ = ["lit_frcnn"]
+__all__ = ["LitFRCNN"]
 
 
-class lit_frcnn(pl.LightningModule):
+class LitFRCNN(pl.LightningModule):
     """
     Creates a Faster CNN which can be fine-tuned.
     """

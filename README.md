@@ -27,7 +27,7 @@
 ### Install Quickvision
 
 - Install from PyPi.
-- Current stable `release 0.1` needs `PyTorch 1.7` and `torchvision 0.8.1`.
+- Current stable `release 0.1.1` needs `PyTorch 1.7.1` and `torchvision 0.8.2`.
 
     ```
     pip install quickvision

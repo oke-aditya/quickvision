@@ -1,12 +1,12 @@
 import torch.nn as nn
 from torchvision.models.detection.faster_rcnn import (fasterrcnn_resnet50_fpn, FasterRCNN, FastRCNNPredictor,)
-from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
+from torchvision.models.detection.backbone_utils import resnet_fpn_backbone, mobilenet_backbone
 from quickvision.models.components import create_torchvision_backbone
 
-__all__ = ["create_vision_fastercnn", "create_fastercnn_backbone"]
+__all__ = ["create_fastercnn", "create_fastercnn_backbone"]
 
 
-def create_vision_fastercnn(num_classes: int = 91, backbone: nn.Module = None, **kwargs,):
+def create_fastercnn(num_classes: int = 91, backbone: nn.Module = None, **kwargs,):
     """
     Creates Faster RCNN implementation based on torchvision library.
     Args:
