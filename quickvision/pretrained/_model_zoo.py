@@ -19,6 +19,7 @@ TORCHVISION_MODEL_ZOO = {
     "mnasnet1_0": torchvision.models.mnasnet1_0,
     "mnasnet1_3": torchvision.models.mnasnet1_3,
     "mobilenet_v2": torchvision.models.mobilenet_v2,
+    "mobilenet_v3_large": torchvision.models.mobilenet_v3_large,
     "wide_resnet50_2": torchvision.models.wide_resnet50_2,
     "wide_resnet101_2": torchvision.models.wide_resnet101_2,
 }
