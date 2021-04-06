@@ -9,7 +9,7 @@ supported_tv_models = ["vgg11", "vgg13", "vgg16", "vgg19", "resnet18",
                        "wide_resnet50_2", "wide_resnet101_2",
                        "mobilenet_v3_large"]
 
-error_model = "invalid_model"
+error_model = "erronous_name"
 
 
 class BackboneTester(unittest.TestCase):
@@ -20,7 +20,7 @@ class BackboneTester(unittest.TestCase):
             self.assertTrue(isinstance(out_channels, int))
 
     def test_invalid_model(self):
-        self.assertRaises(ValueError, create_torchvision_backbone, error_model)
+        self.assertRaises(KeyError, create_torchvision_backbone, error_model)
 
     # def test_torchvision_imagenet_backbones(self):
     #     for model_name in supported_tv_models:
