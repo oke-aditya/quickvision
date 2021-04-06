@@ -63,58 +63,36 @@ def create_torchvision_backbone(model_name: str, pretrained: str = None):
         pretrained (str) : Pretrained weights dataset "imagenet", etc
     """
 
-    if model_name in MOBILENET_MODELS:
-        net = TORCHVISION_MODEL_ZOO[model_name]
-        if pretrained is not None:
-            state_dict = _load_pretrained_weights(WEIGHTS_DICT, model_name, pretrained=pretrained)
-            net.load_state_dict(state_dict)
+    model_selected = TORCHVISION_MODEL_ZOO[model_name]
+    net = model_selected(pretrained=False)
 
+    if pretrained is not None:
+        state_dict = _load_pretrained_weights(WEIGHTS_DICT, model_name, pretrained=pretrained)
+        net.load_state_dict(state_dict)
+
+    if model_name in MOBILENET_MODELS:
         out_channels = 1280
         ft_backbone = _create_backbone_features(net, out_channels)
         return ft_backbone, out_channels
 
     elif model_name in VGG_MODELS:
         out_channels = 512
-        net = TORCHVISION_MODEL_ZOO[model_name]
-
-        if pretrained is not None:
-            state_dict = _load_pretrained_weights(WEIGHTS_DICT, model_name, pretrained=pretrained)
-            net.load_state_dict(state_dict)
-
         ft_backbone = _create_backbone_features(net, out_channels)
         return ft_backbone, out_channels
 
     elif model_name in RESNET_SMALL_MODELS:
         out_channels = 512
-        net = TORCHVISION_MODEL_ZOO[model_name]
-
-        if pretrained is not None:
-            state_dict = _load_pretrained_weights(WEIGHTS_DICT, model_name, pretrained=pretrained)
-            net.load_state_dict(state_dict)
-
         ft_backbone = _create_backbone_adaptive(net, out_channels)
         return ft_backbone, out_channels
 
     elif model_name in RESNET_LARGE_MODELS:
         out_channels = 2048
-        net = TORCHVISION_MODEL_ZOO[model_name]
-
-        if pretrained is not None:
-            state_dict = _load_pretrained_weights(WEIGHTS_DICT, model_name, pretrained=pretrained)
-            net.load_state_dict(state_dict)
-
-        ft_backbone = _create_backbone_adaptive(net, out_channels)
+        ft_backbone = _create_backbone_adaptive(net, 2048)
         return ft_backbone, out_channels
 
     elif model_name in MNASNET_MODELS:
         out_channels = 1280
-        net = TORCHVISION_MODEL_ZOO[model_name]
-
-        if pretrained is not None:
-            state_dict = _load_pretrained_weights(WEIGHTS_DICT, model_name, pretrained=pretrained)
-            net.load_state_dict(state_dict)
-
-        ft_backbone = _create_backbone_adaptive(net, out_channels)
+        ft_backbone = _create_backbone_adaptive(net, 1280)
         return ft_backbone, out_channels
 
     else:
