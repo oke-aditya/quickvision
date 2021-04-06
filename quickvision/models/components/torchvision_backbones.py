@@ -65,11 +65,12 @@ def create_torchvision_backbone(model_name: str, pretrained: str = None):
 
     model_selected = TORCHVISION_MODEL_ZOO[model_name]
     net = model_selected(pretrained=False)
+
     if pretrained is not None:
         state_dict = _load_pretrained_weights(WEIGHTS_DICT, model_name, pretrained=pretrained)
         net.load_state_dict(state_dict)
 
-    if model_name == "mobilenet_v2":
+    if model_name in MOBILENET_MODELS:
         out_channels = 1280
         ft_backbone = _create_backbone_features(net, out_channels)
         return ft_backbone, out_channels
@@ -92,11 +93,6 @@ def create_torchvision_backbone(model_name: str, pretrained: str = None):
     elif model_name in MNASNET_MODELS:
         out_channels = 1280
         ft_backbone = _create_backbone_adaptive(net, 1280)
-        return ft_backbone, out_channels
-
-    elif model_name in ["wide_resnet50_2", "wide_resnet101_2"]:
-        out_channels = 2048
-        ft_backbone = _create_backbone_adaptive(net, 2048)
         return ft_backbone, out_channels
 
     else:
