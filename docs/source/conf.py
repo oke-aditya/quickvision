@@ -20,6 +20,7 @@ import shutil
 import os
 import sys
 import sphinx_rtd_theme
+import quickvision
 
 PATH_HERE = os.path.abspath(os.path.dirname(__file__))
 PATH_ROOT = os.path.join(PATH_HERE, '..', '..')
@@ -104,3 +105,13 @@ PACKAGE_MAPPING = {
     'Pillow': 'PIL',
     'opencv-python': 'cv2',
 }
+
+# only run doctests marked with a ".. doctest::" directive
+doctest_test_doctest_blocks = ''
+doctest_global_setup = """
+import importlib
+import os
+import torch
+import quickvision
+
+"""
